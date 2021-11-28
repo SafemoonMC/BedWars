@@ -1,0 +1,22 @@
+### Deployment ###
+COMPILED-JARS
+
+### Java ###
+*.class
+
+### Javadoc ###
+*.html
+
+### Package Files ###
+*.jar
+!/dependencies/*/*.jar
+
+### Gradle ###
+.gradle
+**/build/**
+
+!gradle-wrapper.jar
+
+### Idea ###
+.idea/
+*.iml
