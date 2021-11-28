@@ -1,0 +1,5 @@
+name: BedWars-Game
+main: gg.mooncraft.minecraft.bedwars.game
+version: @plugin-version@
+api-version: @plugin-api-version@
+author: @plugin-author@

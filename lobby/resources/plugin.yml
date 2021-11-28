@@ -1,0 +1,5 @@
+name: BedWars-Lobby
+main: gg.mooncraft.minecraft.bedwars.lobby
+version: @plugin-version@
+api-version: @plugin-api-version@
+author: @plugin-author@

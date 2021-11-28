@@ -1,1 +1,3 @@
 rootProject.name = 'BedWars'
+include 'game'
+include 'lobby'
