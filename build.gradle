@@ -7,6 +7,8 @@ plugins {
     id "com.sidneysimmons.gradle-plugin-external-properties" version "2.0.0"
 }
 
+externalProperties { propertiesFileResolver project.file("secrets.properties") }
+
 allprojects {
     repositories {
         mavenLocal()
@@ -15,7 +17,7 @@ allprojects {
         maven { url = uri('https://hub.spigotmc.org/nexus/content/repositories/snapshots/') }
         maven {
             url "https://jitpack.io"
-            credentials.username = props.get("jitpack-auth-token", project.properties.get("jitpack-auth-token") as String)
+            credentials.username props.get("jitpack-auth-token", properties.get("jitpack-auth-token") as String)
         }
     }
 }
@@ -94,5 +96,3 @@ task buildAndExtractAll(type: Copy) {
     dependsOn buildAndExtractSources
     dependsOn buildAndExtractShadowjar
 }
-
-externalProperties { propertiesFileResolver project.file("secrets.properties") }
