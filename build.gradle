@@ -73,26 +73,26 @@ subprojects {
     }
 }
 
-task buildAndExtractBase(type: Copy) {
+task buildBase(type: Copy) {
     from subprojects.collect { it.tasks.withType(Jar).named("jar") }
     into "/COMPILED-JARS/base"
 }
-task buildAndExtractSources(type: Copy) {
+task buildSources(type: Copy) {
     from subprojects.collect { it.tasks.withType(Jar).named("sourcesJar") }
     into "/COMPILED-JARS/sources"
 }
-task buildAndExtractJavadoc(type: Copy) {
+task buildJavadoc(type: Copy) {
     from subprojects.collect { it.tasks.withType(Jar).named("javadocJar") }
     into "/COMPILED-JARS/javadocs"
 }
-task buildAndExtractShadowjar(type: Copy) {
+task buildShadowjar(type: Copy) {
     from subprojects.collect { it.tasks.withType(Jar).named("shadowJar") }
     into "/COMPILED-JARS"
 }
-task buildAndExtractAll(type: Copy) {
+task buildAll(type: Copy) {
     dependsOn clean
-    dependsOn buildAndExtractBase
-    dependsOn buildAndExtractJavadoc
-    dependsOn buildAndExtractSources
-    dependsOn buildAndExtractShadowjar
+    dependsOn buildBase
+    dependsOn buildJavadoc
+    dependsOn buildSources
+    dependsOn buildShadowjar
 }
