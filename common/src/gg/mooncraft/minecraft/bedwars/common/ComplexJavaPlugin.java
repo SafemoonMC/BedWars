@@ -2,13 +2,16 @@ package gg.mooncraft.minecraft.bedwars.common;
 
 import lombok.Getter;
 
+import me.eduardwayland.mooncraft.waylander.database.Credentials;
 import me.eduardwayland.mooncraft.waylander.database.Database;
 
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import gg.mooncraft.minecraft.bedwars.common.scheduler.BukkitScheduler;
+import gg.mooncraft.minecraft.bedwars.common.utilities.BukkitDatabaseUtilities;
 
 @Getter
 public abstract class ComplexJavaPlugin extends JavaPlugin {
@@ -53,7 +56,12 @@ public abstract class ComplexJavaPlugin extends JavaPlugin {
     @Override
     public void onLoad() {
         try {
-            this.database = createDatabase();
+            ConfigurationSection mysqlSection = getConfig().getConfigurationSection("mysql");
+            if (mysqlSection != null) {
+                this.database = createDatabase(BukkitDatabaseUtilities.fromBukkitConfig(mysqlSection));
+            } else {
+                throw new IllegalStateException("The config.yml doesn't contain mysql section.");
+            }
         } catch (Exception e) {
             setEnabled(false);
             getLogger().severe("The plugin cannot be loaded. Connection to the database cannot be created. Error: ");
@@ -79,5 +87,5 @@ public abstract class ComplexJavaPlugin extends JavaPlugin {
     /**
      * Creates a Database instance;
      */
-    public abstract @NotNull Database createDatabase();
+    public abstract @NotNull Database createDatabase(@NotNull Credentials credentials);
 }
