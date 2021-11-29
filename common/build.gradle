@@ -1,0 +1,10 @@
+dependencies {
+    compileOnly 'com.github.SafemoonMC.Waylander:WaylanderCommand:develop-SNAPSHOT'
+    compileOnly 'com.github.SafemoonMC.Waylander:WaylanderScheduler:develop-SNAPSHOT'
+    compileOnly 'com.github.SafemoonMC.Waylander:WaylanderDatabase:develop-SNAPSHOT'
+
+    compileOnly 'org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT'
+}
+
+version '1.0.0'
+group 'gg.mooncraft.minecraft.bedwars'

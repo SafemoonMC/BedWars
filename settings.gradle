@@ -1,3 +1,4 @@
 rootProject.name = 'BedWars'
+include 'common'
 include 'game'
 include 'lobby'
