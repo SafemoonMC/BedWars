@@ -1,4 +1,4 @@
-package gg.mooncraft.minecraft.bedwars.common.messaging;
+package gg.mooncraft.minecraft.bedwars.common.messaging.messages;
 
 import org.jetbrains.annotations.NotNull;
 

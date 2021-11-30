@@ -1,7 +1,9 @@
-package gg.mooncraft.minecraft.bedwars.common.messaging;
+package gg.mooncraft.minecraft.bedwars.common.messaging.messages;
 
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
+
+import gg.mooncraft.minecraft.bedwars.common.messaging.RedisMessenger;
 
 import java.util.UUID;
 
