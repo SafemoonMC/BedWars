@@ -84,7 +84,12 @@ public abstract class ComplexJavaPlugin extends JavaPlugin {
                 if (redisPoolSettingsSection != null) {
                     HostAndPort hostAndPort = BukkitRedisUtilities.parseHostAndPort(redisSection);
                     JedisPoolConfig jedisPoolConfig = BukkitRedisUtilities.parsePoolConfig(redisPoolSettingsSection);
-                    this.messenger = createRedisMessenger(jedisPoolConfig, hostAndPort);
+                    String username = redisSection.getString("username");
+                    String password = redisSection.getString("password");
+                    if (username == null || password == null) {
+                        throw new IllegalStateException("The config.yml doesn't contain redis.username and redis.password options.");
+                    }
+                    this.messenger = createRedisMessenger(jedisPoolConfig, hostAndPort, username, password);
                 } else {
                     throw new IllegalStateException("The config.yml doesn't contain redis.pool-settings section.");
                 }
@@ -121,5 +126,5 @@ public abstract class ComplexJavaPlugin extends JavaPlugin {
     /**
      * Creates a RedisMessenger instance
      */
-    public abstract @NotNull RedisMessenger createRedisMessenger(@NotNull JedisPoolConfig jedisPoolConfig, @NotNull HostAndPort hostAndPort);
+    public abstract @NotNull RedisMessenger createRedisMessenger(@NotNull JedisPoolConfig jedisPoolConfig, @NotNull HostAndPort hostAndPort, @NotNull String username, @NotNull String password);
 }
