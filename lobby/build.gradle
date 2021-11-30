@@ -1,7 +1,10 @@
 dependencies {
+    implementation project(":common")
     implementation 'com.github.SafemoonMC.Waylander:WaylanderCommand:develop-SNAPSHOT'
     implementation 'com.github.SafemoonMC.Waylander:WaylanderScheduler:develop-SNAPSHOT'
     implementation 'com.github.SafemoonMC.Waylander:WaylanderDatabase:develop-SNAPSHOT'
+
+    compileOnly 'redis.clients:jedis:3.7.0'
 
     compileOnly 'org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT'
 }
