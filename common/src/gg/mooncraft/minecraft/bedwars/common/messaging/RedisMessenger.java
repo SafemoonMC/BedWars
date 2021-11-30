@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import gg.mooncraft.minecraft.bedwars.common.ComplexJavaPlugin;
+import gg.mooncraft.minecraft.bedwars.common.messaging.messages.OutgoingMessage;
 import gg.mooncraft.minecraft.bedwars.common.utilities.gson.GsonProvider;
 import gg.mooncraft.minecraft.bedwars.common.utilities.gson.JsonObjectWrapper;
 import redis.clients.jedis.HostAndPort;

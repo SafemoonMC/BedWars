@@ -50,6 +50,8 @@ public abstract class ComplexJavaPlugin extends JavaPlugin {
     protected void shutdown() {
         // Close the database
         if (this.database != null) this.database.shutdown();
+        // Close the messenger
+        if (this.messenger != null) this.messenger.stop();
 
         // Close the scheduler
         this.scheduler.shutdownExecutor();
