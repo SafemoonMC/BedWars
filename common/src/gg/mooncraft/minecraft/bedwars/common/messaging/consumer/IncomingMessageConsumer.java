@@ -1,7 +1,9 @@
-package gg.mooncraft.minecraft.bedwars.common.messaging;
+package gg.mooncraft.minecraft.bedwars.common.messaging.consumer;
 
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
+
+import gg.mooncraft.minecraft.bedwars.common.messaging.RedisSubscription;
 
 /**
  * A simply functional interface called by {@link RedisSubscription} with the received message
