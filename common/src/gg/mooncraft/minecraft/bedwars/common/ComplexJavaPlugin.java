@@ -10,8 +10,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import gg.mooncraft.minecraft.bedwars.common.messaging.Messenger;
+import gg.mooncraft.minecraft.bedwars.common.messaging.RedisMessenger;
 import gg.mooncraft.minecraft.bedwars.common.scheduler.BukkitScheduler;
 import gg.mooncraft.minecraft.bedwars.common.utilities.BukkitDatabaseUtilities;
+import gg.mooncraft.minecraft.bedwars.common.utilities.BukkitRedisUtilities;
+import redis.clients.jedis.HostAndPort;
+import redis.clients.jedis.JedisPoolConfig;
 
 @Getter
 public abstract class ComplexJavaPlugin extends JavaPlugin {
@@ -20,6 +25,7 @@ public abstract class ComplexJavaPlugin extends JavaPlugin {
     Fields
      */
     private @Nullable Database database;
+    private @Nullable RedisMessenger messenger;
     private final @NotNull BukkitScheduler scheduler;
 
     /*
@@ -50,6 +56,13 @@ public abstract class ComplexJavaPlugin extends JavaPlugin {
         this.scheduler.shutdownScheduler();
     }
 
+    /**
+     * @return a messenger instance if any, else null
+     */
+    public @Nullable Messenger getMessenger() {
+        return messenger;
+    }
+
     /*
     Override Methods
      */
@@ -61,6 +74,20 @@ public abstract class ComplexJavaPlugin extends JavaPlugin {
                 this.database = createDatabase(BukkitDatabaseUtilities.fromBukkitConfig(mysqlSection));
             } else {
                 throw new IllegalStateException("The config.yml doesn't contain mysql section.");
+            }
+
+            ConfigurationSection redisSection = getConfig().getConfigurationSection("redis");
+            if (redisSection != null) {
+                ConfigurationSection redisPoolSettingsSection = redisSection.getConfigurationSection("pool-settings");
+                if (redisPoolSettingsSection != null) {
+                    HostAndPort hostAndPort = BukkitRedisUtilities.parseHostAndPort(redisSection);
+                    JedisPoolConfig jedisPoolConfig = BukkitRedisUtilities.parsePoolConfig(redisPoolSettingsSection);
+                    this.messenger = createRedisMessenger(jedisPoolConfig, hostAndPort);
+                } else {
+                    throw new IllegalStateException("The config.yml doesn't contain redis.pool-settings section.");
+                }
+            } else {
+                throw new IllegalStateException("The config.yml doesn't contain redis section.");
             }
         } catch (Exception e) {
             setEnabled(false);
@@ -85,7 +112,12 @@ public abstract class ComplexJavaPlugin extends JavaPlugin {
     public abstract void onDisable();
 
     /**
-     * Creates a Database instance;
+     * Creates a Database instance
      */
     public abstract @NotNull Database createDatabase(@NotNull Credentials credentials);
+
+    /**
+     * Creates a RedisMessenger instance
+     */
+    public abstract @NotNull RedisMessenger createRedisMessenger(@NotNull JedisPoolConfig jedisPoolConfig, @NotNull HostAndPort hostAndPort);
 }
