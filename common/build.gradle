@@ -3,6 +3,8 @@ dependencies {
     compileOnly 'com.github.SafemoonMC.Waylander:WaylanderScheduler:develop-SNAPSHOT'
     compileOnly 'com.github.SafemoonMC.Waylander:WaylanderDatabase:develop-SNAPSHOT'
 
+    compileOnly 'redis.clients:jedis:3.7.0'
+
     compileOnly 'org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT'
 }
 
