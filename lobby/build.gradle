@@ -4,9 +4,20 @@ dependencies {
     implementation 'com.github.SafemoonMC.Waylander:WaylanderScheduler:develop-SNAPSHOT'
     implementation 'com.github.SafemoonMC.Waylander:WaylanderDatabase:develop-SNAPSHOT'
 
-    compileOnly 'redis.clients:jedis:3.7.0'
+    implementation 'redis.clients:jedis:3.7.0'
+    implementation 'org.mariadb.jdbc:mariadb-java-client:2.7.4'
+    implementation 'com.github.ben-manes.caffeine:caffeine:3.0.4'
 
     compileOnly 'org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT'
+}
+
+shadowJar {
+    relocate 'redis.clients', 'gg.mooncraft.minecraft.bedwars.libs.redis.clients'
+    relocate 'com.zaxxer', 'gg.mooncraft.minecraft.bedwars.libs.com.zaxxer'
+    relocate 'org.mariadb.jdbc', 'gg.mooncraft.minecraft.bedwars.libs.org.mariadb.jdbc'
+    relocate 'org.apache.commons.pool2', 'gg.mooncraft.minecraft.bedwars.libs.org.apache.commons.pool2'
+    relocate 'com.github.benmanes.caffeine', 'gg.mooncraft.minecraft.bedwars.libs.com.github.benmanes.caffeine'
+    relocate 'me.eduardwayland.mooncraft.waylander', 'gg.mooncraft.minecraft.bedwars.libs.waylander'
 }
 
 version '1.0.0'
