@@ -9,6 +9,8 @@ import org.jetbrains.annotations.NotNull;
 import gg.mooncraft.minecraft.bedwars.common.ComplexJavaPlugin;
 import gg.mooncraft.minecraft.bedwars.common.messaging.RedisChannel;
 import gg.mooncraft.minecraft.bedwars.common.messaging.RedisMessenger;
+import gg.mooncraft.minecraft.bedwars.lobby.handlers.listeners.PlayerListeners;
+import gg.mooncraft.minecraft.bedwars.lobby.messaging.LobbyRedisMessenger;
 import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.JedisPoolConfig;
 
@@ -20,6 +22,9 @@ public class BedWarsPlugin extends ComplexJavaPlugin {
      */
     @Override
     public void onEnable() {
+
+        // Listeners
+        new PlayerListeners();
 
         getLogger().info("Enabled!");
     }
@@ -44,5 +49,12 @@ public class BedWarsPlugin extends ComplexJavaPlugin {
         RedisMessenger redisMessenger = new RedisMessenger(this, new LobbyRedisMessenger(this));
         redisMessenger.init(RedisChannel.LOBBY, jedisPoolConfig, hostAndPort, username, password);
         return redisMessenger;
+    }
+
+    /*
+    Static Methods
+     */
+    public static @NotNull BedWarsPlugin getInstance() {
+        return BedWarsPlugin.getPlugin(BedWarsPlugin.class);
     }
 }
