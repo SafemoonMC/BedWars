@@ -1,4 +1,4 @@
-package gg.mooncraft.minecraft.bedwars.common.messaging.messages;
+package gg.mooncraft.minecraft.bedwars.common.messaging.message;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

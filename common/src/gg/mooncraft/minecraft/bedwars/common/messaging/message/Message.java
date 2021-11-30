@@ -1,4 +1,4 @@
-package gg.mooncraft.minecraft.bedwars.common.messaging.messages;
+package gg.mooncraft.minecraft.bedwars.common.messaging.message;
 
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;

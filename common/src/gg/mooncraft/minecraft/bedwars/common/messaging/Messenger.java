@@ -2,7 +2,7 @@ package gg.mooncraft.minecraft.bedwars.common.messaging;
 
 import org.jetbrains.annotations.NotNull;
 
-import gg.mooncraft.minecraft.bedwars.common.messaging.messages.OutgoingMessage;
+import gg.mooncraft.minecraft.bedwars.common.messaging.message.OutgoingMessage;
 
 import java.util.concurrent.CompletableFuture;
 
