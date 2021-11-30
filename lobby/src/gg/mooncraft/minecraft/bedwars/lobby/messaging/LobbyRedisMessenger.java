@@ -1,4 +1,4 @@
-package gg.mooncraft.minecraft.bedwars.lobby;
+package gg.mooncraft.minecraft.bedwars.lobby.messaging;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -10,6 +10,8 @@ import gg.mooncraft.minecraft.bedwars.common.messaging.consumer.IncomingMessageC
 import gg.mooncraft.minecraft.bedwars.common.messaging.message.Message;
 import gg.mooncraft.minecraft.bedwars.common.utilities.CaffeineList;
 import gg.mooncraft.minecraft.bedwars.common.utilities.gson.GsonProvider;
+import gg.mooncraft.minecraft.bedwars.lobby.BedWarsPlugin;
+import gg.mooncraft.minecraft.bedwars.lobby.MessageType;
 
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
