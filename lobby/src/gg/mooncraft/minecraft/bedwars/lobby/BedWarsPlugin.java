@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import gg.mooncraft.minecraft.bedwars.common.ComplexJavaPlugin;
 import gg.mooncraft.minecraft.bedwars.common.messaging.RedisChannel;
 import gg.mooncraft.minecraft.bedwars.common.messaging.RedisMessenger;
+import gg.mooncraft.minecraft.bedwars.lobby.handlers.commands.Commands;
 import gg.mooncraft.minecraft.bedwars.lobby.handlers.listeners.PlayerListeners;
 import gg.mooncraft.minecraft.bedwars.lobby.messaging.LobbyRedisMessenger;
 import redis.clients.jedis.HostAndPort;
@@ -25,6 +26,8 @@ public class BedWarsPlugin extends ComplexJavaPlugin {
 
         // Listeners
         new PlayerListeners();
+        // Commands
+        Commands.loadAll();
 
         getLogger().info("Enabled!");
     }
