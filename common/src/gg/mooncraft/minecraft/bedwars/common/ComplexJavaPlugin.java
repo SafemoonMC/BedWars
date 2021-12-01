@@ -2,6 +2,8 @@ package gg.mooncraft.minecraft.bedwars.common;
 
 import lombok.Getter;
 
+import me.eduardwayland.mooncraft.waylander.command.LiteralCommand;
+import me.eduardwayland.mooncraft.waylander.command.wrapper.Brigadier;
 import me.eduardwayland.mooncraft.waylander.database.Credentials;
 import me.eduardwayland.mooncraft.waylander.database.Database;
 
@@ -24,8 +26,11 @@ public abstract class ComplexJavaPlugin extends JavaPlugin {
     /*
     Fields
      */
+    private @Nullable Brigadier brigadier;
+
     private @Nullable Database database;
     private @Nullable RedisMessenger messenger;
+
     private final @NotNull BukkitScheduler scheduler;
 
     /*
@@ -56,6 +61,25 @@ public abstract class ComplexJavaPlugin extends JavaPlugin {
         // Close the scheduler
         this.scheduler.shutdownExecutor();
         this.scheduler.shutdownScheduler();
+    }
+
+    /**
+     * Registers the command into Brigadier instance
+     *
+     * @param literalCommand the command to register
+     */
+    public void registerCommand(@NotNull LiteralCommand<?> literalCommand) {
+        // Load Brigadier instance if not loaded yet
+        if (getBrigadier() == null) {
+            try {
+                this.brigadier = new Brigadier(this);
+            } catch (Exception e) {
+                shutdown();
+                getLogger().severe("The plugin cannot work properly without Brigadier.");
+                return;
+            }
+        }
+        getBrigadier().getBrigadierCommandWrapper().register(literalCommand);
     }
 
     /**
