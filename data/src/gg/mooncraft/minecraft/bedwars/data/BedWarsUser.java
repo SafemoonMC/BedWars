@@ -29,6 +29,23 @@ public final class BedWarsUser implements EntityParent<BedWarsUser> {
     }
 
     /*
+    Methods
+     */
+    public void addCoins(int coins) {
+        if (coins <= 0) return;
+        this.coins = this.coins.add(BigInteger.valueOf(coins));
+    }
+
+    public void delCoins(int coins) {
+        if (coins <= 0) return;
+        this.coins = this.coins.subtract(BigInteger.valueOf(coins)).max(BigInteger.ZERO);
+    }
+
+    public @NotNull BigInteger getCoins() {
+        return this.coins;
+    }
+
+    /*
     Override Methods
      */
     @Override
