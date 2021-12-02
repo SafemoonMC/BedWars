@@ -59,6 +59,20 @@ CREATE TABLE IF NOT EXISTS bw_game_maps_points
     id         SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
     identifier VARCHAR(32)       NOT NULL,
     mode       VARCHAR(16)       NOT NULL,
+    type       VARCHAR(32)       NOT NULL,
+    x          DOUBLE            NOT NULL,
+    y          DOUBLE            NOT NULL,
+    z          DOUBLE            NOT NULL,
+    yaw        FLOAT             NOT NULL,
+    pitch      FLOAT             NOT NULL,
+    PRIMARY KEY (id, identifier),
+    FOREIGN KEY (identifier) REFERENCES bw_game_maps (identifier) ON DELETE CASCADE
+);
+CREATE TABLE IF NOT EXISTS bw_game_maps_points_team
+(
+    id         SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    identifier VARCHAR(32)       NOT NULL,
+    mode       VARCHAR(16)       NOT NULL,
     team       VARCHAR(16)       NOT NULL,
     type       VARCHAR(32)       NOT NULL,
     x          DOUBLE            NOT NULL,
