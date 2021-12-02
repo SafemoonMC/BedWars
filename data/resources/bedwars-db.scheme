@@ -5,15 +5,6 @@ CREATE TABLE IF NOT EXISTS bw_users
     level      BIGINT UNSIGNED NOT NULL,
     experience BIGINT UNSIGNED NOT NULL
 );
-CREATE TABLE IF NOT EXISTS bw_users_stats_kd
-(
-    unique_id CHAR(36)        NOT NULL PRIMARY KEY,
-    type      VARCHAR(6)      NOT NULL,
-    mode      VARCHAR(32)     NOT NULL,
-    name      VARCHAR(6)      NOT NULL,
-    amount    BIGINT UNSIGNED NOT NULL,
-    FOREIGN KEY (unique_id) REFERENCES bw_users (unique_id) ON DELETE CASCADE
-);
 CREATE TABLE IF NOT EXISTS bw_users_stats_games
 (
     unique_id CHAR(36)        NOT NULL PRIMARY KEY,
