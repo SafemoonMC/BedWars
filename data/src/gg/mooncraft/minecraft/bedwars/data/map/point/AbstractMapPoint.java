@@ -1,17 +1,18 @@
-package gg.mooncraft.minecraft.bedwars.data;
+package gg.mooncraft.minecraft.bedwars.data.map.point;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import gg.mooncraft.minecraft.bedwars.data.GameMode;
+
 @Getter
 @AllArgsConstructor
-public final class MapPoint {
+public class AbstractMapPoint {
 
     /*
     Fields
      */
     private final GameMode gameMode;
-    private final MapPointType type;
     private final double x;
     private final double y;
     private final double z;
