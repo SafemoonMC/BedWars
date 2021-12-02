@@ -4,6 +4,8 @@ import me.eduardwayland.mooncraft.waylander.database.entities.EntityParent;
 
 import org.jetbrains.annotations.NotNull;
 
+import gg.mooncraft.minecraft.bedwars.data.user.UserStatisticContainer;
+
 import java.math.BigInteger;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;

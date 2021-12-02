@@ -1,4 +1,4 @@
-package gg.mooncraft.minecraft.bedwars.data;
+package gg.mooncraft.minecraft.bedwars.data.user.stats;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -6,6 +6,9 @@ import lombok.Getter;
 import me.eduardwayland.mooncraft.waylander.database.entities.EntityChild;
 
 import org.jetbrains.annotations.NotNull;
+
+import gg.mooncraft.minecraft.bedwars.data.GameMode;
+import gg.mooncraft.minecraft.bedwars.data.user.UserStatisticContainer;
 
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -19,7 +22,7 @@ public final class GameStatistic implements EntityChild<UserStatisticContainer> 
      */
     private final @NotNull UserStatisticContainer parent;
     private final @NotNull GameMode gameMode;
-    private final @NotNull GameStatisticType type;
+    private final @NotNull StatisticTypes.GAME type;
     private final @NotNull AtomicInteger amount;
 
 

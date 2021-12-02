@@ -1,4 +1,4 @@
-package gg.mooncraft.minecraft.bedwars.data;
+package gg.mooncraft.minecraft.bedwars.data.user.stats;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -6,6 +6,8 @@ import lombok.Getter;
 import me.eduardwayland.mooncraft.waylander.database.entities.EntityChild;
 
 import org.jetbrains.annotations.NotNull;
+
+import gg.mooncraft.minecraft.bedwars.data.user.UserStatisticContainer;
 
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -18,7 +20,7 @@ public final class OverallStatistic implements EntityChild<UserStatisticContaine
     Fields
      */
     private final @NotNull UserStatisticContainer parent;
-    private final @NotNull OverallStatisticType type;
+    private final @NotNull StatisticTypes.OVERALL type;
     private final @NotNull AtomicInteger amount;
 
 
