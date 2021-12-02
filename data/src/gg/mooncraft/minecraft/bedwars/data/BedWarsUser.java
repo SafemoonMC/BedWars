@@ -17,15 +17,21 @@ public final class BedWarsUser implements EntityParent<BedWarsUser> {
     private @NotNull BigInteger coins;
     private @NotNull BigInteger level;
     private @NotNull BigInteger experience;
+    private @NotNull UserStatisticContainer statisticContainer;
 
     /*
     Constructor
      */
     public BedWarsUser(@NotNull UUID uniqueId) {
+        this(uniqueId, BigInteger.ZERO, BigInteger.ZERO, BigInteger.ZERO);
+    }
+
+    public BedWarsUser(@NotNull UUID uniqueId, @NotNull BigInteger coins, @NotNull BigInteger level, @NotNull BigInteger experience) {
         this.uniqueId = uniqueId;
-        this.coins = BigInteger.ZERO;
-        this.level = BigInteger.ZERO;
-        this.experience = BigInteger.ZERO;
+        this.coins = coins;
+        this.level = level;
+        this.experience = experience;
+        this.statisticContainer = new UserStatisticContainer(this);
     }
 
     /*
@@ -50,6 +56,7 @@ public final class BedWarsUser implements EntityParent<BedWarsUser> {
      */
     @Override
     public @NotNull CompletableFuture<BedWarsUser> withChildren() {
-        return CompletableFuture.completedFuture(this);
+        CompletableFuture<?> statisticFuture = statisticContainer.withChildren().thenAccept(userStatisticContainer -> this.statisticContainer = userStatisticContainer);
+        return CompletableFuture.allOf(statisticFuture).thenApply(v -> this);
     }
 }
