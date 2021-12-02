@@ -12,27 +12,29 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @Getter
-public final class GameStatisticContainer implements EntityChild<BedWarsUser>, EntityParent<GameStatisticContainer> {
+public final class UserStatisticContainer implements EntityChild<BedWarsUser>, EntityParent<UserStatisticContainer> {
 
     /*
     Fields
      */
     private final @NotNull BedWarsUser parent;
-    private final @NotNull List<GameStatistic> statisticList;
+    private final @NotNull List<GameStatistic> gameStatisticList;
+    private final @NotNull List<OverallStatistic> overallStatisticList;
 
     /*
     Constructor
      */
-    public GameStatisticContainer(@NotNull BedWarsUser parent) {
+    public UserStatisticContainer(@NotNull BedWarsUser parent) {
         this.parent = parent;
-        this.statisticList = new ArrayList<>();
+        this.gameStatisticList = new ArrayList<>();
+        this.overallStatisticList = new ArrayList<>();
     }
 
     /*
     Override Methods
      */
     @Override
-    public @NotNull CompletableFuture<GameStatisticContainer> withChildren() {
+    public @NotNull CompletableFuture<UserStatisticContainer> withChildren() {
         return CompletableFuture.completedFuture(this);
     }
 }

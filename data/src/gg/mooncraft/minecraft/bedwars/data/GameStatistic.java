@@ -12,14 +12,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @Getter
 @AllArgsConstructor
-public final class GameStatistic implements EntityChild<GameStatisticContainer> {
+public final class GameStatistic implements EntityChild<UserStatisticContainer> {
 
     /*
     Fields
      */
-    private final @NotNull GameStatisticContainer parent;
+    private final @NotNull UserStatisticContainer parent;
     private final @NotNull GameMode gameMode;
-    private final @NotNull StatisticType type;
+    private final @NotNull GameStatisticType type;
     private final @NotNull AtomicInteger amount;
 
 

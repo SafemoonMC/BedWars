@@ -1,6 +1,6 @@
 package gg.mooncraft.minecraft.bedwars.data;
 
-public enum StatisticType {
+public enum GameStatisticType {
 
     NORMAL_KILL,
     NORMAL_DEATH,
