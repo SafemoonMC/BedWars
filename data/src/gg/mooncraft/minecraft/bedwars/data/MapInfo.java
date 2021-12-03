@@ -10,6 +10,5 @@ import java.sql.Timestamp;
 public final class MapInfo {
 
     private final @NotNull String display;
-    private final @NotNull String description;
     private final @NotNull Timestamp timestamp;
 }
