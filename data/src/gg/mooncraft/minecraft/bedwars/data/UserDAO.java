@@ -34,8 +34,16 @@ public final class UserDAO {
     /*
     Static Methods
      */
-    public static @NotNull CompletableFuture<BedWarsUser> load(@NotNull UUID uniqueId) {
-
+    public static @NotNull CompletableFuture<BedWarsUser> create(@NotNull BedWarsUser bedWarsUser) {
         return CompletableFuture.completedFuture(null);
     }
+
+    public static @NotNull CompletableFuture<BedWarsUser> read(@NotNull UUID uniqueId) {
+        return CompletableFuture.completedFuture(null);
+    }
+
+    public static @NotNull CompletableFuture<BedWarsUser> update(@NotNull BedWarsUser bedWarsUser) {
+        return CompletableFuture.completedFuture(null);
+    }
+
 }
