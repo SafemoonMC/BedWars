@@ -1,22 +1,31 @@
 package gg.mooncraft.minecraft.bedwars.data;
 
+import lombok.Getter;
+
+import me.eduardwayland.mooncraft.waylander.database.entities.EntityChild;
+import me.eduardwayland.mooncraft.waylander.database.entities.EntityParent;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
-public final class MapSettingsContainer {
+@Getter
+public final class MapSettingsContainer implements EntityParent<MapSettingsContainer>, EntityChild<GameMap> {
 
     /*
     Fields
      */
+    private final @NotNull GameMap parent;
     private final @NotNull List<MapSetting> settingList;
 
     /*
     Constructor
      */
-    public MapSettingsContainer() {
+    public MapSettingsContainer(@NotNull GameMap parent) {
+        this.parent = parent;
         this.settingList = new ArrayList<>();
     }
 
@@ -34,5 +43,13 @@ public final class MapSettingsContainer {
     @UnmodifiableView
     public @NotNull List<MapSetting> getSettingList(@NotNull GameMode gameMode) {
         return this.settingList.stream().filter(mapSetting -> mapSetting.getGameMode() == gameMode).toList();
+    }
+
+    /*
+    Override Methods
+     */
+    @Override
+    public @NotNull CompletableFuture<MapSettingsContainer> withChildren() {
+        return CompletableFuture.completedFuture(this);
     }
 }
