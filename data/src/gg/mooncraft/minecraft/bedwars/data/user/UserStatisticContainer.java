@@ -7,7 +7,6 @@ import me.eduardwayland.mooncraft.waylander.database.entities.EntityParent;
 
 import org.jetbrains.annotations.NotNull;
 
-import gg.mooncraft.minecraft.bedwars.data.BedWarsUser;
 import gg.mooncraft.minecraft.bedwars.data.user.stats.GameStatistic;
 import gg.mooncraft.minecraft.bedwars.data.user.stats.OverallStatistic;
 

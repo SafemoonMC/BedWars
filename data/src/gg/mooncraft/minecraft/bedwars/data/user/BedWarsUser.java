@@ -1,10 +1,8 @@
-package gg.mooncraft.minecraft.bedwars.data;
+package gg.mooncraft.minecraft.bedwars.data.user;
 
 import me.eduardwayland.mooncraft.waylander.database.entities.EntityParent;
 
 import org.jetbrains.annotations.NotNull;
-
-import gg.mooncraft.minecraft.bedwars.data.user.UserStatisticContainer;
 
 import java.math.BigInteger;
 import java.util.UUID;
