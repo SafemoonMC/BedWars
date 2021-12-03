@@ -1,9 +1,11 @@
-package gg.mooncraft.minecraft.bedwars.data;
+package gg.mooncraft.minecraft.bedwars.data.map.setting;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import org.jetbrains.annotations.NotNull;
+
+import gg.mooncraft.minecraft.bedwars.data.GameMode;
 
 @Getter
 @AllArgsConstructor

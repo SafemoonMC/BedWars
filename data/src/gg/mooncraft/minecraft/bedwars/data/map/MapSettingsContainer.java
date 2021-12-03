@@ -1,4 +1,4 @@
-package gg.mooncraft.minecraft.bedwars.data;
+package gg.mooncraft.minecraft.bedwars.data.map;
 
 import lombok.Getter;
 
@@ -7,6 +7,10 @@ import me.eduardwayland.mooncraft.waylander.database.entities.EntityParent;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
+
+import gg.mooncraft.minecraft.bedwars.data.GameMap;
+import gg.mooncraft.minecraft.bedwars.data.GameMode;
+import gg.mooncraft.minecraft.bedwars.data.map.setting.MapSetting;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,11 +1,11 @@
-package gg.mooncraft.minecraft.bedwars.data.map;
+package gg.mooncraft.minecraft.bedwars.data.map.point;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public final class GameMapPointTypes {
+public final class PointTypes {
 
     @AllArgsConstructor
     public enum MAP {

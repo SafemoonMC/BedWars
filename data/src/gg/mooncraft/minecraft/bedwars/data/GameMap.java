@@ -5,6 +5,7 @@ import me.eduardwayland.mooncraft.waylander.database.entities.EntityParent;
 import org.jetbrains.annotations.NotNull;
 
 import gg.mooncraft.minecraft.bedwars.data.map.MapPointsContainer;
+import gg.mooncraft.minecraft.bedwars.data.map.MapSettingsContainer;
 
 import java.sql.Timestamp;
 import java.time.Instant;
