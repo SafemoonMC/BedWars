@@ -39,7 +39,7 @@ public final class UserStatisticDAO {
     /*
     Static registration
      */
-    public static void registerDAO(@NotNull Database database) {
+    static void registerDAO(@NotNull Database database) {
         if (UserStatisticDAO.database != null) return;
         UserStatisticDAO.database = database.getDatabaseManager();
         System.out.println("BedWars-Data: UserStatisticDAO has been registered.");
