@@ -8,6 +8,8 @@ public final class StatisticTypes {
 
     public enum GAME {
 
+        WINS,
+        LOSSES,
         NORMAL_KILL,
         NORMAL_DEATH,
         FINAL_KILL,
