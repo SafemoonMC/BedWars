@@ -4,7 +4,9 @@ import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import gg.mooncraft.minecraft.bedwars.data.GameMode;
 import gg.mooncraft.minecraft.bedwars.data.user.BedWarsUser;
 import gg.mooncraft.minecraft.bedwars.data.user.stats.StatisticTypes;
 import gg.mooncraft.minecraft.bedwars.lobby.BedWarsPlugin;
@@ -18,12 +20,13 @@ import java.math.BigInteger;
  * - %bw_experience% -> returns experience
  * - %bw_stat-game-[type]% -> returns a sum of all [type] amount from all games
  * - %bw_stat-overall-[type]% -> returns an overall statistic
+ * - %bw_counter-[game mode]% -> returns the amount of players playing that game mode
  */
 public class BedWarsExpansion extends PlaceholderExpansion {
 
     @Override
     public String onPlaceholderRequest(Player player, @NotNull String params) {
-        if (player == null) return "Invalid player request";
+        if (player == null) return "INVALID_PLAYER";
         if (params.equalsIgnoreCase("coins")) {
             return BedWarsPlugin.getInstance().getUserFactory().getUser(player)
                     .map(BedWarsUser::getCoins)
@@ -46,6 +49,13 @@ public class BedWarsExpansion extends PlaceholderExpansion {
 
         if (params.contains("-")) {
             String[] args = params.split("-");
+            if (args.length == 2) {
+                String name = args[0];
+                if (name.equalsIgnoreCase("counter")) {
+                    GameMode gameMode = parseGameMode(args[1]);
+                    return "NOT YET";
+                }
+            }
             if (args.length == 3) {
                 String name = args[0];
                 String type = args[1];
@@ -71,7 +81,7 @@ public class BedWarsExpansion extends PlaceholderExpansion {
             }
         }
 
-        return "Invalid parameters";
+        return "INVALID_PARAMS";
     }
 
     @Override
@@ -87,5 +97,16 @@ public class BedWarsExpansion extends PlaceholderExpansion {
     @Override
     public @NotNull String getVersion() {
         return BedWarsPlugin.getInstance().getDescription().getVersion();
+    }
+
+    /*
+    Methods
+     */
+    private @Nullable GameMode parseGameMode(@NotNull String arg) {
+        try {
+            return GameMode.valueOf(arg);
+        } catch (Exception ignored) {
+            return null;
+        }
     }
 }
