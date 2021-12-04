@@ -10,10 +10,10 @@ public final class StatisticTypes {
 
         WINS,
         LOSSES,
-        NORMAL_KILL,
-        NORMAL_DEATH,
-        FINAL_KILL,
-        FINAL_DEATH,
+        NORMAL_KILLS,
+        NORMAL_DEATHS,
+        FINAL_KILLS,
+        FINAL_DEATHS,
         BEDS_BROKEN
     }
 
