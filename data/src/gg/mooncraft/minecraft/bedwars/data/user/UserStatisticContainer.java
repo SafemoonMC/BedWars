@@ -50,6 +50,15 @@ public final class UserStatisticContainer implements EntityChild<BedWarsUser>, E
                 .orElse(BigInteger.ZERO);
     }
 
+    public @NotNull BigInteger getGameStatisticTotal(@NotNull StatisticTypes.GAME type) {
+        return this.gameStatisticList
+                .stream()
+                .filter(gameStatistic -> gameStatistic.getType() == type)
+                .map(GameStatistic::getAmount)
+                .map(atomicInteger -> BigInteger.valueOf(atomicInteger.longValue()))
+                .reduce(BigInteger.ZERO, BigInteger::add);
+    }
+
     public @NotNull BigInteger getOverallStatistic(@NotNull StatisticTypes.OVERALL type) {
         return this.overallStatisticList
                 .stream()
