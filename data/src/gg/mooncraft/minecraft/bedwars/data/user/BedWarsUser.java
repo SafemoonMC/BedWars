@@ -1,5 +1,7 @@
 package gg.mooncraft.minecraft.bedwars.data.user;
 
+import lombok.Getter;
+
 import me.eduardwayland.mooncraft.waylander.database.entities.EntityParent;
 
 import org.jetbrains.annotations.NotNull;
@@ -8,6 +10,7 @@ import java.math.BigInteger;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
+@Getter
 public final class BedWarsUser implements EntityParent<BedWarsUser> {
 
     /*
@@ -45,10 +48,6 @@ public final class BedWarsUser implements EntityParent<BedWarsUser> {
     public void delCoins(int coins) {
         if (coins <= 0) return;
         this.coins = this.coins.subtract(BigInteger.valueOf(coins)).max(BigInteger.ZERO);
-    }
-
-    public @NotNull BigInteger getCoins() {
-        return this.coins;
     }
 
     /*
