@@ -25,10 +25,12 @@ public class PlayerListeners implements Listener {
     @EventHandler
     public void on(@NotNull PlayerJoinEvent e) {
         Player player = e.getPlayer();
+        BedWarsPlugin.getInstance().getUserFactory().loadUser(player);
     }
 
     @EventHandler
     public void on(@NotNull PlayerQuitEvent e) {
         Player player = e.getPlayer();
+        BedWarsPlugin.getInstance().getUserFactory().unloadUser(player);
     }
 }
