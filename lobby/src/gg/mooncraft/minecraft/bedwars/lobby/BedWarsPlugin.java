@@ -6,6 +6,7 @@ import me.eduardwayland.mooncraft.waylander.database.Credentials;
 import me.eduardwayland.mooncraft.waylander.database.Database;
 import me.eduardwayland.mooncraft.waylander.database.connection.hikari.impl.MariaDBConnectionFactory;
 
+import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
 import gg.mooncraft.minecraft.bedwars.common.ComplexJavaPlugin;
@@ -16,6 +17,7 @@ import gg.mooncraft.minecraft.bedwars.lobby.factory.UserFactory;
 import gg.mooncraft.minecraft.bedwars.lobby.handlers.commands.Commands;
 import gg.mooncraft.minecraft.bedwars.lobby.handlers.listeners.PlayerListeners;
 import gg.mooncraft.minecraft.bedwars.lobby.messaging.LobbyRedisMessenger;
+import gg.mooncraft.minecraft.bedwars.lobby.papi.BedWarsExpansion;
 import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.JedisPoolConfig;
 
@@ -32,6 +34,11 @@ public class BedWarsPlugin extends ComplexJavaPlugin {
      */
     @Override
     public void onEnable() {
+        // Load dependencies
+        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            new BedWarsExpansion().register();
+        }
+
         // Load daos
         UserDAO.registerDAO(getDatabase());
 
@@ -40,6 +47,7 @@ public class BedWarsPlugin extends ComplexJavaPlugin {
 
         // Listeners
         new PlayerListeners();
+
         // Commands
         Commands.loadAll();
 
