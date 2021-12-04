@@ -7,7 +7,6 @@ import me.eduardwayland.mooncraft.waylander.database.entities.EntityParent;
 
 import org.jetbrains.annotations.NotNull;
 
-import gg.mooncraft.minecraft.bedwars.data.GameMap;
 import gg.mooncraft.minecraft.bedwars.data.map.point.AbstractMapPoint;
 import gg.mooncraft.minecraft.bedwars.data.map.point.GameMapPoint;
 import gg.mooncraft.minecraft.bedwars.data.map.point.TeamMapPoint;
@@ -17,19 +16,19 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @Getter
-public final class MapPointsContainer implements EntityParent<MapPointsContainer>, EntityChild<GameMap> {
+public final class MapPointsContainer implements EntityParent<MapPointsContainer>, EntityChild<BedWarsMap> {
 
     /*
     Fields
      */
-    private final @NotNull GameMap parent;
+    private final @NotNull BedWarsMap parent;
     private final @NotNull List<GameMapPoint> mapPointList;
     private final @NotNull List<TeamMapPoint> teamPointList;
 
     /*
     Constructor
      */
-    public MapPointsContainer(@NotNull GameMap parent) {
+    public MapPointsContainer(@NotNull BedWarsMap parent) {
         this.parent = parent;
         this.mapPointList = new LinkedList<>();
         this.teamPointList = new LinkedList<>();

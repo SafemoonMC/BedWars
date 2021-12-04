@@ -1,4 +1,4 @@
-package gg.mooncraft.minecraft.bedwars.data;
+package gg.mooncraft.minecraft.bedwars.data.map;
 
 import lombok.AllArgsConstructor;
 

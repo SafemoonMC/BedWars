@@ -8,7 +8,6 @@ import me.eduardwayland.mooncraft.waylander.database.entities.EntityParent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
 
-import gg.mooncraft.minecraft.bedwars.data.GameMap;
 import gg.mooncraft.minecraft.bedwars.data.GameMode;
 import gg.mooncraft.minecraft.bedwars.data.map.setting.MapSetting;
 
@@ -17,18 +16,18 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @Getter
-public final class MapSettingsContainer implements EntityParent<MapSettingsContainer>, EntityChild<GameMap> {
+public final class MapSettingsContainer implements EntityParent<MapSettingsContainer>, EntityChild<BedWarsMap> {
 
     /*
     Fields
      */
-    private final @NotNull GameMap parent;
+    private final @NotNull BedWarsMap parent;
     private final @NotNull List<MapSetting> settingList;
 
     /*
     Constructor
      */
-    public MapSettingsContainer(@NotNull GameMap parent) {
+    public MapSettingsContainer(@NotNull BedWarsMap parent) {
         this.parent = parent;
         this.settingList = new ArrayList<>();
     }
