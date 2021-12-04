@@ -38,6 +38,8 @@ public final class UserDAO {
         if (UserDAO.database != null) return;
         UserDAO.database = database.getDatabaseManager();
         System.out.println("BedWars-Data: UserDAO has been registered.");
+        // Register necessary daos
+        UserStatisticDAO.registerDAO(database);
     }
 
     /*
