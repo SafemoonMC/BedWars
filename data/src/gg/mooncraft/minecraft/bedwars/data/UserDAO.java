@@ -34,8 +34,8 @@ public final class UserDAO {
     /*
     Static registration
      */
-    public static void registerDAO(@NotNull Database database) {
-        if (UserDAO.database != null) return;
+    public static void registerDAO(@Nullable Database database) {
+        if (UserDAO.database != null || database == null) return;
         UserDAO.database = database.getDatabaseManager();
         System.out.println("BedWars-Data: UserDAO has been registered.");
         // Register necessary daos
