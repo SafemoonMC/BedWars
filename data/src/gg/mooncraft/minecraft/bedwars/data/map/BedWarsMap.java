@@ -40,9 +40,10 @@ public final class BedWarsMap implements EntityParent<BedWarsMap> {
      */
     @Override
     public @NotNull CompletableFuture<BedWarsMap> withChildren() {
+        CompletableFuture<?> futureModes = MapModesDAO.read(this).thenAccept(this.gameModeSet::addAll);
         CompletableFuture<?> futureSettings = settingsContainer.withChildren().thenAccept(mapSettingsContainer -> this.settingsContainer = mapSettingsContainer);
         CompletableFuture<?> futurePoints = pointsContainer.withChildren().thenAccept(mapPointsContainer -> this.pointsContainer = mapPointsContainer);
 
-        return CompletableFuture.allOf(futureSettings, futurePoints).thenApply(v -> this);
+        return CompletableFuture.allOf(futureModes, futureSettings, futurePoints).thenApply(v -> this);
     }
 }
