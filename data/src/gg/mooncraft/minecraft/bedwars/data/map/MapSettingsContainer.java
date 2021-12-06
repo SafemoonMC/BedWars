@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
 
 import gg.mooncraft.minecraft.bedwars.data.GameMode;
+import gg.mooncraft.minecraft.bedwars.data.MapSettingsDAO;
 import gg.mooncraft.minecraft.bedwars.data.map.setting.MapSetting;
 
 import java.util.ArrayList;
@@ -53,6 +54,9 @@ public final class MapSettingsContainer implements EntityParent<MapSettingsConta
      */
     @Override
     public @NotNull CompletableFuture<MapSettingsContainer> withChildren() {
-        return CompletableFuture.completedFuture(this);
+        return MapSettingsDAO.read(this).thenApply(list -> {
+            this.settingList.addAll(list);
+            return this;
+        });
     }
 }
