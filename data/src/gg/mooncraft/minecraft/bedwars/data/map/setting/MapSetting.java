@@ -10,6 +10,8 @@ import org.jetbrains.annotations.NotNull;
 import gg.mooncraft.minecraft.bedwars.data.GameMode;
 import gg.mooncraft.minecraft.bedwars.data.map.MapSettingsContainer;
 
+import java.util.Objects;
+
 @Getter
 @AllArgsConstructor
 public final class MapSetting implements EntityChild<MapSettingsContainer> {
@@ -21,4 +23,20 @@ public final class MapSetting implements EntityChild<MapSettingsContainer> {
     private final @NotNull GameMode gameMode;
     private final @NotNull String path;
     private final @NotNull String value;
+
+    /*
+    Override Methods
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MapSetting that = (MapSetting) o;
+        return getGameMode() == that.getGameMode() && getPath().equals(that.getPath());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getGameMode(), getPath());
+    }
 }

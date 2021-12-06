@@ -6,6 +6,7 @@ import me.eduardwayland.mooncraft.waylander.database.entities.EntityChild;
 import me.eduardwayland.mooncraft.waylander.database.entities.EntityParent;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnmodifiableView;
 
 import gg.mooncraft.minecraft.bedwars.data.GameMode;
@@ -14,6 +15,7 @@ import gg.mooncraft.minecraft.bedwars.data.map.setting.MapSetting;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 @Getter
@@ -36,12 +38,32 @@ public final class MapSettingsContainer implements EntityParent<MapSettingsConta
     /*
     Methods
      */
-    public void set(@NotNull MapSetting mapSetting) {
-        // TODO implement with database
+    public void set(@NotNull GameMode gameMode, @NotNull String path, @Nullable String value) {
+        getSetting(gameMode, path).ifPresentOrElse(streamMapSetting -> {
+            this.settingList.remove(streamMapSetting);
+            if (value != null) {
+                MapSetting mapSetting = new MapSetting(this, gameMode, path, value);
+                this.settingList.add(mapSetting);
+                MapSettingsDAO.update(mapSetting);
+            } else {
+                MapSettingsDAO.delete(streamMapSetting);
+            }
+        }, () -> {
+            if (value == null) return;
+            MapSetting mapSetting = new MapSetting(this, gameMode, path, value);
+            this.settingList.add(mapSetting);
+            MapSettingsDAO.create(mapSetting);
+        });
     }
 
     public void del(@NotNull MapSetting mapSetting) {
-        // TODO implement with database
+        boolean removed = this.settingList.remove(mapSetting);
+        if (!removed) return;
+        MapSettingsDAO.delete(mapSetting);
+    }
+
+    public @NotNull Optional<MapSetting> getSetting(@NotNull GameMode gameMode, @NotNull String path) {
+        return this.settingList.stream().filter(streamMapSetting -> streamMapSetting.getGameMode() == gameMode && streamMapSetting.getPath().equals(path)).findFirst();
     }
 
     @UnmodifiableView
