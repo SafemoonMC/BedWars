@@ -1,16 +1,18 @@
 package gg.mooncraft.minecraft.bedwars.data.map;
 
+import lombok.Getter;
+
 import me.eduardwayland.mooncraft.waylander.database.entities.EntityParent;
 
 import org.jetbrains.annotations.NotNull;
 
 import gg.mooncraft.minecraft.bedwars.data.GameMode;
+import gg.mooncraft.minecraft.bedwars.data.MapModesDAO;
 
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.EnumSet;
 import java.util.concurrent.CompletableFuture;
 
+@Getter
 public final class BedWarsMap implements EntityParent<BedWarsMap> {
 
     /*
@@ -19,15 +21,15 @@ public final class BedWarsMap implements EntityParent<BedWarsMap> {
     private final @NotNull String identifier;
     private final @NotNull MapInfo information;
     private final @NotNull EnumSet<GameMode> gameModeSet;
-    private @NotNull MapSettingsContainer settingsContainer;
     private @NotNull MapPointsContainer pointsContainer;
+    private @NotNull MapSettingsContainer settingsContainer;
 
     /*
     Constructor
      */
-    public BedWarsMap(@NotNull String identifier) {
+    public BedWarsMap(@NotNull String identifier, @NotNull MapInfo mapInfo) {
         this.identifier = identifier;
-        this.information = new MapInfo(identifier.toUpperCase(), Timestamp.from(Instant.now()));
+        this.information = mapInfo;
         this.gameModeSet = EnumSet.noneOf(GameMode.class);
         this.settingsContainer = new MapSettingsContainer(this);
         this.pointsContainer = new MapPointsContainer(this);
