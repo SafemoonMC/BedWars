@@ -5,6 +5,7 @@ import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
 import gg.mooncraft.minecraft.bedwars.data.GameMode;
+import gg.mooncraft.minecraft.bedwars.data.map.MapPointsContainer;
 
 @Getter
 public final class GameMapPoint extends AbstractMapPoint {
@@ -17,8 +18,8 @@ public final class GameMapPoint extends AbstractMapPoint {
     /*
     Constructor
      */
-    public GameMapPoint(@NotNull GameMode gameMode, @NotNull PointTypes.MAP type, double x, double y, double z, float yaw, float pitch) {
-        super(gameMode, x, y, z, yaw, pitch);
+    public GameMapPoint(@NotNull MapPointsContainer mapPointsContainer, int id, @NotNull GameMode gameMode, @NotNull PointTypes.MAP type, double x, double y, double z, float yaw, float pitch) {
+        super(mapPointsContainer, id, gameMode, x, y, z, yaw, pitch);
         this.type = type;
     }
 }

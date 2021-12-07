@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import gg.mooncraft.minecraft.bedwars.data.GameMode;
 import gg.mooncraft.minecraft.bedwars.data.GameTeam;
+import gg.mooncraft.minecraft.bedwars.data.map.MapPointsContainer;
 
 @Getter
 public final class TeamMapPoint extends AbstractMapPoint {
@@ -19,8 +20,8 @@ public final class TeamMapPoint extends AbstractMapPoint {
     /*
     Constructor
      */
-    public TeamMapPoint(@NotNull GameMode gameMode, @NotNull GameTeam gameTeam, @NotNull PointTypes.TEAM type, double x, double y, double z, float yaw, float pitch) {
-        super(gameMode, x, y, z, yaw, pitch);
+    public TeamMapPoint(@NotNull MapPointsContainer mapPointsContainer, int id, @NotNull GameMode gameMode, @NotNull GameTeam gameTeam, @NotNull PointTypes.TEAM type, double x, double y, double z, float yaw, float pitch) {
+        super(mapPointsContainer, id, gameMode, x, y, z, yaw, pitch);
         this.gameTeam = gameTeam;
         this.type = type;
     }
