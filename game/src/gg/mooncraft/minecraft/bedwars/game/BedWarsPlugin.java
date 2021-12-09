@@ -1,5 +1,7 @@
 package gg.mooncraft.minecraft.bedwars.game;
 
+import lombok.Getter;
+
 import me.eduardwayland.mooncraft.waylander.database.Credentials;
 import me.eduardwayland.mooncraft.waylander.database.Database;
 import me.eduardwayland.mooncraft.waylander.database.connection.hikari.impl.MariaDBConnectionFactory;
@@ -10,17 +12,31 @@ import gg.mooncraft.minecraft.bedwars.common.ComplexJavaPlugin;
 import gg.mooncraft.minecraft.bedwars.common.messaging.RedisChannel;
 import gg.mooncraft.minecraft.bedwars.common.messaging.RedisMessenger;
 import gg.mooncraft.minecraft.bedwars.game.messaging.GameRedisMessenger;
+import gg.mooncraft.minecraft.bedwars.game.utilities.ServerUtilities;
 import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.JedisPoolConfig;
 
+@Getter
 public class BedWarsPlugin extends ComplexJavaPlugin {
+
+    /*
+    Fields
+     */
+    private final String serverName = ServerUtilities.getProperty("server-name");
 
     /*
     Override Methods
      */
     @Override
     public void onEnable() {
+        // Show startup information
+        getLogger().info("Database: " + (getDatabase() != null ? getDatabase().getIdentifier() : "not started"));
+        getLogger().info("Messenger: " + (getMessenger() != null ? ((RedisMessenger) getMessenger()).isClosed() ? "closed" : "running" : "not started"));
 
+
+
+        // Show enabling information
+        getLogger().info("Running on " + serverName + "...");
         getLogger().info("Enabled!");
     }
 
