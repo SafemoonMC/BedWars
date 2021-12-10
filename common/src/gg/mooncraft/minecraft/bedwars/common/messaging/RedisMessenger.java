@@ -119,10 +119,10 @@ public final class RedisMessenger implements Messenger {
     /*
     Static Methods
      */
-    public static @NotNull String encodeMessageAsJson(@NotNull UUID uniqueId, @NotNull String type, @Nullable JsonElement content) {
+    public static @NotNull String encodeMessageAsJson(@NotNull String type, @NotNull UUID uniqueId, @Nullable JsonElement content) {
         JsonObject json = new JsonObjectWrapper()
-                .add("unique-id", uniqueId.toString())
                 .add("type", type)
+                .add("unique-id", uniqueId.toString())
                 .consume(jsonObjectWrapper -> {
                     if (jsonObjectWrapper == null) return;
                     jsonObjectWrapper.add("content", content);
