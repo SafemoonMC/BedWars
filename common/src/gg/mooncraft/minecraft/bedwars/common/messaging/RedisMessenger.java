@@ -5,6 +5,7 @@ import lombok.Getter;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -119,10 +120,11 @@ public final class RedisMessenger implements Messenger {
     /*
     Static Methods
      */
-    public static @NotNull String encodeMessageAsJson(@NotNull String type, @NotNull UUID uniqueId, @Nullable JsonElement content) {
+    public static @NotNull String encodeMessageAsJson(long timestamp, @NotNull String type, @NotNull UUID uniqueId, @Nullable JsonElement content) {
         JsonObject json = new JsonObjectWrapper()
-                .add("type", type)
-                .add("unique-id", uniqueId.toString())
+                .add("timestamp", new JsonPrimitive(timestamp))
+                .add("type", new JsonPrimitive(type))
+                .add("unique-id", new JsonPrimitive(uniqueId.toString()))
                 .consume(jsonObjectWrapper -> {
                     if (jsonObjectWrapper == null) return;
                     jsonObjectWrapper.add("content", content);

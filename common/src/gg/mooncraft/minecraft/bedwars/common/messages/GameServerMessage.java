@@ -9,6 +9,7 @@ import gg.mooncraft.minecraft.bedwars.common.messaging.RedisMessenger;
 import gg.mooncraft.minecraft.bedwars.common.messaging.message.AbstractMessage;
 import gg.mooncraft.minecraft.bedwars.data.GameMode;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,7 +30,7 @@ public final class GameServerMessage extends AbstractMessage {
     Constructor
      */
     public GameServerMessage(@NotNull GameServer gameServer) {
-        super(UUID.randomUUID());
+        super(Instant.now(), UUID.randomUUID());
         this.gameServer = gameServer;
     }
 
@@ -38,7 +39,7 @@ public final class GameServerMessage extends AbstractMessage {
      */
     @Override
     public @NotNull String asJsonString() {
-        return RedisMessenger.encodeMessageAsJson(TYPE, getUniqueId(), GameServerSerializer.serialize(this.gameServer));
+        return RedisMessenger.encodeMessageAsJson(getTimestamp().getEpochSecond(), TYPE, getUniqueId(), GameServerSerializer.serialize(this.gameServer));
     }
 
     /*

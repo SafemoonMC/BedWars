@@ -5,6 +5,7 @@ import lombok.Getter;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.time.Instant;
 import java.util.UUID;
 
 @Getter
@@ -14,5 +15,6 @@ public abstract class AbstractMessage implements Message, OutgoingMessage {
     /*
     Fields
      */
+    private final @NotNull Instant timestamp;
     private final @NotNull UUID uniqueId;
 }
