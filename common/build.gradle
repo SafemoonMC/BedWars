@@ -1,4 +1,5 @@
 dependencies {
+    compileOnly project(':data')
     compileOnly 'com.github.SafemoonMC.Waylander:WaylanderCommand:develop-SNAPSHOT'
     compileOnly 'com.github.SafemoonMC.Waylander:WaylanderScheduler:develop-SNAPSHOT'
     compileOnly 'com.github.SafemoonMC.Waylander:WaylanderDatabase:develop-SNAPSHOT'
