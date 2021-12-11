@@ -1,6 +1,6 @@
 dependencies {
-    compileOnly 'com.github.SafemoonMC.Waylander:WaylanderScheduler:develop-SNAPSHOT'
-    compileOnly 'com.github.SafemoonMC.Waylander:WaylanderDatabase:develop-SNAPSHOT'
+    compileOnly 'me.eduardwayland.mooncraft.waylander:WaylanderScheduler:1.0.0'
+    compileOnly 'me.eduardwayland.mooncraft.waylander:WaylanderDatabase:1.0.0'
 
     compileOnly 'org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT'
 }

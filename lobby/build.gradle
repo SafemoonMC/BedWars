@@ -1,9 +1,9 @@
 dependencies {
     implementation project(":common")
     implementation project(":data")
-    implementation 'com.github.SafemoonMC.Waylander:WaylanderCommand:develop-SNAPSHOT'
-    implementation 'com.github.SafemoonMC.Waylander:WaylanderScheduler:develop-SNAPSHOT'
-    implementation 'com.github.SafemoonMC.Waylander:WaylanderDatabase:develop-SNAPSHOT'
+    implementation 'me.eduardwayland.mooncraft.waylander:WaylanderCommand:1.0.0'
+    implementation 'me.eduardwayland.mooncraft.waylander:WaylanderScheduler:1.0.0'
+    implementation 'me.eduardwayland.mooncraft.waylander:WaylanderDatabase:1.0.0'
 
     implementation 'redis.clients:jedis:3.7.0'
     implementation 'org.mariadb.jdbc:mariadb-java-client:2.7.4'

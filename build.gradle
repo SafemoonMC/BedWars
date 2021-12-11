@@ -18,8 +18,10 @@ allprojects {
         maven { url = uri('https://hub.spigotmc.org/nexus/content/repositories/snapshots/') }
         maven { url = uri('https://repo.extendedclip.com/content/repositories/placeholderapi/') }
         maven {
-            url "https://jitpack.io"
-            credentials.username props.get("jitpack-auth-token", properties.get("jitpack-auth-token") as String)
+            url = "http://vps-2aa23b62.vps.ovh.us:8081/repository/mooncraft-releases/"
+            allowInsecureProtocol = true
+            credentials.username = props.get("nexus-username", properties.get("nexus-username") as String)
+            credentials.password = props.get("nexus-password", properties.get("nexus-password") as String)
         }
     }
 }
