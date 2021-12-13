@@ -53,7 +53,8 @@ public class BedWarsExpansion extends PlaceholderExpansion {
                 String name = args[0];
                 if (name.equalsIgnoreCase("counter")) {
                     GameMode gameMode = parseGameMode(args[1]);
-                    return "NOT YET";
+                    if (gameMode == null) return "INVALID_GAMEMODE";
+                    return String.valueOf(BedWarsPlugin.getInstance().getGameServerManager().getOnlinePlayers(gameMode));
                 }
             }
             if (args.length == 3) {
