@@ -91,6 +91,8 @@ task buildJavadoc(type: Copy) {
 }
 task buildShadowjar(type: Copy) {
     from subprojects.collect { it.tasks.withType(Jar).named("shadowJar") }
+    exclude('data.jar')
+    exclude('common.jar')
     into "/COMPILED-JARS"
 }
 task buildAll(type: Copy) {
