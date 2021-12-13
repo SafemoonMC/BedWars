@@ -105,7 +105,7 @@ public class BedWarsExpansion extends PlaceholderExpansion {
      */
     private @Nullable GameMode parseGameMode(@NotNull String arg) {
         try {
-            return GameMode.valueOf(arg);
+            return GameMode.valueOf(arg.toUpperCase());
         } catch (Exception ignored) {
             return null;
         }
