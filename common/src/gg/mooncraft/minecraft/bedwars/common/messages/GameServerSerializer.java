@@ -14,9 +14,11 @@ import org.jetbrains.annotations.NotNull;
 import gg.mooncraft.minecraft.bedwars.common.utilities.gson.JsonArrayWrapper;
 import gg.mooncraft.minecraft.bedwars.common.utilities.gson.JsonObjectWrapper;
 import gg.mooncraft.minecraft.bedwars.data.GameMode;
+import gg.mooncraft.minecraft.bedwars.data.GameState;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class GameServerSerializer {
@@ -28,9 +30,10 @@ public final class GameServerSerializer {
                         .consume(jsonArrayWrapper -> {
                             for (GameServerMessage.GameServerMatch gameServerMatch : gameServer.getMatchList()) {
                                 jsonArrayWrapper.add(new JsonObjectWrapper()
+                                        .add("game-unique-id", new JsonPrimitive(gameServerMatch.getGameUniqueId().toString()))
                                         .add("game-mode", new JsonPrimitive(gameServerMatch.getGameMode().name()))
-                                        .add("matches", new JsonPrimitive(gameServerMatch.getMatches()))
-                                        .add("online-players", new JsonPrimitive(gameServerMatch.getOnlinePlayers()))
+                                        .add("game-state", new JsonPrimitive(gameServerMatch.getGameState().name()))
+                                        .add("players", new JsonPrimitive(gameServerMatch.getPlayers()))
                                         .toJson()
                                 );
                             }
@@ -51,7 +54,7 @@ public final class GameServerSerializer {
                 JsonElement jsonArrayElement = jsonArray.get(i);
                 Preconditions.checkArgument(jsonArrayElement.isJsonObject());
                 JsonObject jsonArrayObject = jsonArrayElement.getAsJsonObject();
-                GameServerMessage.GameServerMatch gameServer = new GameServerMessage.GameServerMatch(GameMode.valueOf(jsonArrayObject.get("game-mode").getAsString()), jsonArrayObject.get("matches").getAsInt(), jsonArrayObject.get("online-players").getAsInt());
+                GameServerMessage.GameServerMatch gameServer = new GameServerMessage.GameServerMatch(UUID.fromString(jsonArrayObject.get("game-unique-id").getAsString()), GameMode.valueOf(jsonArrayObject.get("game-mode").getAsString()), GameState.valueOf(jsonArrayObject.get("game-state").getAsString()), jsonArrayObject.get("players").getAsInt());
                 matchList.add(gameServer);
             }
         }

@@ -25,11 +25,14 @@ public final class GameServerManager {
         this.gameServerList.add(gameServer);
     }
 
-    public @NotNull Optional<GameServerMessage.GameServer> getGameServer() {
+    public @NotNull Optional<GameServerMessage.GameServer> getGameServer(@NotNull GameMode gameMode, int players) {
+        Optional<GameServerMessage.GameServer> freeGameServer = this.gameServerList.stream().filter(gameServer -> gameServer.isAvailableFor(gameMode, players)).findFirst();
+        if (freeGameServer.isPresent()) return freeGameServer;
+
         return this.gameServerList.stream()
                 .min((o1, o2) -> {
-                    int stServerWeight = o1.getMatchList().stream().mapToInt(gameServerMatch -> gameServerMatch.getGameMode().getWeight() * gameServerMatch.getMatches()).sum();
-                    int ndServerWeight = o2.getMatchList().stream().mapToInt(gameServerMatch -> gameServerMatch.getGameMode().getWeight() * gameServerMatch.getMatches()).sum();
+                    int stServerWeight = o1.getMatchList().stream().mapToInt(gameServerMatch -> gameServerMatch.getGameMode().getWeight()).sum();
+                    int ndServerWeight = o2.getMatchList().stream().mapToInt(gameServerMatch -> gameServerMatch.getGameMode().getWeight()).sum();
                     return Integer.compare(stServerWeight, ndServerWeight);
                 });
     }
@@ -44,7 +47,7 @@ public final class GameServerManager {
                 .filter(gameServerMatch -> gameServerMatch.getGameMode() == gameMode)
                 .collect(Collectors.toList())
                 .stream()
-                .mapToInt(GameServerMessage.GameServerMatch::getOnlinePlayers)
+                .mapToInt(GameServerMessage.GameServerMatch::getPlayers)
                 .sum();
     }
 
