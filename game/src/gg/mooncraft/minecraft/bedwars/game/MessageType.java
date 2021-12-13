@@ -9,22 +9,22 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import gg.mooncraft.minecraft.bedwars.common.messaging.message.Message;
+import gg.mooncraft.minecraft.bedwars.common.utilities.TriFunction;
 
 import java.util.UUID;
-import java.util.function.BiFunction;
 
 @Getter
 @AllArgsConstructor
 public enum MessageType {
 
-    TODO((uuid, jsonElement) -> null);
+    TODO((timestamp, uuid, jsonElement) -> null);
 
-    private final @NotNull BiFunction<UUID, JsonElement, Message> supplier;
+    private final @NotNull TriFunction<Long, UUID, JsonElement, Message> supplier;
 
     /*
     Static Methods
      */
-    public static @Nullable BiFunction<UUID, JsonElement, Message> getSupplierFor(@NotNull String type) {
+    public static @Nullable TriFunction<Long, UUID, JsonElement, Message> getSupplierFor(@NotNull String type) {
         try {
             return MessageType.valueOf(type.toUpperCase()).supplier;
         } catch (Exception ignored) {

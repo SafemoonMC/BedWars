@@ -9,13 +9,13 @@ import org.jetbrains.annotations.Nullable;
 import gg.mooncraft.minecraft.bedwars.common.messaging.consumer.IncomingMessageConsumer;
 import gg.mooncraft.minecraft.bedwars.common.messaging.message.Message;
 import gg.mooncraft.minecraft.bedwars.common.utilities.CaffeineList;
+import gg.mooncraft.minecraft.bedwars.common.utilities.TriFunction;
 import gg.mooncraft.minecraft.bedwars.common.utilities.gson.GsonProvider;
 import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
 import gg.mooncraft.minecraft.bedwars.game.MessageType;
 
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-import java.util.function.BiFunction;
 
 public final class GameRedisMessenger implements IncomingMessageConsumer {
 
@@ -41,6 +41,13 @@ public final class GameRedisMessenger implements IncomingMessageConsumer {
     public boolean consumeIncomingMessageAsString(@NotNull String jsonMessage) {
         JsonObject jsonObject = GsonProvider.normal().fromJson(jsonMessage, JsonObject.class).getAsJsonObject();
 
+        // Get the timestamp of the message if any
+        JsonElement timestampElement = jsonObject.get("timestamp");
+        if (timestampElement == null) {
+            throw new IllegalStateException("The incoming message has no timestamp argument: " + jsonMessage);
+        }
+        long timestamp = timestampElement.getAsLong();
+
         // Get the unique-id of the message if any
         JsonElement uniqueIdElement = jsonObject.get("unique-id");
         if (uniqueIdElement == null) {
@@ -59,7 +66,7 @@ public final class GameRedisMessenger implements IncomingMessageConsumer {
         String type = typeElement.getAsString();
 
         // Check if the type can be recognised and return false if not
-        @Nullable BiFunction<UUID, JsonElement, Message> messageSupplier = MessageType.getSupplierFor(type);
+        @Nullable TriFunction<Long, UUID, JsonElement, Message> messageSupplier = MessageType.getSupplierFor(type);
         if (messageSupplier == null) return false;
 
         // Get the final message if any and return false if not
@@ -67,7 +74,7 @@ public final class GameRedisMessenger implements IncomingMessageConsumer {
         if (contentElement == null) return false;
 
         // Process the incoming message
-        Message message = messageSupplier.apply(uniqueId, contentElement);
+        Message message = messageSupplier.apply(timestamp, uniqueId, contentElement);
         processIncomingMessage(message);
         return false;
     }
