@@ -3,6 +3,8 @@ package gg.mooncraft.minecraft.bedwars.common.messages;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import com.google.gson.JsonElement;
+
 import org.jetbrains.annotations.NotNull;
 
 import gg.mooncraft.minecraft.bedwars.common.messaging.RedisMessenger;
@@ -32,6 +34,11 @@ public final class GameServerMessage extends AbstractMessage {
     public GameServerMessage(@NotNull GameServer gameServer) {
         super(Instant.now(), UUID.randomUUID());
         this.gameServer = gameServer;
+    }
+
+    public GameServerMessage(long timestamp, @NotNull UUID uniqueId, @NotNull JsonElement jsonElement) {
+        super(timestamp, uniqueId, jsonElement);
+        this.gameServer = GameServerSerializer.deserialize(jsonElement);
     }
 
     /*
