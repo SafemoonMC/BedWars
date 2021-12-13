@@ -16,6 +16,11 @@ dependencies {
 }
 
 shadowJar {
+    dependencies {
+        exclude(dependency('com.mojang:brigadier:.*'))
+        exclude(dependency('com.google.errorprone:error_prone_annotations:.*'))
+        exclude(dependency('org.checkerframework:checker-qual:.*'))
+    }
     relocate 'redis.clients', 'gg.mooncraft.minecraft.bedwars.libs.redis.clients'
     relocate 'com.zaxxer', 'gg.mooncraft.minecraft.bedwars.libs.com.zaxxer'
     relocate 'org.mariadb.jdbc', 'gg.mooncraft.minecraft.bedwars.libs.org.mariadb.jdbc'
