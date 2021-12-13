@@ -25,6 +25,15 @@ public final class GameServerManager {
         this.gameServerList.add(gameServer);
     }
 
+    public @NotNull Optional<GameServerMessage.GameServer> getGameServer() {
+        return this.gameServerList.stream()
+                .min((o1, o2) -> {
+                    int stServerWeight = o1.getMatchList().stream().mapToInt(gameServerMatch -> gameServerMatch.getGameMode().getWeight() * gameServerMatch.getMatches()).sum();
+                    int ndServerWeight = o2.getMatchList().stream().mapToInt(gameServerMatch -> gameServerMatch.getGameMode().getWeight() * gameServerMatch.getMatches()).sum();
+                    return Integer.compare(stServerWeight, ndServerWeight);
+                });
+    }
+
     public @NotNull Optional<GameServerMessage.GameServer> getGameServer(@NotNull String serverName) {
         return this.gameServerList.stream().filter(gameServer -> gameServer.getServerName().equalsIgnoreCase(serverName)).findFirst();
     }
