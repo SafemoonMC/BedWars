@@ -87,7 +87,7 @@ public final class LobbyRedisMessenger implements IncomingMessageConsumer {
         BedWarsPlugin.getInstance().getLogger().info("[Redis] Received a new message with timestamp " + message.getTimestamp().getEpochSecond() + "s and UUID " + message.getUniqueId() + ".");
         if (message instanceof GameServerMessage gameServerMessage) {
             BedWarsPlugin.getInstance().getLogger().info("[Redis] Identified " + message.getUniqueId() + " as GameServerMessage.");
-            //TODO handle message data
+            BedWarsPlugin.getInstance().getGameServerManager().updateGameServer(gameServerMessage.getGameServer());
         }
     }
 }

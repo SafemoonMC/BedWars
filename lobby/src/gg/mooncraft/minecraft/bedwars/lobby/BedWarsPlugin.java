@@ -16,6 +16,7 @@ import gg.mooncraft.minecraft.bedwars.data.UserDAO;
 import gg.mooncraft.minecraft.bedwars.lobby.factory.UserFactory;
 import gg.mooncraft.minecraft.bedwars.lobby.handlers.commands.Commands;
 import gg.mooncraft.minecraft.bedwars.lobby.handlers.listeners.PlayerListeners;
+import gg.mooncraft.minecraft.bedwars.lobby.managers.GameServerManager;
 import gg.mooncraft.minecraft.bedwars.lobby.messaging.LobbyRedisMessenger;
 import gg.mooncraft.minecraft.bedwars.lobby.papi.BedWarsExpansion;
 import redis.clients.jedis.HostAndPort;
@@ -28,6 +29,7 @@ public class BedWarsPlugin extends ComplexJavaPlugin {
     Fields
      */
     private UserFactory userFactory;
+    private GameServerManager gameServerManager;
 
     /*
     Override Methods
@@ -44,6 +46,9 @@ public class BedWarsPlugin extends ComplexJavaPlugin {
 
         // Load factories
         this.userFactory = new UserFactory();
+
+        // Load managers
+        this.gameServerManager = new GameServerManager();
 
         // Listeners
         new PlayerListeners();
