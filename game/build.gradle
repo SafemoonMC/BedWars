@@ -27,5 +27,6 @@ shadowJar {
     relocate 'me.eduardwayland.mooncraft.waylander', 'gg.mooncraft.minecraft.bedwars.libs.waylander'
 }
 
-version '1.0.0'
+archivesBaseName = 'BedWars-Game'
 group 'gg.mooncraft.minecraft.bedwars'
+version '1.0.0'
