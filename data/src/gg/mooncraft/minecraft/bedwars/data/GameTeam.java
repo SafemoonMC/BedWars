@@ -5,6 +5,8 @@ import lombok.Getter;
 
 import net.md_5.bungee.api.ChatColor;
 
+import org.jetbrains.annotations.NotNull;
+
 @Getter
 @AllArgsConstructor
 public enum GameTeam {
@@ -29,5 +31,5 @@ public enum GameTeam {
     /*
     Fields
      */
-    private final ChatColor chatColor;
+    private final @NotNull ChatColor chatColor;
 }
