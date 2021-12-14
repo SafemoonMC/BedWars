@@ -22,7 +22,7 @@ import java.util.concurrent.CompletableFuture;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public final class PartyUtilities {
 
-    public @NotNull CompletableFuture<PartyData> getParty(@NotNull Player player) {
+    public static @NotNull CompletableFuture<PartyData> getParty(@NotNull Player player) {
         CompletableFuture<PartyData> completableFuture = new CompletableFuture<>();
         PartyDataRequestCallbackAPI partyDataRequestCallbackAPI = (PartyDataRequestCallbackAPI) getCommunication().getTask(PartyDataRequestCallbackAPI.class);
         partyDataRequestCallbackAPI.fetchPartyData(player, new PartyDataCallBackRunnable() {
@@ -43,11 +43,11 @@ public final class PartyUtilities {
         return completableFuture;
     }
 
-    public @NotNull CompletableFuture<Player> getPartyLeader(@NotNull Player player) {
+    public static @NotNull CompletableFuture<Player> getPartyLeader(@NotNull Player player) {
         return getParty(player).thenApply(partyData -> Bukkit.getPlayer(partyData.getPartyLeader().PLAYER_UUID));
     }
 
-    public @NotNull CompletableFuture<List<Player>> getPartyMembers(@NotNull Player player, boolean includeLeader) {
+    public static @NotNull CompletableFuture<List<Player>> getPartyMembers(@NotNull Player player, boolean includeLeader) {
         return getParty(player).thenApply(partyData -> {
             List<Player> playerList = new ArrayList<>();
             for (DataRequestPlayerInfo dataRequestPlayerInfo : partyData.getAllPlayers()) {
