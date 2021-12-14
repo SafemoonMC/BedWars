@@ -48,18 +48,20 @@ public final class PartyUtilities {
     }
 
     public static @NotNull CompletableFuture<List<Player>> getPartyMembers(@NotNull Player player, boolean includeLeader) {
-        return getParty(player).thenApply(partyData -> {
-            List<Player> playerList = new ArrayList<>();
-            for (DataRequestPlayerInfo dataRequestPlayerInfo : partyData.getAllPlayers()) {
-                if (!includeLeader && dataRequestPlayerInfo.PLAYER_UUID.equals(partyData.getPartyLeader().PLAYER_UUID)) {
-                    continue;
-                }
-                Player onlinePlayer = Bukkit.getPlayer(dataRequestPlayerInfo.PLAYER_UUID);
-                if (onlinePlayer == null) continue;
-                playerList.add(onlinePlayer);
+        return getParty(player).thenApply(partyData -> getPartyMembers(partyData, includeLeader));
+    }
+
+    public static @NotNull List<Player> getPartyMembers(@NotNull PartyData partyData, boolean includeLeader) {
+        List<Player> playerList = new ArrayList<>();
+        for (DataRequestPlayerInfo dataRequestPlayerInfo : partyData.getAllPlayers()) {
+            if (!includeLeader && dataRequestPlayerInfo.PLAYER_UUID.equals(partyData.getPartyLeader().PLAYER_UUID)) {
+                continue;
             }
-            return playerList;
-        });
+            Player onlinePlayer = Bukkit.getPlayer(dataRequestPlayerInfo.PLAYER_UUID);
+            if (onlinePlayer == null) continue;
+            playerList.add(onlinePlayer);
+        }
+        return playerList;
     }
 
     @UnmodifiableView
