@@ -14,6 +14,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import gg.mooncraft.minecraft.bedwars.lobby.BedWarsPlugin;
+import gg.mooncraft.minecraft.bedwars.lobby.utilities.PartyUtilities;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public final class Commands {
@@ -29,7 +30,17 @@ public final class Commands {
                                         .name("player", new PlayerType())
                                         .executes(((sender, arguments) -> {
                                             Player player = Bukkit.getPlayer(arguments.getArgument("player", String.class));
-                                            //TODO
+                                            if (player == null) return;
+                                            PartyUtilities.getParty(player).handle((partyData, throwable) -> {
+                                                if (throwable == null) return null;
+                                                return partyData;
+                                            }).thenAccept(partyData -> {
+                                                if (partyData == null) {
+                                                    //TODO teleport only player
+                                                    return;
+                                                }
+                                                //TODO teleport player and members;
+                                            });
                                         }))
                                 )
                         )
