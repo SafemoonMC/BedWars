@@ -88,4 +88,12 @@ public final class MapDAO {
                 .build();
         return database.updateQuery(query, u -> bedWarsMap);
     }
+
+    public static @NotNull CompletableFuture<BedWarsMap> delete(@NotNull BedWarsMap bedWarsMap) {
+        Objects.requireNonNull(database, "The DAO hasn't been registered yet.");
+        Query query = Query.single("DELETE FROM " + TABLE_NAME + " WHERE identifier = ?;")
+                .with(bedWarsMap.getIdentifier())
+                .build();
+        return database.updateQuery(query, u -> bedWarsMap);
+    }
 }
