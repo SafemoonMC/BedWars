@@ -36,9 +36,20 @@ public class BedWarsPlugin extends ComplexJavaPlugin {
      */
     @Override
     public void onEnable() {
+        // Show startup information
+        getLogger().info("Database: " + (getDatabase() != null ? "running for " + getDatabase().getIdentifier() : "not started"));
+        getLogger().info("Messenger: " + (getMessenger() != null ? ((RedisMessenger) getMessenger()).isClosed() ? "closed" : "running" : "not started"));
+
+        // Stop server if database or messenger are not loaded
+        if (getDatabase() == null || getMessenger() == null || ((RedisMessenger) getMessenger()).isClosed()) {
+            setEnabled(false);
+            return;
+        }
+
         // Load dependencies
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             new BedWarsExpansion().register();
+            getLogger().info("PlaceholderAPI has been found and BedWars expansion has been registered.");
         }
 
         // Load daos
