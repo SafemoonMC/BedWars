@@ -17,6 +17,8 @@ allprojects {
         maven { url = uri('https://papermc.io/repo/repository/maven-public/') }
         maven { url = uri('https://hub.spigotmc.org/nexus/content/repositories/snapshots/') }
         maven { url = uri('https://repo.extendedclip.com/content/repositories/placeholderapi/') }
+        maven { url = uri("https://repo.rapture.pw/repository/maven-releases/") }
+        maven { url = uri("https://repo.rapture.pw/repository/maven-snapshots/") }
         maven {
             url = "http://vps-2aa23b62.vps.ovh.us:8081/repository/mooncraft-releases/"
             allowInsecureProtocol = true
