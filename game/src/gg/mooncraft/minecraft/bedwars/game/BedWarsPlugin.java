@@ -16,6 +16,8 @@ import gg.mooncraft.minecraft.bedwars.common.messaging.RedisChannel;
 import gg.mooncraft.minecraft.bedwars.common.messaging.RedisMessenger;
 import gg.mooncraft.minecraft.bedwars.data.MapDAO;
 import gg.mooncraft.minecraft.bedwars.data.UserDAO;
+import gg.mooncraft.minecraft.bedwars.game.handlers.commands.Commands;
+import gg.mooncraft.minecraft.bedwars.game.handlers.listeners.SetupListeners;
 import gg.mooncraft.minecraft.bedwars.game.managers.GameServerManager;
 import gg.mooncraft.minecraft.bedwars.game.managers.MapManager;
 import gg.mooncraft.minecraft.bedwars.game.managers.SetupManager;
@@ -71,6 +73,11 @@ public class BedWarsPlugin extends ComplexJavaPlugin {
         this.setupManager = new SetupManager();
         this.mapManager = new MapManager();
         this.gameServerManager = new GameServerManager();
+
+        // Load commands
+        Commands.loadAll();
+        // Load listeners
+        new SetupListeners();
 
         // Show enabling information
         getLogger().info("Running on " + serverName + "...");
