@@ -55,6 +55,8 @@ public final class MapBuilder {
         } else {
             player.kickPlayer("The setup has been cancelled, but default-world " + GameConstants.DEFAULT_WORLD_NAME + " was missing.");
         }
+
+        BedWarsPlugin.getInstance().getSetupManager().stopSetup(this);
     }
 
     public void complete() {
@@ -68,7 +70,8 @@ public final class MapBuilder {
                 player.kickPlayer("The setup has been completed, but default-world " + GameConstants.DEFAULT_WORLD_NAME + " was missing.");
             }
         });
-        
+
+        BedWarsPlugin.getInstance().getSetupManager().stopSetup(this);
         BedWarsPlugin.getInstance().getMapManager().storeMap(name, bedWarsMap, slimeBukkitPair);
     }
 }
