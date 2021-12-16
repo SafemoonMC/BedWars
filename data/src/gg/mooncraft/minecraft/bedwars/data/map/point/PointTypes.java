@@ -10,6 +10,7 @@ public final class PointTypes {
     @AllArgsConstructor
     public enum MAP {
         MAP_CENTER(1, 1),
+        MAP_SPAWNPOINT(1, 1),
         MAP_GENERATOR_DIAMOND(1, -1),
         MAP_GENERATOR_EMERALD(1, -1);
 
