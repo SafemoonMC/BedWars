@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 public final class MapManager {
@@ -50,9 +51,35 @@ public final class MapManager {
                 });
     }
 
-    public void storeMap(@NotNull String name, @NotNull BedWarsMap bedWarsMap, @NotNull SlimeBukkitPair slimeBukkitPair) {
+    public void storeMap(@NotNull String mapName, @NotNull BedWarsMap bedWarsMap, @NotNull SlimeBukkitPair slimeBukkitPair) {
         this.mapList.add(bedWarsMap);
-        this.worldsMap.put(name, slimeBukkitPair);
+        this.worldsMap.put(mapName, slimeBukkitPair);
+    }
+
+    public @NotNull CompletableFuture<Boolean> deleteMap(@NotNull String mapName) {
+        Optional<BedWarsMap> optionalBedWarsMap = getBedWarsMap(mapName);
+        Optional<SlimeBukkitPair> optionalSlimeBukkitPair = getSlimeBukkitPair(mapName);
+        if (optionalBedWarsMap.isEmpty() || optionalSlimeBukkitPair.isEmpty()) {
+            return CompletableFuture.completedFuture(false);
+        }
+        BedWarsMap bedWarsMap = optionalBedWarsMap.get();
+        SlimeBukkitPair slimeBukkitPair = optionalSlimeBukkitPair.get();
+
+        CompletableFuture<?> futureMapDelete = MapDAO.delete(bedWarsMap);
+        CompletableFuture<?> futureWorldDelete = BedWarsPlugin.getInstance().getSlimeManager().deletePairAsync(slimeBukkitPair);
+        return CompletableFuture.allOf(futureMapDelete, futureWorldDelete).thenApply(v -> {
+            this.mapList.remove(bedWarsMap);
+            this.worldsMap.remove(bedWarsMap.getIdentifier());
+            return true;
+        });
+    }
+
+    public @NotNull Optional<BedWarsMap> getBedWarsMap(@NotNull String mapName) {
+        return this.mapList.stream().filter(bedWarsMap -> bedWarsMap.getIdentifier().equalsIgnoreCase(mapName)).findFirst();
+    }
+
+    public @NotNull Optional<SlimeBukkitPair> getSlimeBukkitPair(@NotNull String mapName) {
+        return this.worldsMap.entrySet().stream().filter(entry -> entry.getKey().equalsIgnoreCase(mapName)).findFirst().map(Map.Entry::getValue);
     }
 
     @UnmodifiableView

@@ -1,5 +1,6 @@
 package gg.mooncraft.minecraft.bedwars.game.managers;
 
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
@@ -28,18 +29,38 @@ public final class SetupManager {
     Methods
      */
     public void startSetup(@NotNull Player player, @NotNull String mapName) {
-        BedWarsPlugin.getInstance().getSlimeManager().createPairAsync(mapName).thenAccept(slimeBukkitPair -> {
-            BedWarsMap bedWarsMap = new BedWarsMap(mapName, new MapInfo(mapName, Timestamp.from(Instant.now())));
-            MapDAO.create(bedWarsMap).thenAccept(newBedWarsMap -> {
-                MapBuilder mapBuilder = new MapBuilder(player, mapName, newBedWarsMap, slimeBukkitPair);
-                this.mapBuilderList.add(mapBuilder);
+        Optional<BedWarsMap> optionalBedWarsMap = BedWarsPlugin.getInstance().getMapManager().getBedWarsMap(mapName);
+        Optional<SlimeBukkitPair> optionalSlimeBukkitPair = BedWarsPlugin.getInstance().getMapManager().getSlimeBukkitPair(mapName);
 
-                BedWarsPlugin.getInstance().getScheduler().executeSync(() -> {
-                    player.teleport(slimeBukkitPair.world().getSpawnLocation());
-                    player.getLocation().getBlock().getRelative(BlockFace.DOWN).setType(Material.BEDROCK);
+        if (optionalBedWarsMap.isPresent() && optionalSlimeBukkitPair.isPresent()) {
+            BedWarsMap bedWarsMap = optionalBedWarsMap.get();
+            SlimeBukkitPair slimeBukkitPair = optionalSlimeBukkitPair.get();
+
+            MapBuilder mapBuilder = new MapBuilder(player, mapName, bedWarsMap, slimeBukkitPair);
+            this.mapBuilderList.add(mapBuilder);
+
+            player.teleport(slimeBukkitPair.world().getSpawnLocation());
+            player.setFlying(true);
+            player.setAllowFlight(true);
+            player.setGameMode(GameMode.CREATIVE);
+        } else {
+            BedWarsPlugin.getInstance().getSlimeManager().createPairAsync(mapName).thenAccept(slimeBukkitPair -> {
+                BedWarsMap bedWarsMap = new BedWarsMap(mapName, new MapInfo(mapName, Timestamp.from(Instant.now())));
+                MapDAO.create(bedWarsMap).thenAccept(newBedWarsMap -> {
+                    MapBuilder mapBuilder = new MapBuilder(player, mapName, newBedWarsMap, slimeBukkitPair);
+                    this.mapBuilderList.add(mapBuilder);
+
+                    BedWarsPlugin.getInstance().getScheduler().executeSync(() -> {
+                        player.teleport(slimeBukkitPair.world().getSpawnLocation());
+                        player.getLocation().getBlock().getRelative(BlockFace.DOWN).setType(Material.BEDROCK);
+
+                        player.setFlying(true);
+                        player.setAllowFlight(true);
+                        player.setGameMode(GameMode.CREATIVE);
+                    });
                 });
             });
-        });
+        }
     }
 
     public void stopSetup(@NotNull MapBuilder mapBuilder) {

@@ -56,6 +56,51 @@ public final class Commands {
                                 })
                         )
                 )
+                .then(LiteralCommandBuilder.name("delete")
+                        .then(RequiredCommandBuilder
+                                .<Player, String>name("map-name", StringArgumentType.word())
+                                .executes((sender, arguments) -> {
+                                    if (BedWarsPlugin.getInstance().getSetupManager().getMapBuilder(sender).isPresent()) {
+                                        sender.sendMessage("You are in a setup mode. You can cancel the current one with /bw cancel.");
+                                        return;
+                                    }
+
+                                    String mapName = arguments.getArgument("map-name", String.class);
+                                    if (!BedWarsPlugin.getInstance().getMapManager().getWorldsMap().containsKey(mapName)) {
+                                        sender.sendMessage("There is no map with that name.");
+                                        return;
+                                    }
+
+                                    BedWarsPlugin.getInstance().getMapManager().deleteMap(mapName).thenAccept(deleted -> {
+                                        if (deleted) {
+                                            sender.sendMessage("The map has been removed.");
+                                        } else {
+                                            sender.sendMessage("The map cannot be removed.");
+                                        }
+                                    });
+
+                                })
+                        )
+                )
+                .then(LiteralCommandBuilder.name("load")
+                        .then(RequiredCommandBuilder
+                                .<Player, String>name("map-name", StringArgumentType.word())
+                                .executes((sender, arguments) -> {
+                                    if (BedWarsPlugin.getInstance().getSetupManager().getMapBuilder(sender).isPresent()) {
+                                        sender.sendMessage("You are already in setup mode. You can cancel the current one with /bw cancel.");
+                                        return;
+                                    }
+
+                                    String mapName = arguments.getArgument("map-name", String.class);
+                                    if (!BedWarsPlugin.getInstance().getMapManager().getWorldsMap().containsKey(mapName)) {
+                                        sender.sendMessage("There is no map with that name.");
+                                        return;
+                                    }
+                                    BedWarsPlugin.getInstance().getSetupManager().startSetup(sender, mapName);
+                                    sender.sendMessage("Setup mode has been started for " + mapName + ".");
+                                })
+                        )
+                )
                 .then(LiteralCommandBuilder.name("setup")
                         .then(LiteralCommandBuilder
                                 .<Player>name("display")

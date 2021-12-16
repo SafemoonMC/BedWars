@@ -121,6 +121,19 @@ public final class SlimeManager {
         });
     }
 
+    public @NotNull CompletableFuture<Boolean> deletePairAsync(@NotNull SlimeBukkitPair slimeBukkitPair) {
+        Bukkit.unloadWorld(slimeBukkitPair.world(), false);
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                getSlimeLoader().deleteWorld(slimeBukkitPair.slimeWorld().getName());
+                return true;
+            } catch (Exception e) {
+                BedWarsPlugin.getInstance().getLogger().warning("The world " + slimeBukkitPair.slimeWorld().getName() + " cannot be deleted! Exception: " + e.getMessage());
+                return false;
+            }
+        });
+    }
+
     public void loadBukkitWorld(@NotNull SlimeWorld slimeWorld, @NotNull Consumer<World> worldConsumer) {
         BedWarsPlugin.getInstance().getScheduler().executeSync(() -> {
             BedWarsPlugin.getSlimePlugin().generateWorld(slimeWorld);
