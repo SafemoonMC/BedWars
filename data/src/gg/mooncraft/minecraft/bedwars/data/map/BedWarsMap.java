@@ -2,14 +2,19 @@ package gg.mooncraft.minecraft.bedwars.data.map;
 
 import lombok.Getter;
 
+import com.google.common.collect.ImmutableSet;
+
 import me.eduardwayland.mooncraft.waylander.database.entities.EntityParent;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.UnmodifiableView;
 
 import gg.mooncraft.minecraft.bedwars.data.GameMode;
+import gg.mooncraft.minecraft.bedwars.data.MapDAO;
 import gg.mooncraft.minecraft.bedwars.data.MapModesDAO;
 
 import java.util.EnumSet;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 @Getter
@@ -33,6 +38,26 @@ public final class BedWarsMap implements EntityParent<BedWarsMap> {
         this.gameModeSet = EnumSet.noneOf(GameMode.class);
         this.settingsContainer = new MapSettingsContainer(this);
         this.pointsContainer = new MapPointsContainer(this);
+    }
+
+    /*
+    Methods
+     */
+    public void addGameMode(@NotNull GameMode gameMode) {
+        if (this.gameModeSet.contains(gameMode)) return;
+        this.gameModeSet.add(gameMode);
+        MapDAO.update(this);
+    }
+
+    public void delGameMode(@NotNull GameMode gameMode) {
+        if (!this.gameModeSet.contains(gameMode)) return;
+        this.gameModeSet.remove(gameMode);
+        MapDAO.update(this);
+    }
+
+    @UnmodifiableView
+    public @NotNull Set<GameMode> getGameModeSet() {
+        return ImmutableSet.copyOf(this.gameModeSet);
     }
 
     /*
