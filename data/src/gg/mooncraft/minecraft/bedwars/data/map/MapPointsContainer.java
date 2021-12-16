@@ -40,11 +40,9 @@ public final class MapPointsContainer implements EntityParent<MapPointsContainer
      */
     public void addPoint(@NotNull AbstractMapPoint mapPoint) {
         if (mapPoint instanceof GameMapPoint gameMapPoint) {
-            this.mapPointList.add(gameMapPoint);
-            MapPointsDAO.createGamePoint(gameMapPoint);
+            MapPointsDAO.createGamePoint(gameMapPoint).thenAccept(this.mapPointList::add);
         } else if (mapPoint instanceof TeamMapPoint teamMapPoint) {
-            this.teamPointList.add(teamMapPoint);
-            MapPointsDAO.createTeamPoint(teamMapPoint);
+            MapPointsDAO.createTeamPoint(teamMapPoint).thenAccept(this.teamPointList::add);
         } else {
             throw new IllegalArgumentException("AbstractMapPoint implementation not recognized.");
         }

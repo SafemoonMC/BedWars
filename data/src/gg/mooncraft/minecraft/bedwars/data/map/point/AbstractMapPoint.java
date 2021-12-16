@@ -20,7 +20,7 @@ public class AbstractMapPoint implements EntityChild<MapPointsContainer> {
     Fields
      */
     private final @NotNull MapPointsContainer parent;
-    private final int id;
+    private final long id;
     private final @NotNull GameMode gameMode;
     private final double x;
     private final double y;

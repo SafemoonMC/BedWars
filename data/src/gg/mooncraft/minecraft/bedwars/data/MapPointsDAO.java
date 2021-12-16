@@ -58,7 +58,7 @@ public final class MapPointsDAO {
                 .with(gameMapPoint.getYaw())
                 .with(gameMapPoint.getPitch())
                 .build();
-        return database.updateQuery(query, u -> gameMapPoint);
+        return database.updateQuery(query, id -> new GameMapPoint(gameMapPoint.getParent(), id, gameMapPoint.getGameMode(), gameMapPoint.getType(), gameMapPoint.getX(), gameMapPoint.getY(), gameMapPoint.getZ(), gameMapPoint.getYaw(), gameMapPoint.getPitch()), true);
     }
 
     public static @NotNull CompletableFuture<TeamMapPoint> createTeamPoint(@NotNull TeamMapPoint teamMapPoint) {
@@ -74,7 +74,7 @@ public final class MapPointsDAO {
                 .with(teamMapPoint.getYaw())
                 .with(teamMapPoint.getPitch())
                 .build();
-        return database.updateQuery(query, u -> teamMapPoint);
+        return database.updateQuery(query, id -> new TeamMapPoint(teamMapPoint.getParent(), id, teamMapPoint.getGameMode(), teamMapPoint.getGameTeam(), teamMapPoint.getType(), teamMapPoint.getX(), teamMapPoint.getY(), teamMapPoint.getZ(), teamMapPoint.getYaw(), teamMapPoint.getPitch()), true);
     }
 
     public static @NotNull CompletableFuture<List<GameMapPoint>> readGamePoint(@NotNull MapPointsContainer mapPointsContainer) {

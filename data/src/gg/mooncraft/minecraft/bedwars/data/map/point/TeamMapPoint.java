@@ -20,7 +20,7 @@ public final class TeamMapPoint extends AbstractMapPoint {
     /*
     Constructor
      */
-    public TeamMapPoint(@NotNull MapPointsContainer mapPointsContainer, int id, @NotNull GameMode gameMode, @NotNull GameTeam gameTeam, @NotNull PointTypes.TEAM type, double x, double y, double z, float yaw, float pitch) {
+    public TeamMapPoint(@NotNull MapPointsContainer mapPointsContainer, long id, @NotNull GameMode gameMode, @NotNull GameTeam gameTeam, @NotNull PointTypes.TEAM type, double x, double y, double z, float yaw, float pitch) {
         super(mapPointsContainer, id, gameMode, x, y, z, yaw, pitch);
         this.gameTeam = gameTeam;
         this.type = type;

@@ -18,7 +18,7 @@ public final class GameMapPoint extends AbstractMapPoint {
     /*
     Constructor
      */
-    public GameMapPoint(@NotNull MapPointsContainer mapPointsContainer, int id, @NotNull GameMode gameMode, @NotNull PointTypes.MAP type, double x, double y, double z, float yaw, float pitch) {
+    public GameMapPoint(@NotNull MapPointsContainer mapPointsContainer, long id, @NotNull GameMode gameMode, @NotNull PointTypes.MAP type, double x, double y, double z, float yaw, float pitch) {
         super(mapPointsContainer, id, gameMode, x, y, z, yaw, pitch);
         this.type = type;
     }
