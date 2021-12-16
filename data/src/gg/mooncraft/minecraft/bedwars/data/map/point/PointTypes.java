@@ -2,11 +2,13 @@ package gg.mooncraft.minecraft.bedwars.data.map.point;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public final class PointTypes {
 
+    @Getter
     @AllArgsConstructor
     public enum MAP {
         MAP_CENTER(1, 1),
@@ -28,6 +30,7 @@ public final class PointTypes {
         }
     }
 
+    @Getter
     @AllArgsConstructor
     public enum TEAM {
         TEAM_SPAWNPOINT(1, 4),
