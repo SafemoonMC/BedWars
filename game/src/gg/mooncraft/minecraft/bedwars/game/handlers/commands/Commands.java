@@ -14,9 +14,23 @@ import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 
 import gg.mooncraft.minecraft.bedwars.data.GameMode;
+import gg.mooncraft.minecraft.bedwars.data.GameTeam;
 import gg.mooncraft.minecraft.bedwars.data.MapDAO;
+import gg.mooncraft.minecraft.bedwars.data.map.MapPointsContainer;
+import gg.mooncraft.minecraft.bedwars.data.map.point.GameMapPoint;
+import gg.mooncraft.minecraft.bedwars.data.map.point.PointTypes;
+import gg.mooncraft.minecraft.bedwars.data.map.point.TeamMapPoint;
 import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
 
+/**
+ * Commands:
+ * /bw create
+ * /bw setup <complete or cancel>
+ * /bw setup display <display>
+ * /bw setup gamemode <SOLO/DUOS/TRIOS/QUADS>
+ * /bw setup gamepoint <gamemode> <point>
+ * /bw setup teampoint <gamemode> <point> <team>
+ */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public final class Commands {
 
@@ -60,9 +74,9 @@ public final class Commands {
                         .then(LiteralCommandBuilder
                                 .<Player>name("gamemode")
                                 .then(RequiredCommandBuilder
-                                        .<Player, String>name("game-mode", StringArgumentType.greedyString())
+                                        .<Player, String>name("game-mode", StringArgumentType.word())
                                         .executes(((sender, arguments) -> {
-                                            GameMode gameMode = GameMode.valueOf(arguments.getArgument("game-mode", String.class));
+                                            GameMode gameMode = GameMode.valueOf(arguments.getArgument("game-mode", String.class).toUpperCase());
                                             BedWarsPlugin.getInstance().getSetupManager().getMapBuilder(sender).ifPresentOrElse(mapBuilder -> {
                                                         if (mapBuilder.getBedWarsMap().getGameModeSet().contains(gameMode)) {
                                                             mapBuilder.getBedWarsMap().delGameMode(gameMode);
@@ -74,6 +88,49 @@ public final class Commands {
                                                     },
                                                     () -> sender.sendMessage("You are not in a setup mode."));
                                         }))
+                                )
+                        )
+                        .then(LiteralCommandBuilder
+                                .<Player>name("gamepoint")
+                                .then(RequiredCommandBuilder
+                                        .<Player, String>name("game-mode", StringArgumentType.word())
+                                        .then(RequiredCommandBuilder
+                                                .<Player, String>name("type", StringArgumentType.word())
+                                                .executes(((sender, arguments) -> {
+                                                    GameMode gameMode = GameMode.valueOf(arguments.getArgument("game-mode", String.class).toUpperCase());
+                                                    PointTypes.MAP pointType = PointTypes.MAP.valueOf(arguments.getArgument("type", String.class).toUpperCase());
+
+                                                    BedWarsPlugin.getInstance().getSetupManager().getMapBuilder(sender).ifPresentOrElse(mapBuilder -> {
+                                                                MapPointsContainer mapPointsContainer = mapBuilder.getBedWarsMap().getPointsContainer();
+                                                                mapPointsContainer.addPoint(new GameMapPoint(mapPointsContainer, -1, gameMode, pointType, sender.getLocation().getX(), sender.getLocation().getY(), sender.getLocation().getZ(), sender.getLocation().getYaw(), sender.getLocation().getPitch()));
+                                                                sender.sendMessage("A new game point has been added to the map.");
+                                                            },
+                                                            () -> sender.sendMessage("You are not in a setup mode."));
+                                                }))
+                                        )
+                                )
+                        )
+                        .then(LiteralCommandBuilder
+                                .<Player>name("teampoint")
+                                .then(RequiredCommandBuilder
+                                        .<Player, String>name("game-mode", StringArgumentType.word())
+                                        .then(RequiredCommandBuilder
+                                                .<Player, String>name("type", StringArgumentType.word())
+                                                .then(RequiredCommandBuilder
+                                                        .<Player, String>name("game-team", StringArgumentType.word())
+                                                        .executes(((sender, arguments) -> {
+                                                            GameMode gameMode = GameMode.valueOf(arguments.getArgument("game-mode", String.class).toUpperCase());
+                                                            PointTypes.TEAM pointType = PointTypes.TEAM.valueOf(arguments.getArgument("type", String.class).toUpperCase());
+                                                            GameTeam gameTeam = GameTeam.valueOf(arguments.getArgument("game-team", String.class).toUpperCase());
+                                                            BedWarsPlugin.getInstance().getSetupManager().getMapBuilder(sender).ifPresentOrElse(mapBuilder -> {
+                                                                        MapPointsContainer mapPointsContainer = mapBuilder.getBedWarsMap().getPointsContainer();
+                                                                        mapPointsContainer.addPoint(new TeamMapPoint(mapPointsContainer, -1, gameMode, gameTeam, pointType, sender.getLocation().getX(), sender.getLocation().getY(), sender.getLocation().getZ(), sender.getLocation().getYaw(), sender.getLocation().getPitch()));
+                                                                        sender.sendMessage("A new team point has been added to the map.");
+                                                                    },
+                                                                    () -> sender.sendMessage("You are not in a setup mode."));
+                                                        }))
+                                                )
+                                        )
                                 )
                         )
                         .then(LiteralCommandBuilder
