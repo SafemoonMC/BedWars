@@ -2,7 +2,7 @@ dependencies {
     compileOnly 'me.eduardwayland.mooncraft.waylander:WaylanderScheduler:1.0.0'
     compileOnly 'me.eduardwayland.mooncraft.waylander:WaylanderDatabase:1.0.0'
 
-    compileOnly 'org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT'
+    compileOnly 'org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT'
 }
 
 group 'gg.mooncraft.minecraft.bedwars'
