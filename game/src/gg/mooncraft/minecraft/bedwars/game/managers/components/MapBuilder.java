@@ -2,12 +2,15 @@ package gg.mooncraft.minecraft.bedwars.game.managers.components;
 
 import lombok.Getter;
 
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import gg.mooncraft.minecraft.bedwars.data.MapDAO;
 import gg.mooncraft.minecraft.bedwars.data.map.BedWarsMap;
 import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
+import gg.mooncraft.minecraft.bedwars.game.GameConstants;
 import gg.mooncraft.minecraft.bedwars.game.managers.SlimeBukkitPair;
 
 @Getter
@@ -45,12 +48,27 @@ public final class MapBuilder {
                 }
             }
         });
+
+        World world = Bukkit.getWorld(GameConstants.DEFAULT_WORLD_NAME);
+        if (world != null) {
+            player.teleport(world.getSpawnLocation());
+        } else {
+            player.kickPlayer("The setup has been cancelled, but default-world " + GameConstants.DEFAULT_WORLD_NAME + " was missing.");
+        }
     }
 
     public void complete() {
-        slimeBukkitPair.world().save();
-        slimeBukkitPair.world().getPlayers().forEach(player -> player.kickPlayer("That map has been set-up."));
+        World world = Bukkit.getWorld(GameConstants.DEFAULT_WORLD_NAME);
 
+        slimeBukkitPair.world().save();
+        slimeBukkitPair.world().getPlayers().forEach(player -> {
+            if (world != null) {
+                player.teleport(world.getSpawnLocation());
+            } else {
+                player.kickPlayer("The setup has been completed, but default-world " + GameConstants.DEFAULT_WORLD_NAME + " was missing.");
+            }
+        });
+        
         BedWarsPlugin.getInstance().getMapManager().storeMap(name, bedWarsMap, slimeBukkitPair);
     }
 }
