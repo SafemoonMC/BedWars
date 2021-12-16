@@ -38,23 +38,24 @@ public final class MapBuilder {
     Methods
      */
     public void cancel() {
-        MapDAO.delete(bedWarsMap);
-        BedWarsPlugin.getInstance().getSlimeManager().unloadPairAsync(slimeBukkitPair).thenAccept(unloaded -> {
-            if (unloaded) {
-                try {
-                    BedWarsPlugin.getInstance().getSlimeManager().getSlimeLoader().deleteWorld(name);
-                } catch (Exception e) {
-                    BedWarsPlugin.getInstance().getLogger().warning("The world " + name + " cannot be deleted! Exception: " + e.getMessage());
-                }
-            }
-        });
-
         World world = Bukkit.getWorld(GameConstants.DEFAULT_WORLD_NAME);
         if (world != null) {
             player.teleport(world.getSpawnLocation());
         } else {
             player.kickPlayer("The setup has been cancelled, but default-world " + GameConstants.DEFAULT_WORLD_NAME + " was missing.");
         }
+
+        MapDAO.delete(bedWarsMap).thenAccept(oldBedWarsMap -> {
+            BedWarsPlugin.getInstance().getSlimeManager().unloadPairAsync(slimeBukkitPair).thenAccept(unloaded -> {
+                if (unloaded) {
+                    try {
+                        BedWarsPlugin.getInstance().getSlimeManager().getSlimeLoader().deleteWorld(name);
+                    } catch (Exception e) {
+                        BedWarsPlugin.getInstance().getLogger().warning("The world " + name + " cannot be deleted! Exception: " + e.getMessage());
+                    }
+                }
+            });
+        });
 
         BedWarsPlugin.getInstance().getSetupManager().stopSetup(this);
     }
