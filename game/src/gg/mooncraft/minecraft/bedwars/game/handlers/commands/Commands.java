@@ -47,7 +47,7 @@ public final class Commands {
                                     }
 
                                     String mapName = arguments.getArgument("map-name", String.class);
-                                    if (!BedWarsPlugin.getInstance().getMapManager().getWorldsMap().containsKey(mapName)) {
+                                    if (BedWarsPlugin.getInstance().getMapManager().getWorldsMap().containsKey(mapName)) {
                                         sender.sendMessage("There is already a map with that name.");
                                         return;
                                     }
