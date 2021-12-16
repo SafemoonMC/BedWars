@@ -13,6 +13,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 
+import gg.mooncraft.minecraft.bedwars.data.GameMode;
+import gg.mooncraft.minecraft.bedwars.data.MapDAO;
 import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -41,6 +43,39 @@ public final class Commands {
                         )
                 )
                 .then(LiteralCommandBuilder.name("setup")
+                        .then(LiteralCommandBuilder
+                                .<Player>name("display")
+                                .then(RequiredCommandBuilder
+                                        .<Player, String>name("display", StringArgumentType.greedyString())
+                                        .executes(((sender, arguments) -> {
+                                            String display = arguments.getArgument("display", String.class);
+                                            BedWarsPlugin.getInstance().getSetupManager().getMapBuilder(sender).ifPresentOrElse(mapBuilder -> {
+                                                        mapBuilder.getBedWarsMap().getInformation().setDisplay(display);
+                                                        MapDAO.update(mapBuilder.getBedWarsMap()).thenAccept(bedWarsMap -> sender.sendMessage("The display of the map has been updated!"));
+                                                    },
+                                                    () -> sender.sendMessage("You are not in a setup mode."));
+                                        }))
+                                )
+                        )
+                        .then(LiteralCommandBuilder
+                                .<Player>name("gamemode")
+                                .then(RequiredCommandBuilder
+                                        .<Player, String>name("game-mode", StringArgumentType.greedyString())
+                                        .executes(((sender, arguments) -> {
+                                            GameMode gameMode = GameMode.valueOf(arguments.getArgument("game-mode", String.class));
+                                            BedWarsPlugin.getInstance().getSetupManager().getMapBuilder(sender).ifPresentOrElse(mapBuilder -> {
+                                                        if (mapBuilder.getBedWarsMap().getGameModeSet().contains(gameMode)) {
+                                                            mapBuilder.getBedWarsMap().delGameMode(gameMode);
+                                                            sender.sendMessage("The allowed game modes of the map have been updated! " + gameMode.name() + " has been removed.");
+                                                            return;
+                                                        }
+                                                        mapBuilder.getBedWarsMap().addGameMode(gameMode);
+                                                        sender.sendMessage("The allowed game modes of the map have been updated! " + gameMode.name() + " has been added.");
+                                                    },
+                                                    () -> sender.sendMessage("You are not in a setup mode."));
+                                        }))
+                                )
+                        )
                         .then(LiteralCommandBuilder
                                 .<Player>name("cancel")
                                 .executes(sender -> {
