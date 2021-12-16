@@ -1,5 +1,7 @@
 package gg.mooncraft.minecraft.bedwars.game.managers;
 
+import org.bukkit.Material;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -29,10 +31,13 @@ public final class SetupManager {
         BedWarsPlugin.getInstance().getSlimeManager().createPairAsync(mapName).thenAccept(slimeBukkitPair -> {
             BedWarsMap bedWarsMap = new BedWarsMap(mapName, new MapInfo(mapName, Timestamp.from(Instant.now())));
             MapDAO.create(bedWarsMap).thenAccept(newBedWarsMap -> {
-                player.teleport(slimeBukkitPair.world().getSpawnLocation());
-
-                MapBuilder mapBuilder = new MapBuilder(player, mapName, bedWarsMap, slimeBukkitPair);
+                MapBuilder mapBuilder = new MapBuilder(player, mapName, newBedWarsMap, slimeBukkitPair);
                 this.mapBuilderList.add(mapBuilder);
+
+                BedWarsPlugin.getInstance().getScheduler().executeSync(() -> {
+                    player.teleport(slimeBukkitPair.world().getSpawnLocation());
+                    player.getLocation().getBlock().getRelative(BlockFace.DOWN).setType(Material.BEDROCK);
+                });
             });
         });
     }
