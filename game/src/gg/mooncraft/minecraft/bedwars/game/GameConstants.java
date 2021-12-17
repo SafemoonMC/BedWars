@@ -11,5 +11,5 @@ public final class GameConstants {
     /*
     Constants
      */
-    public static final @NotNull String DEFAULT_WORLD_NAME = " VoidworldStart";
+    public static final @NotNull String DEFAULT_WORLD_NAME = "VoidworldStart";
 }
