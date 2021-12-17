@@ -54,7 +54,7 @@ public final class MapDAO {
         Query query = Query.single("INSERT INTO " + TABLE_NAME + " VALUES (?, ?, ?);")
                 .with(bedWarsMap.getIdentifier())
                 .with(bedWarsMap.getInformation().getDisplay())
-                .with(bedWarsMap.getInformation().getTimestamp())
+                .with(bedWarsMap.getInformation().getCreationDate())
                 .build();
         return database.updateQuery(query, u -> bedWarsMap);
     }
@@ -69,10 +69,10 @@ public final class MapDAO {
             }
             List<BedWarsMap> bedWarsMapList = new ArrayList<>();
             resultSetIterator.forEachRemaining(resultSet -> {
-                ResultSetWrapper resultSetWrapper = new ResultSetWrapper(resultSetIterator.next());
+                ResultSetWrapper resultSetWrapper = new ResultSetWrapper(resultSet);
                 String identifier = resultSetWrapper.get("identifier", String.class);
                 String display = resultSetWrapper.get("display", String.class);
-                Timestamp timestamp = resultSetWrapper.get("timestamp", Timestamp.class);
+                Timestamp timestamp = resultSetWrapper.get("creation_date", Timestamp.class);
 
                 bedWarsMapList.add(new BedWarsMap(identifier, new MapInfo(display, timestamp)).withChildren().join());
             });

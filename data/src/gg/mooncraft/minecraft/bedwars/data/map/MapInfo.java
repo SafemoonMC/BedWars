@@ -14,5 +14,5 @@ public final class MapInfo {
 
     @Setter
     private @NotNull String display;
-    private final @NotNull Timestamp timestamp;
+    private final @NotNull Timestamp creationDate;
 }
