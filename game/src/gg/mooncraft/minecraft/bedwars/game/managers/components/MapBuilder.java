@@ -38,41 +38,32 @@ public final class MapBuilder {
     Methods
      */
     public void cancel() {
-        World world = Bukkit.getWorld(GameConstants.DEFAULT_WORLD_NAME);
-        if (world != null) {
-            player.teleport(world.getSpawnLocation());
-        } else {
-            player.kickPlayer("The setup has been cancelled, but default-world " + GameConstants.DEFAULT_WORLD_NAME + " was missing.");
-        }
+        clearWorld();
 
-        MapDAO.delete(bedWarsMap).thenAccept(oldBedWarsMap -> {
-            BedWarsPlugin.getInstance().getSlimeManager().unloadPairAsync(slimeBukkitPair).thenAccept(unloaded -> {
-                if (unloaded) {
-                    try {
-                        BedWarsPlugin.getInstance().getSlimeManager().getSlimeLoader().deleteWorld(name);
-                    } catch (Exception e) {
-                        BedWarsPlugin.getInstance().getLogger().warning("The world " + name + " cannot be deleted! Exception: " + e.getMessage());
-                    }
-                }
-            });
-        });
+        MapDAO.delete(bedWarsMap).thenAccept(oldBedWarsMap -> BedWarsPlugin.getInstance().getSlimeManager().unloadPairAsync(slimeBukkitPair));
 
         BedWarsPlugin.getInstance().getSetupManager().stopSetup(this);
     }
 
     public void complete() {
-        World world = Bukkit.getWorld(GameConstants.DEFAULT_WORLD_NAME);
+        clearWorld();
 
         slimeBukkitPair.world().save();
-        slimeBukkitPair.world().getPlayers().forEach(player -> {
-            if (world != null) {
-                player.teleport(world.getSpawnLocation());
-            } else {
-                player.kickPlayer("The setup has been completed, but default-world " + GameConstants.DEFAULT_WORLD_NAME + " was missing.");
-            }
-        });
+        BedWarsPlugin.getAsyncSlimeLoader().unlockWorld(slimeBukkitPair.slimeWorld().getName());
 
         BedWarsPlugin.getInstance().getSetupManager().stopSetup(this);
         BedWarsPlugin.getInstance().getMapManager().storeMap(name, bedWarsMap, slimeBukkitPair);
+    }
+
+    public void clearWorld() {
+        World world = Bukkit.getWorld(GameConstants.DEFAULT_WORLD_NAME);
+
+        slimeBukkitPair.world().getPlayers().forEach(streamPlayer -> {
+            if (world != null) {
+                player.teleport(world.getSpawnLocation());
+            } else {
+                player.kickPlayer("");
+            }
+        });
     }
 }
