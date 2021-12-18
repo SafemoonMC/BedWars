@@ -41,7 +41,10 @@ public final class MapManager {
                 .thenApply(list -> list
                         .stream()
                         .map(bedWarsMap -> BedWarsPlugin.getInstance().getSlimeManager().readPairAsync(bedWarsMap.getIdentifier()).thenAccept(slimeBukkitPair -> {
-                            storeMap(bedWarsMap.getIdentifier(), bedWarsMap, slimeBukkitPair);
+                            // Caches the map
+                            this.mapList.add(bedWarsMap);
+                            this.worldsMap.put(bedWarsMap.getIdentifier(), slimeBukkitPair);
+
                             BedWarsPlugin.getInstance().getLogger().info("[Map] " + bedWarsMap.getIdentifier() + " has been loaded...");
                         }))
                         .toArray(CompletableFuture[]::new))
