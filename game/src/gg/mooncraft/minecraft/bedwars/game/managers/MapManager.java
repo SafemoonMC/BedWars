@@ -40,7 +40,7 @@ public final class MapManager {
         MapDAO.read()
                 .thenApply(list -> list
                         .stream()
-                        .map(bedWarsMap -> BedWarsPlugin.getInstance().getSlimeManager().loadPairAsync(bedWarsMap.getIdentifier()).thenAccept(slimeBukkitPair -> {
+                        .map(bedWarsMap -> BedWarsPlugin.getInstance().getSlimeManager().readPairAsync(bedWarsMap.getIdentifier()).thenAccept(slimeBukkitPair -> {
                             storeMap(bedWarsMap.getIdentifier(), bedWarsMap, slimeBukkitPair);
                             BedWarsPlugin.getInstance().getLogger().info("[Map] " + bedWarsMap.getIdentifier() + " has been loaded...");
                         }))
