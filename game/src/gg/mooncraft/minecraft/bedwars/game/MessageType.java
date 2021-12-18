@@ -8,6 +8,7 @@ import com.google.gson.JsonElement;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import gg.mooncraft.minecraft.bedwars.common.messages.GameRequestMessage;
 import gg.mooncraft.minecraft.bedwars.common.messaging.message.Message;
 import gg.mooncraft.minecraft.bedwars.common.utilities.TriFunction;
 
@@ -17,7 +18,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public enum MessageType {
 
-    TODO((timestamp, uuid, jsonElement) -> null);
+    GAMEREQUEST(GameRequestMessage::new);
 
     private final @NotNull TriFunction<Long, UUID, JsonElement, Message> supplier;
 

@@ -6,6 +6,8 @@ import com.google.gson.JsonObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import gg.mooncraft.minecraft.bedwars.common.messages.GameRequestMessage;
+import gg.mooncraft.minecraft.bedwars.common.messages.GameServerMessage;
 import gg.mooncraft.minecraft.bedwars.common.messaging.consumer.IncomingMessageConsumer;
 import gg.mooncraft.minecraft.bedwars.common.messaging.message.Message;
 import gg.mooncraft.minecraft.bedwars.common.utilities.CaffeineList;
@@ -83,6 +85,9 @@ public final class GameRedisMessenger implements IncomingMessageConsumer {
     Methods
      */
     private void processIncomingMessage(@NotNull Message message) {
-
+        BedWarsPlugin.getInstance().getLogger().info("[Redis] Received a new message with timestamp " + message.getTimestamp().getEpochSecond() + "s and UUID " + message.getUniqueId() + ".");
+        if (message instanceof GameRequestMessage gameRequestMessage) {
+            BedWarsPlugin.getInstance().getLogger().info("[Redis] Identified " + message.getUniqueId() + " as GameRequestMessage.");
+        }
     }
 }
