@@ -5,6 +5,8 @@ import lombok.Getter;
 import me.eduardwayland.mooncraft.waylander.database.Credentials;
 import me.eduardwayland.mooncraft.waylander.database.Database;
 import me.eduardwayland.mooncraft.waylander.database.connection.hikari.impl.MariaDBConnectionFactory;
+import me.eduardwayland.mooncraft.waylander.database.scheme.db.NormalDatabaseScheme;
+import me.eduardwayland.mooncraft.waylander.database.scheme.file.NormalSchemeFile;
 
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
@@ -12,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import gg.mooncraft.minecraft.bedwars.common.ComplexJavaPlugin;
 import gg.mooncraft.minecraft.bedwars.common.messaging.RedisChannel;
 import gg.mooncraft.minecraft.bedwars.common.messaging.RedisMessenger;
+import gg.mooncraft.minecraft.bedwars.common.utilities.IOUtils;
 import gg.mooncraft.minecraft.bedwars.data.UserDAO;
 import gg.mooncraft.minecraft.bedwars.lobby.factory.UserFactory;
 import gg.mooncraft.minecraft.bedwars.lobby.handlers.commands.Commands;
@@ -21,6 +24,10 @@ import gg.mooncraft.minecraft.bedwars.lobby.messaging.LobbyRedisMessenger;
 import gg.mooncraft.minecraft.bedwars.lobby.papi.BedWarsExpansion;
 import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.JedisPoolConfig;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 
 @Getter
 public class BedWarsPlugin extends ComplexJavaPlugin {
@@ -77,10 +84,38 @@ public class BedWarsPlugin extends ComplexJavaPlugin {
     }
 
     @Override
-    public @NotNull Database createDatabase(@NotNull Credentials credentials) {
+    public @NotNull Database createDatabase(@NotNull Credentials credentials) throws Exception {
+        // Load input stream
+        InputStream inputStream = getResource("bedwars-db.scheme");
+        if (inputStream == null) {
+            throw new IllegalStateException("bedwars-db.scheme is not inside the jar.");
+        }
+
+        // Create temporary file
+        File temporaryFile = new File(getDataFolder(), "bedwars-db.scheme");
+        if (!temporaryFile.exists() && !temporaryFile.createNewFile()) {
+            throw new IllegalStateException("The temporary file bedwars-db.scheme cannot be created.");
+        }
+
+        // Load output stream
+        FileOutputStream outputStream = new FileOutputStream(temporaryFile);
+
+        // Copy input to output
+        IOUtils.copy(inputStream, outputStream);
+
+        // Close streams
+        inputStream.close();
+        outputStream.close();
+
+        // Parse database scheme and delete temporary file
+        NormalDatabaseScheme normalDatabaseScheme = new NormalSchemeFile(temporaryFile).parse();
+        if (!temporaryFile.delete()) {
+            getLogger().warning("The temporary file bedwars-db.scheme cannot be deleted. You could ignore this warning!");
+        }
         return Database.builder()
                 .identifier(getName())
                 .scheduler(getScheduler())
+                .databaseScheme(normalDatabaseScheme)
                 .connectionFactory(new MariaDBConnectionFactory(getName(), credentials))
                 .build();
     }
