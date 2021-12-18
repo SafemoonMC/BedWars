@@ -51,4 +51,4 @@ CREATE TABLE IF NOT EXISTS bw_game_maps_points_team
     PRIMARY KEY (id, identifier),
     FOREIGN KEY (identifier) REFERENCES bw_game_maps (identifier) ON DELETE CASCADE
 );
-ALTER TABLE worlds ADD FOREIGN KEY (name) REFERENCES bw_game_maps(identifier) ON DELETE CASCADE;
+ALTER TABLE worlds ADD CONSTRAINT worlds_bwgm_fk FOREIGN KEY IF NOT EXISTS (name) REFERENCES bw_game_maps(identifier) ON DELETE CASCADE;
