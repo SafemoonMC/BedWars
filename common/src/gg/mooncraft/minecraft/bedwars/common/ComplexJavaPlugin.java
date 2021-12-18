@@ -145,7 +145,7 @@ public abstract class ComplexJavaPlugin extends JavaPlugin {
     /**
      * Creates a Database instance
      */
-    public abstract @NotNull Database createDatabase(@NotNull Credentials credentials);
+    public abstract @NotNull Database createDatabase(@NotNull Credentials credentials) throws Exception;
 
     /**
      * Creates a RedisMessenger instance
