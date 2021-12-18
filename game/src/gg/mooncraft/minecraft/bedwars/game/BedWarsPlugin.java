@@ -97,7 +97,7 @@ public class BedWarsPlugin extends ComplexJavaPlugin {
     @Override
     public void onDisable() {
         // Unlock loaded worlds
-        getMapManager().getWorldsMap().values().forEach(slimeBukkitPair -> {
+        getMapManager().getWorldsMap().values().stream().filter(slimeBukkitPair -> slimeBukkitPair.slimeWorld().isLocked()).forEach(slimeBukkitPair -> {
             try {
                 getAsyncSlimeLoader().getSync().unlockWorld(slimeBukkitPair.slimeWorld().getName());
                 getLogger().info("[MapManager] Unlocked " + slimeBukkitPair.slimeWorld().getName());
