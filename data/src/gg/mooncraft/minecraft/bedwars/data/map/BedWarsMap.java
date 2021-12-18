@@ -10,7 +10,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
 
 import gg.mooncraft.minecraft.bedwars.data.GameMode;
-import gg.mooncraft.minecraft.bedwars.data.MapDAO;
 import gg.mooncraft.minecraft.bedwars.data.MapModesDAO;
 
 import java.util.EnumSet;
@@ -46,13 +45,13 @@ public final class BedWarsMap implements EntityParent<BedWarsMap> {
     public void addGameMode(@NotNull GameMode gameMode) {
         if (this.gameModeSet.contains(gameMode)) return;
         this.gameModeSet.add(gameMode);
-        MapDAO.update(this);
+        MapModesDAO.create(this, gameMode);
     }
 
     public void delGameMode(@NotNull GameMode gameMode) {
         if (!this.gameModeSet.contains(gameMode)) return;
         this.gameModeSet.remove(gameMode);
-        MapDAO.update(this);
+        MapModesDAO.delete(this, gameMode);
     }
 
     @UnmodifiableView
