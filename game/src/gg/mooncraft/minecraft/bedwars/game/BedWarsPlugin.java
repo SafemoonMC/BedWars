@@ -7,6 +7,8 @@ import com.grinderwolf.swm.api.SlimePlugin;
 import me.eduardwayland.mooncraft.waylander.database.Credentials;
 import me.eduardwayland.mooncraft.waylander.database.Database;
 import me.eduardwayland.mooncraft.waylander.database.connection.hikari.impl.MariaDBConnectionFactory;
+import me.eduardwayland.mooncraft.waylander.database.scheme.db.NormalDatabaseScheme;
+import me.eduardwayland.mooncraft.waylander.database.scheme.file.NormalSchemeFile;
 
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
@@ -14,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import gg.mooncraft.minecraft.bedwars.common.ComplexJavaPlugin;
 import gg.mooncraft.minecraft.bedwars.common.messaging.RedisChannel;
 import gg.mooncraft.minecraft.bedwars.common.messaging.RedisMessenger;
+import gg.mooncraft.minecraft.bedwars.common.utilities.IOUtils;
 import gg.mooncraft.minecraft.bedwars.data.MapDAO;
 import gg.mooncraft.minecraft.bedwars.data.UserDAO;
 import gg.mooncraft.minecraft.bedwars.game.handlers.commands.Commands;
@@ -23,9 +26,15 @@ import gg.mooncraft.minecraft.bedwars.game.managers.MapManager;
 import gg.mooncraft.minecraft.bedwars.game.managers.SetupManager;
 import gg.mooncraft.minecraft.bedwars.game.managers.SlimeManager;
 import gg.mooncraft.minecraft.bedwars.game.messaging.GameRedisMessenger;
+import gg.mooncraft.minecraft.bedwars.game.slime.AsyncSlimeLoader;
+import gg.mooncraft.minecraft.bedwars.game.slime.AsyncSlimePlugin;
 import gg.mooncraft.minecraft.bedwars.game.utilities.ServerUtilities;
 import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.JedisPoolConfig;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 
 @Getter
 public class BedWarsPlugin extends ComplexJavaPlugin {
@@ -35,7 +44,8 @@ public class BedWarsPlugin extends ComplexJavaPlugin {
      */
     private final String serverName = ServerUtilities.getProperty("server-name");
 
-    private static SlimePlugin slimePlugin;
+    private static AsyncSlimePlugin asyncSlimePlugin;
+    private static AsyncSlimeLoader asyncSlimeLoader;
 
     private SlimeManager slimeManager;
     private SetupManager setupManager;
@@ -86,15 +96,54 @@ public class BedWarsPlugin extends ComplexJavaPlugin {
 
     @Override
     public void onDisable() {
+        // Unlock loaded worlds
+        getMapManager().getWorldsMap().values().forEach(slimeBukkitPair -> {
+            try {
+                getAsyncSlimeLoader().getSync().unlockWorld(slimeBukkitPair.slimeWorld().getName());
+                getLogger().info("[MapManager] Unlocked " + slimeBukkitPair.slimeWorld().getName());
+            } catch (Exception ignored) {
+                getLogger().info("[MapManager] " + slimeBukkitPair.slimeWorld().getName() + " cannot be unlocked.");
+            }
+        });
+
+        // Shutdown processes
         super.shutdown();
         getLogger().info("Disabled!");
     }
 
     @Override
-    public @NotNull Database createDatabase(@NotNull Credentials credentials) {
+    public @NotNull Database createDatabase(@NotNull Credentials credentials) throws Exception {
+        // Load input stream
+        InputStream inputStream = getResource("bedwars-db.scheme");
+        if (inputStream == null) {
+            throw new IllegalStateException("bedwars-db.scheme is not inside the jar.");
+        }
+
+        // Create temporary file
+        File temporaryFile = new File(getDataFolder(), "bedwars-db.scheme");
+        if (!temporaryFile.exists() && !temporaryFile.createNewFile()) {
+            throw new IllegalStateException("The temporary file bedwars-db.scheme cannot be created.");
+        }
+
+        // Load output stream
+        FileOutputStream outputStream = new FileOutputStream(temporaryFile);
+
+        // Copy input to output
+        IOUtils.copy(inputStream, outputStream);
+
+        // Close streams
+        inputStream.close();
+        outputStream.close();
+
+        // Parse database scheme and delete temporary file
+        NormalDatabaseScheme normalDatabaseScheme = new NormalSchemeFile(temporaryFile).parse();
+        if (!temporaryFile.delete()) {
+            getLogger().warning("The temporary file bedwars-db.scheme cannot be deleted. You could ignore this warning!");
+        }
         return Database.builder()
                 .identifier(getName())
                 .scheduler(getScheduler())
+                .databaseScheme(normalDatabaseScheme)
                 .connectionFactory(new MariaDBConnectionFactory(getName(), credentials))
                 .build();
     }
@@ -111,7 +160,10 @@ public class BedWarsPlugin extends ComplexJavaPlugin {
             getLogger().warning("Dependency not found: SlimeWorldManager");
             return false;
         } else {
-            slimePlugin = (SlimePlugin) Bukkit.getPluginManager().getPlugin("SlimeWorldManager");
+            SlimePlugin slimePlugin = (SlimePlugin) Bukkit.getPluginManager().getPlugin("SlimeWorldManager");
+            if (slimePlugin == null) return false;
+            asyncSlimePlugin = new AsyncSlimePlugin(slimePlugin);
+            asyncSlimeLoader = new AsyncSlimeLoader(slimePlugin.getLoader("mysql"));
         }
         return true;
     }
@@ -123,7 +175,11 @@ public class BedWarsPlugin extends ComplexJavaPlugin {
         return BedWarsPlugin.getPlugin(BedWarsPlugin.class);
     }
 
-    public static @NotNull SlimePlugin getSlimePlugin() {
-        return slimePlugin;
+    public static @NotNull AsyncSlimePlugin getAsyncSlimePlugin() {
+        return asyncSlimePlugin;
+    }
+
+    public static @NotNull AsyncSlimeLoader getAsyncSlimeLoader() {
+        return asyncSlimeLoader;
     }
 }
