@@ -11,7 +11,7 @@ import gg.mooncraft.minecraft.bedwars.data.MapDAO;
 import gg.mooncraft.minecraft.bedwars.data.map.BedWarsMap;
 import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
 import gg.mooncraft.minecraft.bedwars.game.GameConstants;
-import gg.mooncraft.minecraft.bedwars.game.managers.SlimeBukkitPair;
+import gg.mooncraft.minecraft.bedwars.game.slime.SlimeBukkitPair;
 
 @Getter
 public final class MapBuilder {

@@ -11,6 +11,7 @@ import gg.mooncraft.minecraft.bedwars.data.map.BedWarsMap;
 import gg.mooncraft.minecraft.bedwars.data.map.MapInfo;
 import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
 import gg.mooncraft.minecraft.bedwars.game.managers.components.MapBuilder;
+import gg.mooncraft.minecraft.bedwars.game.slime.SlimeBukkitPair;
 
 import java.sql.Timestamp;
 import java.time.Instant;

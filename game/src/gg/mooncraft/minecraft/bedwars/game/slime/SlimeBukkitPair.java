@@ -1,4 +1,4 @@
-package gg.mooncraft.minecraft.bedwars.game.managers;
+package gg.mooncraft.minecraft.bedwars.game.slime;
 
 import com.grinderwolf.swm.api.world.SlimeWorld;
 

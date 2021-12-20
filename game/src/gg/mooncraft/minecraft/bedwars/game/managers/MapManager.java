@@ -6,6 +6,7 @@ import org.jetbrains.annotations.UnmodifiableView;
 import gg.mooncraft.minecraft.bedwars.data.MapDAO;
 import gg.mooncraft.minecraft.bedwars.data.map.BedWarsMap;
 import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
+import gg.mooncraft.minecraft.bedwars.game.slime.SlimeBukkitPair;
 
 import java.util.ArrayList;
 import java.util.Collections;
