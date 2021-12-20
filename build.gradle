@@ -20,8 +20,12 @@ allprojects {
         maven { url = uri("https://repo.rapture.pw/repository/maven-releases/") }
         maven { url = uri("https://repo.rapture.pw/repository/maven-snapshots/") }
         maven {
-            url = "http://vps-2aa23b62.vps.ovh.us:8081/repository/mooncraft-releases/"
-            allowInsecureProtocol = true
+            url = "https://nexus.mooncraft.dev/repository/spigots/"
+            credentials.username = props.get("nexus-username", properties.get("nexus-username") as String)
+            credentials.password = props.get("nexus-password", properties.get("nexus-password") as String)
+        }
+        maven {
+            url = "https://nexus.mooncraft.dev/repository/mooncraft-releases/"
             credentials.username = props.get("nexus-username", properties.get("nexus-username") as String)
             credentials.password = props.get("nexus-password", properties.get("nexus-password") as String)
         }
