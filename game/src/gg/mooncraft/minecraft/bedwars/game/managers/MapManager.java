@@ -3,6 +3,7 @@ package gg.mooncraft.minecraft.bedwars.game.managers;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
 
+import gg.mooncraft.minecraft.bedwars.data.GameMode;
 import gg.mooncraft.minecraft.bedwars.data.MapDAO;
 import gg.mooncraft.minecraft.bedwars.data.map.BedWarsMap;
 import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
@@ -15,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 public final class MapManager {
 
@@ -84,6 +87,11 @@ public final class MapManager {
 
     public @NotNull Optional<SlimeBukkitPair> getSlimeBukkitPair(@NotNull String mapName) {
         return this.worldsMap.entrySet().stream().filter(entry -> entry.getKey().equalsIgnoreCase(mapName)).findFirst().map(Map.Entry::getValue);
+    }
+
+    public @NotNull Optional<BedWarsMap> getRandomMap(@NotNull GameMode gameMode) {
+        List<BedWarsMap> mapList = getMapList().stream().filter(bedWarsMap -> bedWarsMap.getGameModeSet().contains(gameMode)).collect(Collectors.toList());
+        return Optional.of(mapList.get(ThreadLocalRandom.current().nextInt(mapList.size())));
     }
 
     @UnmodifiableView
