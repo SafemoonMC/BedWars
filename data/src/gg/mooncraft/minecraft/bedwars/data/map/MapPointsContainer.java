@@ -10,10 +10,12 @@ import org.jetbrains.annotations.NotNull;
 import gg.mooncraft.minecraft.bedwars.data.MapPointsDAO;
 import gg.mooncraft.minecraft.bedwars.data.map.point.AbstractMapPoint;
 import gg.mooncraft.minecraft.bedwars.data.map.point.GameMapPoint;
+import gg.mooncraft.minecraft.bedwars.data.map.point.PointTypes;
 import gg.mooncraft.minecraft.bedwars.data.map.point.TeamMapPoint;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 @Getter
@@ -62,6 +64,14 @@ public final class MapPointsContainer implements EntityParent<MapPointsContainer
         } else {
             throw new IllegalArgumentException("AbstractMapPoint implementation not recognized.");
         }
+    }
+
+    public @NotNull Optional<GameMapPoint> getGameMapPoint(@NotNull PointTypes.MAP map) {
+        return this.mapPointList.stream().filter(gameMapPoint -> gameMapPoint.getType() == map).findFirst();
+    }
+
+    public @NotNull Optional<TeamMapPoint> getTeamMapPoint(@NotNull PointTypes.TEAM map) {
+        return this.teamPointList.stream().filter(teamMapPoint -> teamMapPoint.getType() == map).findFirst();
     }
 
     /*
