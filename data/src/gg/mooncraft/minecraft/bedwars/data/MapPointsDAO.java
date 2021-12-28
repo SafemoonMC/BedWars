@@ -88,7 +88,7 @@ public final class MapPointsDAO {
             }
             List<GameMapPoint> list = new ArrayList<>();
             resultSetIterator.forEachRemaining(resultSet -> {
-                ResultSetWrapper resultSetWrapper = new ResultSetWrapper(resultSetIterator.next());
+                ResultSetWrapper resultSetWrapper = new ResultSetWrapper(resultSet);
                 int id = resultSetWrapper.get("id", Integer.class);
                 GameMode mode = GameMode.valueOf(resultSetWrapper.get("mode", String.class));
                 PointTypes.MAP type = PointTypes.MAP.valueOf(resultSetWrapper.get("type", String.class));

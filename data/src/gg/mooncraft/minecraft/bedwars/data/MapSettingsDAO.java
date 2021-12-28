@@ -66,7 +66,7 @@ public final class MapSettingsDAO {
             }
             List<MapSetting> list = new ArrayList<>();
             resultSetIterator.forEachRemaining(resultSet -> {
-                ResultSetWrapper resultSetWrapper = new ResultSetWrapper(resultSetIterator.next());
+                ResultSetWrapper resultSetWrapper = new ResultSetWrapper(resultSet);
                 GameMode gameMode = GameMode.valueOf(resultSetWrapper.get("mode", String.class));
                 String path = resultSetWrapper.get("path", String.class);
                 String value = resultSetWrapper.get("value", String.class);

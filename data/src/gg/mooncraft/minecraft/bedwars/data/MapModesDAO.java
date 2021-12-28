@@ -63,7 +63,7 @@ public final class MapModesDAO {
             }
             List<GameMode> list = new ArrayList<>();
             resultSetIterator.forEachRemaining(resultSet -> {
-                ResultSetWrapper resultSetWrapper = new ResultSetWrapper(resultSetIterator.next());
+                ResultSetWrapper resultSetWrapper = new ResultSetWrapper(resultSet);
                 GameMode gameMode = GameMode.valueOf(resultSetWrapper.get("mode", String.class));
                 list.add(gameMode);
             });

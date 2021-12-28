@@ -80,7 +80,7 @@ public final class UserStatisticDAO {
             }
             List<GameStatistic> list = new ArrayList<>();
             resultSetIterator.forEachRemaining(resultSet -> {
-                ResultSetWrapper resultSetWrapper = new ResultSetWrapper(resultSetIterator.next());
+                ResultSetWrapper resultSetWrapper = new ResultSetWrapper(resultSet);
                 GameMode mode = GameMode.valueOf(resultSetWrapper.get("mode", String.class));
                 StatisticTypes.GAME type = StatisticTypes.GAME.valueOf(resultSetWrapper.get("type", String.class));
                 AtomicInteger amount = new AtomicInteger(resultSetWrapper.get("amount", Integer.class));
