@@ -1,5 +1,6 @@
 package gg.mooncraft.minecraft.bedwars.game.managers;
 
+import com.github.benmanes.caffeine.cache.Cache;
 import com.google.common.base.Stopwatch;
 import com.grinderwolf.swm.api.world.SlimeWorld;
 
@@ -7,8 +8,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 
+import gg.mooncraft.minecraft.bedwars.common.utilities.CaffeineFactory;
 import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
-import gg.mooncraft.minecraft.bedwars.game.slime.AsyncSlimeWorld;
 import gg.mooncraft.minecraft.bedwars.game.slime.SlimeBukkitPair;
 
 import java.util.concurrent.CompletableFuture;
@@ -18,13 +19,18 @@ import java.util.function.Consumer;
 public final class SlimeManager {
 
     /*
+    Fields
+     */
+    private final @NotNull Cache<String, SlimeWorld> slimeWorldCache = CaffeineFactory.newBuilder().expireAfterWrite(60, TimeUnit.SECONDS).build();
+
+    /*
     Methods
      */
     public @NotNull CompletableFuture<SlimeBukkitPair> createPairAsync(@NotNull String worldName) {
         Stopwatch createStopwatch = Stopwatch.createStarted();
         Stopwatch generateStopwatch = Stopwatch.createUnstarted();
 
-        return BedWarsPlugin.getAsyncSlimePlugin().createWorld(worldName, true).thenApply(slimeWorld -> {
+        return BedWarsPlugin.getAsyncSlimePlugin().createWorld(worldName, false).thenApply(slimeWorld -> {
             long createElapsed = createStopwatch.stop().elapsed(TimeUnit.MILLISECONDS);
             CompletableFuture<SlimeBukkitPair> completableFuture = new CompletableFuture<>();
 
@@ -39,17 +45,21 @@ public final class SlimeManager {
         });
     }
 
-    public @NotNull CompletableFuture<SlimeBukkitPair> createTemporaryPairAsync(@NotNull SlimeBukkitPair fromBukkitPair, @NotNull String newWorldName) {
+    public @NotNull CompletableFuture<SlimeBukkitPair> createTemporaryPairAsync(@NotNull String fromWorldName, @NotNull String toWorldName) {
         Stopwatch copyStopwatch = Stopwatch.createStarted();
         Stopwatch generateStopwatch = Stopwatch.createUnstarted();
-        return AsyncSlimeWorld.copy(fromBukkitPair.slimeWorld(), newWorldName).thenApply(slimeWorld -> {
-            long loadElapsed = copyStopwatch.stop().elapsed(TimeUnit.MILLISECONDS);
+        return CompletableFuture.supplyAsync(() -> {
             CompletableFuture<SlimeBukkitPair> completableFuture = new CompletableFuture<>();
 
+            // Get the SlimeWorld from the cache (or load from database) and clone the world
+            SlimeWorld fromSlimeWorld = slimeWorldCache.get(fromWorldName, worldName -> BedWarsPlugin.getAsyncSlimePlugin().loadWorld(fromWorldName, true).join());
+            SlimeWorld slimeWorld = fromSlimeWorld.clone(toWorldName);
+
+            long loadElapsed = copyStopwatch.stop().elapsed(TimeUnit.MILLISECONDS);
             generateStopwatch.start();
             loadBukkitWorld(slimeWorld, world -> {
                 long generateElapsed = generateStopwatch.stop().elapsed(TimeUnit.MILLISECONDS);
-                BedWarsPlugin.getInstance().getLogger().info("[SlimeManager] Copied " + fromBukkitPair.world().getName() + " to " + newWorldName + " in " + loadElapsed + "ms and generated in " + generateElapsed + "ms.");
+                BedWarsPlugin.getInstance().getLogger().info("[SlimeManager] Copied " + fromWorldName + " to " + toWorldName + " in " + loadElapsed + "ms and generated in " + generateElapsed + "ms with " + world.getLoadedChunks().length + " preloaded chunks.");
 
                 completableFuture.complete(new SlimeBukkitPair(slimeWorld, world, false));
             });
@@ -61,14 +71,14 @@ public final class SlimeManager {
     public @NotNull CompletableFuture<SlimeBukkitPair> readPairAsync(@NotNull String worldName) {
         Stopwatch loadStopwatch = Stopwatch.createStarted();
         Stopwatch generateStopwatch = Stopwatch.createUnstarted();
-        return BedWarsPlugin.getAsyncSlimePlugin().loadWorld(worldName, true).thenApply(slimeWorld -> {
+        return BedWarsPlugin.getAsyncSlimePlugin().loadWorld(worldName, false).thenApply(slimeWorld -> {
             long loadElapsed = loadStopwatch.stop().elapsed(TimeUnit.MILLISECONDS);
             CompletableFuture<SlimeBukkitPair> completableFuture = new CompletableFuture<>();
 
             generateStopwatch.start();
             loadBukkitWorld(slimeWorld, world -> {
                 long generateElapsed = generateStopwatch.stop().elapsed(TimeUnit.MILLISECONDS);
-                BedWarsPlugin.getInstance().getLogger().info("[SlimeManager] Loaded " + worldName + " in " + loadElapsed + "ms and generated in " + generateElapsed + "ms.");
+                BedWarsPlugin.getInstance().getLogger().info("[SlimeManager] Loaded " + worldName + " in " + loadElapsed + "ms and generated in " + generateElapsed + "ms with " + world.getLoadedChunks().length + " preloaded chunks.");
 
                 completableFuture.complete(new SlimeBukkitPair(slimeWorld, world, true));
             });
@@ -104,6 +114,14 @@ public final class SlimeManager {
         BedWarsPlugin.getInstance().getScheduler().executeSync(() -> {
             BedWarsPlugin.getAsyncSlimePlugin().getSync().generateWorld(slimeWorld);
             World newWorld = Bukkit.getWorld(slimeWorld.getName());
+
+            // Force-load 400 chunks
+            for (int x = -10; x < 10; x++) {
+                for (int z = -10; z < 10; z++) {
+                    newWorld.getChunkAt(x, z).load(true);
+                }
+            }
+
             worldConsumer.accept(newWorld);
         });
     }

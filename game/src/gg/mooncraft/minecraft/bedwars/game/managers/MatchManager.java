@@ -7,7 +7,6 @@ import gg.mooncraft.minecraft.bedwars.data.GameMode;
 import gg.mooncraft.minecraft.bedwars.data.map.BedWarsMap;
 import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatch;
-import gg.mooncraft.minecraft.bedwars.game.slime.SlimeBukkitPair;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -43,14 +42,15 @@ public final class MatchManager {
     }
 
     private CompletableFuture<GameMatch> createMatch(@NotNull GameMode gameMode) {
+        // Get a random map for that game mode and check if exists
         Optional<BedWarsMap> mapOptional = BedWarsPlugin.getInstance().getMapManager().getRandomMap(gameMode);
-        if (mapOptional.isEmpty()) return CompletableFuture.completedFuture(null);
+        if (mapOptional.isEmpty()) {
+            return CompletableFuture.completedFuture(null);
+        }
         BedWarsMap bedWarsMap = mapOptional.get();
-        Optional<SlimeBukkitPair> pairOptional = BedWarsPlugin.getInstance().getMapManager().getSlimeBukkitPair(bedWarsMap.getIdentifier());
-        if (pairOptional.isEmpty()) return CompletableFuture.completedFuture(null);
-        SlimeBukkitPair slimeBukkitPair = pairOptional.get();
+
         int id = indexCounter.getAndIncrement();
-        return BedWarsPlugin.getInstance().getSlimeManager().createTemporaryPairAsync(slimeBukkitPair, String.format("%s-%d", bedWarsMap.getIdentifier(), id))
+        return BedWarsPlugin.getInstance().getSlimeManager().createTemporaryPairAsync(bedWarsMap.getIdentifier(), String.format("%s-%d", bedWarsMap.getIdentifier(), id))
                 .thenApply(newSlimePair -> new GameMatch(id, bedWarsMap.getIdentifier(), gameMode, newSlimePair));
     }
 
