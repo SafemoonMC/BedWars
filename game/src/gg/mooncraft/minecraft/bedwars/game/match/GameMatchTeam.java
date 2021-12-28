@@ -46,6 +46,10 @@ public final class GameMatchTeam {
         this.matchPlayerList.removeIf(gameMatchPlayer -> gameMatchPlayer.getUniqueId().equals(uniqueId));
     }
 
+    public boolean hasPlayer(@NotNull UUID uniqueId) {
+        return this.matchPlayerList.stream().anyMatch(gameMatchPlayer -> gameMatchPlayer.getUniqueId().equals(uniqueId));
+    }
+
     public void setStatus(@NotNull TeamStatus teamStatus) {
         this.teamStatus = teamStatus;
     }
