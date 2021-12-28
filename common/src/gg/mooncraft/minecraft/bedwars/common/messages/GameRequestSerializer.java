@@ -43,7 +43,7 @@ public final class GameRequestSerializer {
         GameMode gameMode = GameMode.valueOf(jsonObject.get("game-mode").getAsString());
         List<UUID> playerList = new ArrayList<>();
 
-        JsonArray jsonArray = jsonObject.getAsJsonArray("match-list");
+        JsonArray jsonArray = jsonObject.getAsJsonArray("player-list");
         if (jsonArray.size() != 0) {
             for (int i = 0; i < jsonArray.size(); i++) {
                 JsonElement jsonArrayElement = jsonArray.get(i);
