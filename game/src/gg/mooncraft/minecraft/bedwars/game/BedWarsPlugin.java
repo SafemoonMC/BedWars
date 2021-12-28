@@ -20,6 +20,7 @@ import gg.mooncraft.minecraft.bedwars.common.utilities.IOUtils;
 import gg.mooncraft.minecraft.bedwars.data.MapDAO;
 import gg.mooncraft.minecraft.bedwars.data.UserDAO;
 import gg.mooncraft.minecraft.bedwars.game.handlers.commands.Commands;
+import gg.mooncraft.minecraft.bedwars.game.handlers.listeners.MatchListeners;
 import gg.mooncraft.minecraft.bedwars.game.handlers.listeners.SetupListeners;
 import gg.mooncraft.minecraft.bedwars.game.managers.GameRequestManager;
 import gg.mooncraft.minecraft.bedwars.game.managers.GameServerManager;
@@ -94,6 +95,7 @@ public class BedWarsPlugin extends ComplexJavaPlugin {
         Commands.loadAll();
         // Load listeners
         new SetupListeners();
+        new MatchListeners();
 
         // Show enabling information
         getLogger().info("Running on " + serverName + "...");
@@ -157,7 +159,7 @@ public class BedWarsPlugin extends ComplexJavaPlugin {
     @Override
     public @NotNull RedisMessenger createRedisMessenger(@NotNull JedisPoolConfig jedisPoolConfig, @NotNull HostAndPort hostAndPort, @NotNull String username, @NotNull String password) {
         RedisMessenger redisMessenger = new RedisMessenger(this, new GameRedisMessenger(this));
-        redisMessenger.init(RedisChannel.LOBBY, jedisPoolConfig, hostAndPort, username, password);
+        redisMessenger.init(RedisChannel.GAME, jedisPoolConfig, hostAndPort, username, password);
         return redisMessenger;
     }
 
