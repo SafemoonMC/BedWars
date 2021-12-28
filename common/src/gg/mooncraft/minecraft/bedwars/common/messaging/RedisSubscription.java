@@ -55,6 +55,11 @@ public final class RedisSubscription extends JedisPubSub implements Runnable {
         if (redisMessenger.getConsumer() == null) return;
         if (redisMessenger.getIncomingChannel() == null) return;
         if (!channel.equals(redisMessenger.getIncomingChannel().getChannel())) return;
-        redisMessenger.getConsumer().consumeIncomingMessageAsString(message);
+        try {
+            redisMessenger.getConsumer().consumeIncomingMessageAsString(message);
+        } catch (Exception e) {
+            redisMessenger.getPlugin().getLogger().severe("[Redis Pub/Sub] Error onMessage: ");
+            e.printStackTrace();
+        }
     }
 }
