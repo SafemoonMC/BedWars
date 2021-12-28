@@ -91,6 +91,8 @@ public final class MapManager {
 
     public @NotNull Optional<BedWarsMap> getRandomMap(@NotNull GameMode gameMode) {
         List<BedWarsMap> mapList = getMapList().stream().filter(bedWarsMap -> bedWarsMap.getGameModeSet().contains(gameMode)).collect(Collectors.toList());
+        if (mapList.isEmpty()) return Optional.empty();
+
         return Optional.of(mapList.get(ThreadLocalRandom.current().nextInt(mapList.size())));
     }
 
