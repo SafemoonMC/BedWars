@@ -27,15 +27,15 @@ public final class BoardManager {
      */
     public BoardManager() {
         // Register %date%
-        TabAPI.getInstance().getPlaceholderManager().registerServerPlaceholder("date", 0, () -> {
+        TabAPI.getInstance().getPlaceholderManager().registerServerPlaceholder("%date%", 50, () -> {
             return new SimpleDateFormat("yyyy-MM-dd").format(new Date());
         });
         // Register %server-name%
-        TabAPI.getInstance().getPlaceholderManager().registerServerPlaceholder("server-name", 0, () -> {
+        TabAPI.getInstance().getPlaceholderManager().registerServerPlaceholder("%server-name%", 50, () -> {
             return BedWarsPlugin.getInstance().getServerName();
         });
         // Register %game-status%
-        TabAPI.getInstance().getPlaceholderManager().registerPlayerPlaceholder("server-name", 10, tabPlayer -> {
+        TabAPI.getInstance().getPlaceholderManager().registerPlayerPlaceholder("%game-status%", 50, tabPlayer -> {
             Player player = (Player) tabPlayer.getPlayer();
             Optional<GameMatch> matchOptional = BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player);
 
@@ -44,7 +44,7 @@ public final class BoardManager {
 
         // Register %game-team-status-[color]%
         for (GameTeam gameTeam : GameTeam.values()) {
-            TabAPI.getInstance().getPlaceholderManager().registerPlayerPlaceholder("game-team-status-" + gameTeam.name(), 10, tabPlayer -> {
+            TabAPI.getInstance().getPlaceholderManager().registerPlayerPlaceholder("%game-team-status-" + gameTeam.name() + "%", 50, tabPlayer -> {
                 Player player = (Player) tabPlayer.getPlayer();
                 Optional<GameMatch> matchOptional = BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player);
 
@@ -67,11 +67,11 @@ public final class BoardManager {
             for (GameMatchTeam matchTeam : gameMatch.getTeamList()) {
                 String team;
                 if (matchTeam.getId() != gameMatchTeam.getId()) {
-                    team = String.format("%c &f%s: %%game-team-status-%s%%", matchTeam.getGameTeam().getLetter(), matchTeam.getGameTeam().getDisplay(), matchTeam.getTeamStatus().name());
+                    team = String.format("%c &f%s: %%game-team-status-%s%%", matchTeam.getGameTeam().getLetter(), matchTeam.getGameTeam().getDisplay(), matchTeam.getGameTeam().name());
                 } else {
-                    team = String.format("%c &f%s: %%game-team-status-%s%% &7You", matchTeam.getGameTeam().getLetter(), matchTeam.getGameTeam().getDisplay(), matchTeam.getTeamStatus().name());
+                    team = String.format("%c &f%s: %%game-team-status-%s%% &7You", matchTeam.getGameTeam().getLetter(), matchTeam.getGameTeam().getDisplay(), matchTeam.getGameTeam().name());
                 }
-                lines.add(team);
+                lines.add(matchTeam.getGameTeam().getChatColor() + team);
             }
         }
 
