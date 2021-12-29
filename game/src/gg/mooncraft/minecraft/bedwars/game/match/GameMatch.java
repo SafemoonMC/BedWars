@@ -11,6 +11,8 @@ import gg.mooncraft.minecraft.bedwars.data.GameTeam;
 import gg.mooncraft.minecraft.bedwars.data.map.BedWarsMap;
 import gg.mooncraft.minecraft.bedwars.data.map.point.TeamMapPoint;
 import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
+import gg.mooncraft.minecraft.bedwars.game.events.EventsAPI;
+import gg.mooncraft.minecraft.bedwars.game.events.MatchUpdateStateEvent;
 import gg.mooncraft.minecraft.bedwars.game.slime.SlimeBukkitPair;
 
 import java.util.LinkedList;
@@ -31,7 +33,7 @@ public final class GameMatch {
     private final @NotNull SlimeBukkitPair slimeBukkitPair;
     private final @NotNull List<GameMatchTeam> teamList = new LinkedList<>();
 
-    private @NotNull GameState gameState;
+    private GameState gameState;
 
     /*
     Constructor
@@ -51,7 +53,7 @@ public final class GameMatch {
             this.teamList.forEach(gameMatchTeam -> gameMatchTeam.initScoreboard(this));
         });
 
-        this.gameState = GameState.LOADING;
+        updateState(GameState.WAITING);
     }
 
     /*
@@ -70,6 +72,11 @@ public final class GameMatch {
 
         playerList.forEach(freeMatchTeam::addPlayer);
         return true;
+    }
+
+    public void updateState(@NotNull GameState gameState) {
+        this.gameState = gameState;
+        EventsAPI.callEventSync(new MatchUpdateStateEvent(this));
     }
 
     public @NotNull Optional<GameMatchTeam> getTeam(@NotNull GameTeam gameTeam) {
