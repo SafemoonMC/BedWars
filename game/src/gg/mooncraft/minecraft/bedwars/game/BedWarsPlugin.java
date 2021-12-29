@@ -20,6 +20,7 @@ import gg.mooncraft.minecraft.bedwars.common.utilities.IOUtils;
 import gg.mooncraft.minecraft.bedwars.data.MapDAO;
 import gg.mooncraft.minecraft.bedwars.data.UserDAO;
 import gg.mooncraft.minecraft.bedwars.game.handlers.commands.Commands;
+import gg.mooncraft.minecraft.bedwars.game.handlers.listeners.GameListeners;
 import gg.mooncraft.minecraft.bedwars.game.handlers.listeners.MatchListeners;
 import gg.mooncraft.minecraft.bedwars.game.handlers.listeners.PlayerListeners;
 import gg.mooncraft.minecraft.bedwars.game.handlers.listeners.SetupListeners;
@@ -101,6 +102,7 @@ public class BedWarsPlugin extends ComplexJavaPlugin {
         new SetupListeners();
         new MatchListeners();
         new PlayerListeners();
+        new GameListeners();
 
         // Show enabling information
         getLogger().info("Running on " + serverName + "...");
@@ -110,7 +112,7 @@ public class BedWarsPlugin extends ComplexJavaPlugin {
     @Override
     public void onDisable() {
         // Unlock loaded worlds
-        if(mapManager != null) {
+        if (mapManager != null) {
             getMapManager().getWorldsMap().values().stream().filter(slimeBukkitPair -> slimeBukkitPair.slimeWorld().isLocked()).forEach(slimeBukkitPair -> {
                 try {
                     getAsyncSlimeLoader().getSync().unlockWorld(slimeBukkitPair.slimeWorld().getName());
