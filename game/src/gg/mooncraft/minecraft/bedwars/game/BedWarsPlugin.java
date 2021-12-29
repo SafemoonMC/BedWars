@@ -108,14 +108,16 @@ public class BedWarsPlugin extends ComplexJavaPlugin {
     @Override
     public void onDisable() {
         // Unlock loaded worlds
-        getMapManager().getWorldsMap().values().stream().filter(slimeBukkitPair -> slimeBukkitPair.slimeWorld().isLocked()).forEach(slimeBukkitPair -> {
-            try {
-                getAsyncSlimeLoader().getSync().unlockWorld(slimeBukkitPair.slimeWorld().getName());
-                getLogger().info("[MapManager] Unlocked " + slimeBukkitPair.slimeWorld().getName());
-            } catch (Exception ignored) {
-                getLogger().info("[MapManager] " + slimeBukkitPair.slimeWorld().getName() + " cannot be unlocked.");
-            }
-        });
+        if(mapManager != null) {
+            getMapManager().getWorldsMap().values().stream().filter(slimeBukkitPair -> slimeBukkitPair.slimeWorld().isLocked()).forEach(slimeBukkitPair -> {
+                try {
+                    getAsyncSlimeLoader().getSync().unlockWorld(slimeBukkitPair.slimeWorld().getName());
+                    getLogger().info("[MapManager] Unlocked " + slimeBukkitPair.slimeWorld().getName());
+                } catch (Exception ignored) {
+                    getLogger().info("[MapManager] " + slimeBukkitPair.slimeWorld().getName() + " cannot be unlocked.");
+                }
+            });
+        }
 
         // Shutdown processes
         super.shutdown();
