@@ -9,6 +9,10 @@ import org.jetbrains.annotations.NotNull;
 public record SlimeBukkitPair(@NotNull SlimeWorld slimeWorld, @NotNull World world,
                               boolean persistent) {
 
+    public @NotNull String getName() {
+        return slimeWorld.getName();
+    }
+
     public @NotNull Location getLocation(double x, double y, double z, float yaw, float pitch) {
         return new Location(world, x, y, z, yaw, pitch);
     }
