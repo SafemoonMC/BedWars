@@ -58,7 +58,7 @@ public final class BoardManager {
      */
     public @NotNull Scoreboard createScoreboard(@NotNull GameMatch gameMatch, @NotNull GameMatchTeam gameMatchTeam) {
         List<String> lines = new ArrayList<>();
-        for (String line : GameConstants.DEFAULT_SCOREBOARD_LINES) {
+        for (String line : GameConstants.SCOREBOARD_LINES) {
             if (!line.equalsIgnoreCase("{teams}")) {
                 lines.add(line);
                 continue;
@@ -75,6 +75,6 @@ public final class BoardManager {
             }
         }
 
-        return TabAPI.getInstance().getScoreboardManager().createScoreboard(String.format("bw-map-%s-%s", gameMatch.getId(), gameMatchTeam.getGameTeam().name()), GameConstants.DEFAULT_SCOREBOARD_TITLE, lines);
+        return TabAPI.getInstance().getScoreboardManager().createScoreboard(String.format("bw-map-%s-%s", gameMatch.getId(), gameMatchTeam.getGameTeam().name()), GameConstants.SCOREBOARD_TITLE, lines);
     }
 }
