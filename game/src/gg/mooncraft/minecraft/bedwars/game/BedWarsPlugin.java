@@ -22,6 +22,7 @@ import gg.mooncraft.minecraft.bedwars.data.UserDAO;
 import gg.mooncraft.minecraft.bedwars.game.handlers.commands.Commands;
 import gg.mooncraft.minecraft.bedwars.game.handlers.listeners.MatchListeners;
 import gg.mooncraft.minecraft.bedwars.game.handlers.listeners.SetupListeners;
+import gg.mooncraft.minecraft.bedwars.game.managers.BoardManager;
 import gg.mooncraft.minecraft.bedwars.game.managers.GameRequestManager;
 import gg.mooncraft.minecraft.bedwars.game.managers.GameServerManager;
 import gg.mooncraft.minecraft.bedwars.game.managers.MapManager;
@@ -53,6 +54,7 @@ public class BedWarsPlugin extends ComplexJavaPlugin {
     private SlimeManager slimeManager;
     private SetupManager setupManager;
     private MatchManager matchManager;
+    private BoardManager boardManager;
     private MapManager mapManager;
 
     private GameServerManager gameServerManager;
@@ -87,6 +89,7 @@ public class BedWarsPlugin extends ComplexJavaPlugin {
         this.slimeManager = new SlimeManager();
         this.setupManager = new SetupManager();
         this.matchManager = new MatchManager();
+        this.boardManager = new BoardManager();
         this.mapManager = new MapManager();
         this.gameServerManager = new GameServerManager();
         this.gameRequestManager = new GameRequestManager();

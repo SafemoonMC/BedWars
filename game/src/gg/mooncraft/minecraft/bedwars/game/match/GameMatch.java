@@ -6,6 +6,8 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import gg.mooncraft.minecraft.bedwars.data.GameMode;
+import gg.mooncraft.minecraft.bedwars.data.GameState;
+import gg.mooncraft.minecraft.bedwars.data.GameTeam;
 import gg.mooncraft.minecraft.bedwars.data.map.BedWarsMap;
 import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
 import gg.mooncraft.minecraft.bedwars.game.slime.SlimeBukkitPair;
@@ -27,6 +29,8 @@ public final class GameMatch {
     private final @NotNull SlimeBukkitPair slimeBukkitPair;
     private final @NotNull List<GameMatchTeam> teamList = new LinkedList<>();
 
+    private @NotNull GameState gameState;
+
     /*
     Constructor
      */
@@ -35,10 +39,11 @@ public final class GameMatch {
         this.identifier = identifier;
         this.gameMode = gameMode;
         this.slimeBukkitPair = slimeBukkitPair;
-
         getBedWarsMap().ifPresent(bedWarsMap -> {
-            bedWarsMap.getPointsContainer().getTeamPointList().forEach(teamMapPoint -> this.teamList.add(new GameMatchTeam(this.teamList.size(), teamMapPoint.getGameTeam())));
+            bedWarsMap.getPointsContainer().getTeamPointList().forEach(teamMapPoint -> this.teamList.add(new GameMatchTeam(this.teamList.size(), teamMapPoint.getGameTeam(), this)));
         });
+
+        this.gameState = GameState.LOADING;
     }
 
     /*
@@ -57,6 +62,18 @@ public final class GameMatch {
 
         playerList.forEach(freeMatchTeam::addPlayer);
         return true;
+    }
+
+    public @NotNull Optional<GameMatchTeam> getTeam(@NotNull GameTeam gameTeam) {
+        return this.teamList.stream().filter(gameMatchTeam -> gameMatchTeam.getGameTeam() == gameTeam).findFirst();
+    }
+
+    public @NotNull Optional<GameMatchTeam> getTeamOf(@NotNull Player player) {
+        return this.teamList.stream().filter(gameMatchTeam -> gameMatchTeam.hasPlayer(player.getUniqueId())).findFirst();
+    }
+
+    public @NotNull Optional<GameMatchPlayer> getDataOf(@NotNull Player player) {
+        return getTeamOf(player).flatMap(gameMatchTeam -> gameMatchTeam.getPlayer(player.getUniqueId()));
     }
 
     public @NotNull Optional<BedWarsMap> getBedWarsMap() {
