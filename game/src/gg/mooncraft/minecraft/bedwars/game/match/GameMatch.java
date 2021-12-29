@@ -60,6 +60,8 @@ public final class GameMatch {
     Methods
      */
     public boolean findTeamFor(@NotNull List<UUID> playerList) {
+        if (gameState != GameState.WAITING) return false;
+
         GameMatchTeam freeMatchTeam = null;
         for (GameMatchTeam gameMatchTeam : teamList) {
             int teamSize = gameMatchTeam.getMatchPlayerList().size();
