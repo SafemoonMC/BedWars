@@ -2,6 +2,8 @@ package gg.mooncraft.minecraft.bedwars.game.match;
 
 import lombok.Getter;
 
+import me.neznamy.tab.api.scoreboard.Scoreboard;
+
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -32,6 +34,7 @@ public final class GameMatch {
     private final @NotNull GameMode gameMode;
     private final @NotNull SlimeBukkitPair slimeBukkitPair;
     private final @NotNull List<GameMatchTeam> teamList = new LinkedList<>();
+    private final @NotNull Scoreboard scoreboard;
 
     private GameState gameState;
 
@@ -43,6 +46,8 @@ public final class GameMatch {
         this.identifier = identifier;
         this.gameMode = gameMode;
         this.slimeBukkitPair = slimeBukkitPair;
+        this.scoreboard = BedWarsPlugin.getInstance().getBoardManager().createScoreboard(this);
+
         getBedWarsMap().ifPresent(bedWarsMap -> {
             bedWarsMap.getPointsContainer().getTeamPointList()
                     .stream()
@@ -95,6 +100,18 @@ public final class GameMatch {
 
     public @NotNull Optional<BedWarsMap> getBedWarsMap() {
         return BedWarsPlugin.getInstance().getMapManager().getBedWarsMap(this.identifier);
+    }
+
+    public int getPlayersCount() {
+        int amount = 0;
+        for (GameMatchTeam gameMatchTeam : this.teamList) {
+            amount += gameMatchTeam.getMatchPlayerList().stream().mapToInt(gameMatchPlayer -> gameMatchPlayer.getPlayer().isPresent() ? 1 : 0).sum();
+        }
+        return amount;
+    }
+
+    public int getPlayersCapacity() {
+        return gameMode.getWeight();
     }
 
     /*
