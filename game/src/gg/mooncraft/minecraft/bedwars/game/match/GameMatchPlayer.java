@@ -37,7 +37,7 @@ public final class GameMatchPlayer {
     }
 
     public @NotNull Optional<Player> getPlayer() {
-        if (this.player == null) {
+        if (this.player == null || !this.player.isOnline()) {
             this.player = Bukkit.getPlayer(uniqueId);
         }
         return Optional.ofNullable(this.player);
