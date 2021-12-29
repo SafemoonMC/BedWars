@@ -125,8 +125,16 @@ public final class SlimeManager {
 
             // Setup game rules
             newWorld.setFullTime(24000);
+            newWorld.setGameRule(GameRule.SHOW_DEATH_MESSAGES, false);
             newWorld.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
+            newWorld.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
             newWorld.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+            newWorld.setGameRule(GameRule.DO_MOB_SPAWNING, false);
+            newWorld.setGameRule(GameRule.DO_FIRE_TICK, false);
+            newWorld.setGameRule(GameRule.DO_MOB_LOOT, false);
+            newWorld.setGameRule(GameRule.DO_TILE_DROPS, false);
+            newWorld.setGameRule(GameRule.DO_TRADER_SPAWNING, false);
+            newWorld.setGameRule(GameRule.NATURAL_REGENERATION, true);
             newWorld.setGameRule(GameRule.REDUCED_DEBUG_INFO, true);
             worldConsumer.accept(newWorld);
         });
