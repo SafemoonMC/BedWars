@@ -12,6 +12,7 @@ dependencies {
     compileOnly 'com.mojang:brigadier:1.0.18'
 
     compileOnly 'me.neznamy:tab-api:3.0.1'
+    compileOnly 'me.clip:placeholderapi:2.11.1'
     compileOnly 'com.grinderwolf:slimeworldmanager-api:2.6.2-SNAPSHOT'
 
     compileOnly 'org.spigotmc:Airplane:1.17.1'
