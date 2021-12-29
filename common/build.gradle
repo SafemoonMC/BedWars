@@ -7,7 +7,7 @@ dependencies {
     compileOnly 'redis.clients:jedis:4.0.0'
     compileOnly 'com.github.ben-manes.caffeine:caffeine:3.0.5'
 
-    compileOnly 'org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT'
+    compileOnly 'org.spigotmc:Airplane:1.17.1'
 }
 
 group 'gg.mooncraft.minecraft.bedwars'

@@ -10,7 +10,7 @@ dependencies {
     implementation 'com.github.ben-manes.caffeine:caffeine:3.0.5'
 
     compileOnly 'com.mojang:brigadier:1.0.18'
-    compileOnly 'org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT'
+    compileOnly 'org.spigotmc:Airplane:1.17.1'
 
     compileOnly 'me.clip:placeholderapi:2.10.10'
     compileOnly files('../dependencies/plugins/PartyAndFriends.jar')
