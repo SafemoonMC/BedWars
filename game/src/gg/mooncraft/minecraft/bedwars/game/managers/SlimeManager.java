@@ -5,6 +5,7 @@ import com.google.common.base.Stopwatch;
 import com.grinderwolf.swm.api.world.SlimeWorld;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameRule;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 
@@ -122,6 +123,11 @@ public final class SlimeManager {
                 }
             }
 
+            // Setup game rules
+            newWorld.setFullTime(24000);
+            newWorld.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
+            newWorld.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+            newWorld.setGameRule(GameRule.REDUCED_DEBUG_INFO, true);
             worldConsumer.accept(newWorld);
         });
     }
