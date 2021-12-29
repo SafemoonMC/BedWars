@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -40,5 +41,21 @@ public final class GameMatchPlayer {
             this.player = Bukkit.getPlayer(uniqueId);
         }
         return Optional.ofNullable(this.player);
+    }
+
+    /*
+    Override Methods
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GameMatchPlayer that = (GameMatchPlayer) o;
+        return getUniqueId().equals(that.getUniqueId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getUniqueId());
     }
 }

@@ -13,6 +13,7 @@ import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -25,17 +26,16 @@ public final class GameMatchTeam {
     private final int id;
     private final @NotNull GameTeam gameTeam;
     private final @NotNull List<GameMatchPlayer> matchPlayerList;
-    private final @NotNull Scoreboard scoreboard;
+    private Scoreboard scoreboard;
     private TeamStatus teamStatus;
 
     /*
     Constructor
      */
-    public GameMatchTeam(int id, @NotNull GameTeam gameTeam, @NotNull GameMatch gameMatch) {
+    public GameMatchTeam(int id, @NotNull GameTeam gameTeam) {
         this.id = id;
         this.gameTeam = gameTeam;
         this.matchPlayerList = new LinkedList<>();
-        this.scoreboard = BedWarsPlugin.getInstance().getBoardManager().createScoreboard(gameMatch, this);
 
         this.teamStatus = TeamStatus.ALIVE;
     }
@@ -43,6 +43,10 @@ public final class GameMatchTeam {
     /*
     Methods
      */
+    void initScoreboard(@NotNull GameMatch gameMatch) {
+        this.scoreboard = BedWarsPlugin.getInstance().getBoardManager().createScoreboard(gameMatch, this);
+    }
+
     public void addPlayer(@NotNull UUID uniqueId) {
         this.matchPlayerList.add(new GameMatchPlayer(uniqueId));
     }
@@ -66,5 +70,21 @@ public final class GameMatchTeam {
     @UnmodifiableView
     public @NotNull List<GameMatchPlayer> getMatchPlayerList() {
         return Collections.unmodifiableList(matchPlayerList);
+    }
+
+    /*
+    Override Methods
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GameMatchTeam that = (GameMatchTeam) o;
+        return getId() == that.getId() && getGameTeam() == that.getGameTeam();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getGameTeam());
     }
 }

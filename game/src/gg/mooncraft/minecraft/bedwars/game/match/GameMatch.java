@@ -9,11 +9,13 @@ import gg.mooncraft.minecraft.bedwars.data.GameMode;
 import gg.mooncraft.minecraft.bedwars.data.GameState;
 import gg.mooncraft.minecraft.bedwars.data.GameTeam;
 import gg.mooncraft.minecraft.bedwars.data.map.BedWarsMap;
+import gg.mooncraft.minecraft.bedwars.data.map.point.TeamMapPoint;
 import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
 import gg.mooncraft.minecraft.bedwars.game.slime.SlimeBukkitPair;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -40,7 +42,13 @@ public final class GameMatch {
         this.gameMode = gameMode;
         this.slimeBukkitPair = slimeBukkitPair;
         getBedWarsMap().ifPresent(bedWarsMap -> {
-            bedWarsMap.getPointsContainer().getTeamPointList().forEach(teamMapPoint -> this.teamList.add(new GameMatchTeam(this.teamList.size(), teamMapPoint.getGameTeam(), this)));
+            bedWarsMap.getPointsContainer().getTeamPointList()
+                    .stream()
+                    .map(TeamMapPoint::getGameTeam)
+                    .sorted((o1, o2) -> o1.getDisplay().compareToIgnoreCase(o2.getDisplay()))
+                    .distinct()
+                    .forEach(gameTeam -> this.teamList.add(new GameMatchTeam(this.teamList.size(), gameTeam)));
+            this.teamList.forEach(gameMatchTeam -> gameMatchTeam.initScoreboard(this));
         });
 
         this.gameState = GameState.LOADING;
@@ -78,5 +86,21 @@ public final class GameMatch {
 
     public @NotNull Optional<BedWarsMap> getBedWarsMap() {
         return BedWarsPlugin.getInstance().getMapManager().getBedWarsMap(this.identifier);
+    }
+
+    /*
+    Override Methods
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GameMatch gameMatch = (GameMatch) o;
+        return getId() == gameMatch.getId() && getIdentifier().equals(gameMatch.getIdentifier()) && getGameMode() == gameMatch.getGameMode();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getIdentifier(), getGameMode());
     }
 }
