@@ -36,8 +36,12 @@ public final class MatchManager {
             }
         }
         return createMatch(gameMode).thenApply(gameMatch -> {
-            this.matchList.add(gameMatch);
+            if (gameMatch == null) {
+                BedWarsPlugin.getInstance().getLogger().warning("No match can be created for " + gameMode.name() + " gamemode.");
+                return null;
+            }
             gameMatch.findTeamFor(playerList);
+            this.matchList.add(gameMatch);
             return gameMatch;
         });
     }
@@ -56,9 +60,9 @@ public final class MatchManager {
     }
 
     public @NotNull Optional<GameMatch> getGameMatch(@NotNull Player player) {
-        return BedWarsPlugin.getInstance().getMatchManager().getMatchList()
+        return this.matchList
                 .stream()
-                .filter(gameMatch -> gameMatch.getTeamList().stream().anyMatch(gameMatchTeam -> gameMatchTeam.hasPlayer(player.getUniqueId())))
+                .filter(gameMatch -> gameMatch.getTeamOf(player).isPresent())
                 .findFirst();
     }
 
