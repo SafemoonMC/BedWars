@@ -30,23 +30,23 @@ public final class BoardManager {
      */
     public BoardManager() {
         // Register %date%
-        TabAPI.getInstance().getPlaceholderManager().registerServerPlaceholder("%date%", -1, () -> {
-            return new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-        });
+        TabAPI.getInstance().getPlaceholderManager().registerServerPlaceholder("%date%", -1, () -> new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
         // Register %server-name%
-        TabAPI.getInstance().getPlaceholderManager().registerServerPlaceholder("%server-name%", -1, () -> {
-            return BedWarsPlugin.getInstance().getServerName();
-        });
+        TabAPI.getInstance().getPlaceholderManager().registerServerPlaceholder("%server-name%", -1, () -> BedWarsPlugin.getInstance().getServerName());
         // Register %plugin-version%
-        TabAPI.getInstance().getPlaceholderManager().registerServerPlaceholder("%plugin-version%", -1, () -> {
-            return BedWarsPlugin.getInstance().getDescription().getVersion();
-        });
+        TabAPI.getInstance().getPlaceholderManager().registerServerPlaceholder("%plugin-version%", -1, () -> BedWarsPlugin.getInstance().getDescription().getVersion());
         // Register %game-status%
         TabAPI.getInstance().getPlaceholderManager().registerPlayerPlaceholder("%game-status%", 50, tabPlayer -> {
             Player player = (Player) tabPlayer.getPlayer();
             Optional<GameMatch> matchOptional = BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player);
-
-            return matchOptional.map(GameMatch::getGameState).map(GameState::getDisplay).orElse("Unknown");
+            if (matchOptional.isEmpty()) return "Unknown";
+            GameMatch gameMatch = matchOptional.get();
+            if (gameMatch.getGameState() == GameState.WAITING) {
+                if (gameMatch.getGameTicker().getGameStartTask().isRunning()) {
+                    return gameMatch.getGameState().getDisplay() + gameMatch.getGameTicker().getGameStartTask().getTimeColor() + gameMatch.getGameTicker().getGameStartTask().getTimeLeft() + "s";
+                }
+            }
+            return gameMatch.getGameState().getDisplay();
         });
         // Register %game-event%
         TabAPI.getInstance().getPlaceholderManager().registerPlayerPlaceholder("%game-event%", 50, tabPlayer -> {

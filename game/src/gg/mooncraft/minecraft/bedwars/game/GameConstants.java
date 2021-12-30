@@ -46,6 +46,7 @@ public final class GameConstants {
 
     public static final @NotNull String MESSAGE_PLAYER_JOIN = "%vault_rankprefix%%vault_suffix%%player_name% &ehas joined (&b%game-players-count%&e/&b%game-players-capacity%&e)!";
     public static final @NotNull String MESSAGE_PLAYER_QUIT = "%vault_rankprefix%%vault_suffix%%player_name% &ehas quit!";
+    public static final @NotNull String MESSAGE_GLOBAL_STARTING = color("&eThe game starts in %time-color%%time-left% %time-unit%!");
     public static final @NotNull String MESSAGE_ACTIONBAR_WAITING = color("&6The game will start once necessary players join");
 
     private static @NotNull String color(@NotNull String content) {

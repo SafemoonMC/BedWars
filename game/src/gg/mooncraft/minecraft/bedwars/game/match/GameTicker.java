@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
 import gg.mooncraft.minecraft.bedwars.game.GameConstants;
+import gg.mooncraft.minecraft.bedwars.game.match.tasks.GameStartTask;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -21,12 +22,16 @@ public final class GameTicker implements Runnable {
     private final @NotNull GameMatch gameMatch;
     private final @NotNull AtomicInteger ticking;
 
+    private final @NotNull GameStartTask gameStartTask;
+
     /*
     Constructor
      */
     public GameTicker(@NotNull GameMatch gameMatch) {
         this.gameMatch = gameMatch;
         this.ticking = new AtomicInteger();
+        this.gameStartTask = new GameStartTask(gameMatch);
+
         BedWarsPlugin.getInstance().getScheduler().asyncRepeating(this, 250, TimeUnit.MILLISECONDS);
     }
 
