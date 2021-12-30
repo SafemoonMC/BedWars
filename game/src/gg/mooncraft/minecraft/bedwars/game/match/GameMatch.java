@@ -6,6 +6,7 @@ import me.neznamy.tab.api.scoreboard.Scoreboard;
 
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.UnmodifiableView;
 
 import gg.mooncraft.minecraft.bedwars.data.GameMode;
 import gg.mooncraft.minecraft.bedwars.data.GameState;
@@ -33,8 +34,9 @@ public final class GameMatch {
     private final @NotNull String identifier;
     private final @NotNull GameMode gameMode;
     private final @NotNull SlimeBukkitPair slimeBukkitPair;
-    private final @NotNull List<GameMatchTeam> teamList = new LinkedList<>();
     private final @NotNull Scoreboard scoreboard;
+
+    private final @NotNull List<GameMatchTeam> teamList = new LinkedList<>();
 
     private GameState gameState;
 
@@ -100,6 +102,11 @@ public final class GameMatch {
 
     public @NotNull Optional<BedWarsMap> getBedWarsMap() {
         return BedWarsPlugin.getInstance().getMapManager().getBedWarsMap(this.identifier);
+    }
+
+    @UnmodifiableView
+    public @NotNull List<Player> getPlayerList() {
+        return slimeBukkitPair.world().getPlayers();
     }
 
     public int getPlayersCount() {

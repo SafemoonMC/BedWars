@@ -85,19 +85,23 @@ public class MatchListeners implements Listener {
 
         // Send join message
         String joinMessage = PlaceholderAPI.setPlaceholders(player, GameConstants.MESSAGE_PLAYER_JOIN);
-        player.sendMessage(joinMessage
+        player.sendMessage(joinMessage);
+        gameMatch.getPlayerList().forEach(streamPlayer -> streamPlayer.sendMessage(joinMessage
                 .replaceAll("%game-players-count%", String.valueOf(gameMatch.getPlayersCount()))
                 .replaceAll("%game-players-capacity%", String.valueOf(gameMatch.getPlayersCapacity()))
-        );
+        ));
     }
 
     @EventHandler
     public void on(@NotNull MatchPlayerQuitEvent e) {
         Player player = e.getPlayer();
+        GameMatch gameMatch = e.getGameMatch();
         GameMatchPlayer gameMatchPlayer = e.getGameMatchPlayer();
         gameMatchPlayer.setStatus(PlayerStatus.SPECTATING);
 
+        // Send quit message
         String quitMessage = PlaceholderAPI.setPlaceholders(player, GameConstants.MESSAGE_PLAYER_QUIT);
         player.sendMessage(quitMessage);
+        gameMatch.getPlayerList().forEach(streamPlayer -> streamPlayer.sendMessage(quitMessage));
     }
 }

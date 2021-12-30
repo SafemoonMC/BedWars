@@ -34,6 +34,7 @@ public class PlayerListeners implements Listener {
                             .ifPresent(gameMatchTeam -> gameMatchTeam.getPlayer(player.getUniqueId())
                                     .ifPresent(gameMatchPlayer -> EventsAPI.callEventSync(new MatchPlayerJoinEvent(player, gameMatch, gameMatchTeam, gameMatchPlayer))));
                 });
+        e.joinMessage(null);
     }
 
     @EventHandler
@@ -45,5 +46,6 @@ public class PlayerListeners implements Listener {
                             .ifPresent(gameMatchTeam -> gameMatchTeam.getPlayer(player.getUniqueId())
                                     .ifPresent(gameMatchPlayer -> EventsAPI.callEventSync(new MatchPlayerQuitEvent(player, gameMatch, gameMatchTeam, gameMatchPlayer))));
                 });
+        e.quitMessage(null);
     }
 }
