@@ -30,15 +30,15 @@ public final class BoardManager {
      */
     public BoardManager() {
         // Register %date%
-        TabAPI.getInstance().getPlaceholderManager().registerServerPlaceholder("%date%", 50, () -> {
+        TabAPI.getInstance().getPlaceholderManager().registerServerPlaceholder("%date%", -1, () -> {
             return new SimpleDateFormat("yyyy-MM-dd").format(new Date());
         });
         // Register %server-name%
-        TabAPI.getInstance().getPlaceholderManager().registerServerPlaceholder("%server-name%", 50, () -> {
+        TabAPI.getInstance().getPlaceholderManager().registerServerPlaceholder("%server-name%", -1, () -> {
             return BedWarsPlugin.getInstance().getServerName();
         });
         // Register %plugin-version%
-        TabAPI.getInstance().getPlaceholderManager().registerServerPlaceholder("%plugin-version%", 50, () -> {
+        TabAPI.getInstance().getPlaceholderManager().registerServerPlaceholder("%plugin-version%", -1, () -> {
             return BedWarsPlugin.getInstance().getDescription().getVersion();
         });
         // Register %game-status%
@@ -48,15 +48,22 @@ public final class BoardManager {
 
             return matchOptional.map(GameMatch::getGameState).map(GameState::getDisplay).orElse("Unknown");
         });
+        // Register %game-event%
+        TabAPI.getInstance().getPlaceholderManager().registerPlayerPlaceholder("%game-event%", 50, tabPlayer -> {
+            Player player = (Player) tabPlayer.getPlayer();
+            Optional<GameMatch> matchOptional = BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player);
+
+            return matchOptional.map(GameMatch::getGameState).map(GameState::getDisplay).orElse("Unknown");
+        });
         // Register %game-mode%
-        TabAPI.getInstance().getPlaceholderManager().registerPlayerPlaceholder("%game-mode%", 50, tabPlayer -> {
+        TabAPI.getInstance().getPlaceholderManager().registerPlayerPlaceholder("%game-mode%", -1, tabPlayer -> {
             Player player = (Player) tabPlayer.getPlayer();
             Optional<GameMatch> matchOptional = BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player);
 
             return matchOptional.map(GameMatch::getGameMode).map(GameMode::name).orElse("Unknown");
         });
         // Register %game-map%
-        TabAPI.getInstance().getPlaceholderManager().registerPlayerPlaceholder("%game-map%", 50, tabPlayer -> {
+        TabAPI.getInstance().getPlaceholderManager().registerPlayerPlaceholder("%game-map%", -1, tabPlayer -> {
             Player player = (Player) tabPlayer.getPlayer();
             Optional<GameMatch> matchOptional = BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player);
 
