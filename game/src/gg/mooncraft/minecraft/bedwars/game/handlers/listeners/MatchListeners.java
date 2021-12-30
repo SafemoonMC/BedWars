@@ -57,7 +57,7 @@ public class MatchListeners implements Listener {
             }
         }
 
-        Bukkit.broadcastMessage(gameMatch.getSlimeBukkitPair().getName() + " match status: " + gameMatch.getGameState().name());
+        Bukkit.broadcastMessage(gameMatch.getDimension().getName() + " match status: " + gameMatch.getGameState().name());
     }
 
     @EventHandler
@@ -70,7 +70,7 @@ public class MatchListeners implements Listener {
         gameMatch.getBedWarsMap()
                 .flatMap(bedWarsMap -> bedWarsMap.getPointsContainer().getGameMapPoint(PointTypes.MAP.MAP_SPAWNPOINT))
                 .ifPresent(gameMapPoint -> {
-                    Location location = gameMatch.getSlimeBukkitPair().getLocation(gameMapPoint.getX(), gameMapPoint.getY(), gameMapPoint.getZ(), gameMapPoint.getYaw(), gameMapPoint.getPitch());
+                    Location location = gameMatch.getDimension().getLocation(gameMapPoint.getX(), gameMapPoint.getY(), gameMapPoint.getZ(), gameMapPoint.getYaw(), gameMapPoint.getPitch());
                     BedWarsPlugin.getInstance().getScheduler().executeSync(() -> player.teleport(location));
                 });
 
@@ -96,8 +96,15 @@ public class MatchListeners implements Listener {
     public void on(@NotNull MatchPlayerQuitEvent e) {
         Player player = e.getPlayer();
         GameMatch gameMatch = e.getGameMatch();
-        GameMatchPlayer gameMatchPlayer = e.getGameMatchPlayer();
-        gameMatchPlayer.setStatus(PlayerStatus.SPECTATING);
+
+        // If the game is still waiting for players, a quit has to free team slot
+        // Else the player must be set as a spectator
+        if (gameMatch.getGameState() != GameState.WAITING) {
+            GameMatchPlayer gameMatchPlayer = e.getGameMatchPlayer();
+            gameMatchPlayer.setStatus(PlayerStatus.SPECTATING);
+        } else {
+            e.getGameMatchTeam().delPlayer(player.getUniqueId());
+        }
 
         // Send quit message
         String quitMessage = PlaceholderAPI.setPlaceholders(player, GameConstants.MESSAGE_PLAYER_QUIT);

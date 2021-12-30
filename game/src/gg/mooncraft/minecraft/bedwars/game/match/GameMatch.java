@@ -33,7 +33,9 @@ public final class GameMatch {
     private final int id;
     private final @NotNull String identifier;
     private final @NotNull GameMode gameMode;
-    private final @NotNull SlimeBukkitPair slimeBukkitPair;
+    private final @NotNull SlimeBukkitPair dimension;
+
+    private final @NotNull GameTicker gameTicker;
     private final @NotNull Scoreboard scoreboard;
 
     private final @NotNull List<GameMatchTeam> teamList = new LinkedList<>();
@@ -43,11 +45,12 @@ public final class GameMatch {
     /*
     Constructor
      */
-    public GameMatch(int id, @NotNull String identifier, @NotNull GameMode gameMode, @NotNull SlimeBukkitPair slimeBukkitPair) {
+    public GameMatch(int id, @NotNull String identifier, @NotNull GameMode gameMode, @NotNull SlimeBukkitPair dimension) {
         this.id = id;
         this.identifier = identifier;
         this.gameMode = gameMode;
-        this.slimeBukkitPair = slimeBukkitPair;
+        this.dimension = dimension;
+        this.gameTicker = new GameTicker(this);
         this.scoreboard = BedWarsPlugin.getInstance().getBoardManager().createScoreboard(this);
 
         getBedWarsMap().ifPresent(bedWarsMap -> {
@@ -106,7 +109,7 @@ public final class GameMatch {
 
     @UnmodifiableView
     public @NotNull List<Player> getPlayerList() {
-        return slimeBukkitPair.world().getPlayers();
+        return dimension.world().getPlayers();
     }
 
     public int getPlayersCount() {

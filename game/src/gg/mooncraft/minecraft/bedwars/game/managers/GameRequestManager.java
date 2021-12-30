@@ -29,7 +29,7 @@ public final class GameRequestManager {
                             gameRequest.getPlayerList().forEach(uuid -> {
                                 Player player = Bukkit.getPlayer(uuid);
                                 if (player == null) return;
-                                Location location = gameMatch.getSlimeBukkitPair().getLocation(gameMapPoint.getX(), gameMapPoint.getY(), gameMapPoint.getZ(), gameMapPoint.getYaw(), gameMapPoint.getPitch());
+                                Location location = gameMatch.getDimension().getLocation(gameMapPoint.getX(), gameMapPoint.getY(), gameMapPoint.getZ(), gameMapPoint.getYaw(), gameMapPoint.getPitch());
                                 BedWarsPlugin.getInstance().getScheduler().executeSync(() -> player.teleport(location));
                             })
                     );
