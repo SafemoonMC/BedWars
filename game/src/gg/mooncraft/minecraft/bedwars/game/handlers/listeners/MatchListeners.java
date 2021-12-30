@@ -90,6 +90,13 @@ public class MatchListeners implements Listener {
                 .replaceAll("%game-players-count%", String.valueOf(gameMatch.getPlayersCount()))
                 .replaceAll("%game-players-capacity%", String.valueOf(gameMatch.getPlayersCapacity()))
         ));
+
+        // Try to update GameStarTask if necessary
+        if (gameMatch.getGameState() == GameState.WAITING) {
+            if (gameMatch.getPlayersCount() == gameMatch.getPlayersCapacity()) {
+                gameMatch.getGameTicker().getGameStartTask().play();
+            }
+        }
     }
 
     @EventHandler
@@ -110,5 +117,10 @@ public class MatchListeners implements Listener {
         String quitMessage = PlaceholderAPI.setPlaceholders(player, GameConstants.MESSAGE_PLAYER_QUIT);
         player.sendMessage(quitMessage);
         gameMatch.getPlayerList().forEach(streamPlayer -> streamPlayer.sendMessage(quitMessage));
+
+        // Try to update GameStarTask if necessary
+        if (gameMatch.getGameState() == GameState.WAITING) {
+            gameMatch.getGameTicker().getGameStartTask().stop();
+        }
     }
 }

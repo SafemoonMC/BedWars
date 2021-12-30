@@ -14,6 +14,7 @@ import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 
 import gg.mooncraft.minecraft.bedwars.data.GameMode;
+import gg.mooncraft.minecraft.bedwars.data.GameState;
 import gg.mooncraft.minecraft.bedwars.data.GameTeam;
 import gg.mooncraft.minecraft.bedwars.data.MapDAO;
 import gg.mooncraft.minecraft.bedwars.data.map.MapPointsContainer;
@@ -37,6 +38,23 @@ public final class Commands {
     public static void loadAll() {
         LiteralCommand<?> command = LiteralCommandBuilder
                 .name("bedwars").aliases("bw").permission(new Permission("bedwars.admin", PermissionDefault.OP))
+                .then(LiteralCommandBuilder
+                        .<Player>name("start")
+                        .executes(player -> {
+                            BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player).ifPresentOrElse(gameMatch -> {
+                                if (gameMatch.getGameState() == GameState.WAITING) {
+                                    if (!gameMatch.getGameTicker().getGameStartTask().isRunning()) {
+                                        gameMatch.getGameTicker().getGameStartTask().play();
+                                        player.sendMessage("The GameStartTask has been started!");
+                                    } else {
+                                        player.sendMessage("The GameStartTask is already playing!");
+                                    }
+                                } else {
+                                    player.sendMessage("This game has already been started!");
+                                }
+                            }, () -> player.sendMessage("You're not in a game match."));
+                        })
+                )
                 .then(LiteralCommandBuilder.name("create")
                         .then(RequiredCommandBuilder
                                 .<Player, String>name("map-name", StringArgumentType.word())
