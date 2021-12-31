@@ -7,17 +7,18 @@ import org.jetbrains.annotations.NotNull;
 
 @Getter
 @AllArgsConstructor
-public enum GameEvents {
+public enum GameEvent {
 
     DIAMOND("Diamond", 3),
     EMERALD("Emerald", 3),
     BED_DESTRUCTION("Bed Destruction", 1),
-    SUDDEN_DEATH("Sudden Death", 1);
+    SUDDEN_DEATH("Sudden Death", 1),
+    TIE("Tie", 1);
 
     /*
     Fields
      */
     private final @NotNull String display;
-    private final int count;
+    private final int minutes;
 
 }

@@ -1,8 +1,14 @@
 package gg.mooncraft.minecraft.bedwars.game.managers;
 
 import me.neznamy.tab.api.TabAPI;
+import me.neznamy.tab.api.TabPlayer;
+import me.neznamy.tab.api.placeholder.Placeholder;
 import me.neznamy.tab.api.scoreboard.Scoreboard;
+import me.neznamy.tab.shared.features.PlaceholderManagerImpl;
+import me.neznamy.tab.shared.placeholders.PlayerPlaceholderImpl;
+import me.neznamy.tab.shared.placeholders.ServerPlaceholderImpl;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -13,9 +19,11 @@ import gg.mooncraft.minecraft.bedwars.data.map.BedWarsMap;
 import gg.mooncraft.minecraft.bedwars.data.map.MapInfo;
 import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
 import gg.mooncraft.minecraft.bedwars.game.GameConstants;
+import gg.mooncraft.minecraft.bedwars.game.match.EventSystem;
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatch;
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatchTeam;
 import gg.mooncraft.minecraft.bedwars.game.match.TeamStatus;
+import gg.mooncraft.minecraft.bedwars.game.utilities.DisplayUtilities;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,6 +32,11 @@ import java.util.List;
 import java.util.Optional;
 
 public final class BoardManager {
+
+    /*
+    Fields
+     */
+    private final @NotNull List<String> updatablePlaceholderList = new ArrayList<>();
 
     /*
     Constructor
@@ -36,24 +49,21 @@ public final class BoardManager {
         // Register %plugin-version%
         TabAPI.getInstance().getPlaceholderManager().registerServerPlaceholder("%plugin-version%", -1, () -> BedWarsPlugin.getInstance().getDescription().getVersion());
         // Register %game-status%
-        TabAPI.getInstance().getPlaceholderManager().registerPlayerPlaceholder("%game-status%", 50, tabPlayer -> {
+        TabAPI.getInstance().getPlaceholderManager().registerPlayerPlaceholder("%game-status%", -1, tabPlayer -> {
             Player player = (Player) tabPlayer.getPlayer();
             Optional<GameMatch> matchOptional = BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player);
             if (matchOptional.isEmpty()) return "Unknown";
             GameMatch gameMatch = matchOptional.get();
-            if (gameMatch.getGameState() == GameState.WAITING) {
-                if (gameMatch.getGameTicker().getGameStartTask().isRunning()) {
-                    return gameMatch.getGameState().getDisplay() + gameMatch.getGameTicker().getGameStartTask().getTimeColor() + gameMatch.getGameTicker().getGameStartTask().getTimeLeft() + "s";
-                }
+            if (gameMatch.getGameState() == GameState.STARTING) {
+                return gameMatch.getGameState().getDisplay() + gameMatch.getGameTicker().getGameStartTask().getTimeColor() + gameMatch.getGameTicker().getGameStartTask().getTimeLeft() + "s";
             }
             return gameMatch.getGameState().getDisplay();
         });
         // Register %game-event%
-        TabAPI.getInstance().getPlaceholderManager().registerPlayerPlaceholder("%game-event%", 50, tabPlayer -> {
+        TabAPI.getInstance().getPlaceholderManager().registerPlayerPlaceholder("%game-event%", -1, tabPlayer -> {
             Player player = (Player) tabPlayer.getPlayer();
             Optional<GameMatch> matchOptional = BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player);
-
-            return matchOptional.map(GameMatch::getGameState).map(GameState::getDisplay).orElse("Unknown");
+            return matchOptional.map(GameMatch::getEventSystem).flatMap(EventSystem::getCurrentEvent).map(gameMatchEvent -> ChatColor.WHITE + gameMatchEvent.getGameEvent().getDisplay() + " in " + ChatColor.GREEN + DisplayUtilities.getDisplay(gameMatchEvent.getTimeLeft())).orElse("Unknown");
         });
         // Register %game-mode%
         TabAPI.getInstance().getPlaceholderManager().registerPlayerPlaceholder("%game-mode%", -1, tabPlayer -> {
@@ -70,29 +80,35 @@ public final class BoardManager {
             return matchOptional.flatMap(GameMatch::getBedWarsMap).map(BedWarsMap::getInformation).map(MapInfo::getDisplay).orElse("Unknown");
         });
         // Register %game-players-count%
-        TabAPI.getInstance().getPlaceholderManager().registerPlayerPlaceholder("%game-players-count%", 50, tabPlayer -> {
+        TabAPI.getInstance().getPlaceholderManager().registerPlayerPlaceholder("%game-players-count%", -1, tabPlayer -> {
             Player player = (Player) tabPlayer.getPlayer();
             Optional<GameMatch> matchOptional = BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player);
 
             return matchOptional.map(GameMatch::getPlayersCount).map(String::valueOf).orElse("0");
         });
         // Register %game-players-capacity%
-        TabAPI.getInstance().getPlaceholderManager().registerPlayerPlaceholder("%game-players-capacity%", 50, tabPlayer -> {
+        TabAPI.getInstance().getPlaceholderManager().registerPlayerPlaceholder("%game-players-capacity%", -1, tabPlayer -> {
             Player player = (Player) tabPlayer.getPlayer();
             Optional<GameMatch> matchOptional = BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player);
 
             return matchOptional.map(GameMatch::getPlayersCapacity).map(String::valueOf).orElse("0");
         });
-
         // Register %game-team-status-[color]%
         for (GameTeam gameTeam : GameTeam.values()) {
-            TabAPI.getInstance().getPlaceholderManager().registerPlayerPlaceholder("%game-team-status-" + gameTeam.name() + "%", 50, tabPlayer -> {
+            TabAPI.getInstance().getPlaceholderManager().registerPlayerPlaceholder("%game-team-status-" + gameTeam.name() + "%", -1, tabPlayer -> {
                 Player player = (Player) tabPlayer.getPlayer();
                 Optional<GameMatch> matchOptional = BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player);
 
                 return matchOptional.flatMap(gameMatch -> gameMatch.getTeam(gameTeam)).map(GameMatchTeam::getTeamStatus).map(TeamStatus::getSymbol).orElse("-");
             });
+
+            updatablePlaceholderList.add("%game-team-status-" + gameTeam.name() + "%");
         }
+
+        updatablePlaceholderList.add("%game-status%");
+        updatablePlaceholderList.add("%game-event%");
+        updatablePlaceholderList.add("%game-players-count%");
+        updatablePlaceholderList.add("%game-players-capacity%");
     }
 
     /*
@@ -122,5 +138,25 @@ public final class BoardManager {
         }
 
         return TabAPI.getInstance().getScoreboardManager().createScoreboard(String.format("bw-map-%s-%s", gameMatch.getId(), gameMatchTeam.getGameTeam().name()), GameConstants.SCOREBOARD_TITLE, lines);
+    }
+
+    public void updateScoreboard(@NotNull TabPlayer tabPlayer) {
+        PlaceholderManagerImpl placeholderManager = (PlaceholderManagerImpl) TabAPI.getInstance().getPlaceholderManager();
+
+        for (Placeholder placeholder : placeholderManager.getUsedPlaceholders()) {
+            if (!this.updatablePlaceholderList.contains(placeholder.getIdentifier())) continue;
+
+            boolean updated = false;
+            if (placeholder instanceof ServerPlaceholderImpl serverPlaceholder) {
+                updated = serverPlaceholder.update();
+            }
+            if (placeholder instanceof PlayerPlaceholderImpl playerPlaceholder) {
+                updated = playerPlaceholder.update(tabPlayer);
+            }
+
+            if (updated) {
+                placeholderManager.getPlaceholderUsage().get(placeholder.getIdentifier()).forEach(tabFeature -> tabFeature.refresh(tabPlayer, true));
+            }
+        }
     }
 }

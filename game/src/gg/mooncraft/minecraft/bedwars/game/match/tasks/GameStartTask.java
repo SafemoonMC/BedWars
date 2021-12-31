@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import me.eduardwayland.mooncraft.waylander.scheduler.SchedulerTask;
+import me.neznamy.tab.api.TabAPI;
+import me.neznamy.tab.api.TabPlayer;
 
 import net.kyori.adventure.text.Component;
 
@@ -11,6 +13,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.jetbrains.annotations.NotNull;
 
+import gg.mooncraft.minecraft.bedwars.data.GameState;
 import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
 import gg.mooncraft.minecraft.bedwars.game.GameConstants;
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatch;
@@ -47,12 +50,14 @@ public final class GameStartTask implements Runnable {
      */
     public void play() {
         if (this.schedulerTask != null) return;
+        this.gameMatch.updateState(GameState.STARTING);
         this.count = new AtomicInteger(GAME_COUNTDOWN_START);
         this.schedulerTask = BedWarsPlugin.getInstance().getScheduler().asyncRepeating(this, 1, TimeUnit.SECONDS);
     }
 
     public void stop() {
         if (this.schedulerTask == null) return;
+        this.gameMatch.updateState(GameState.WAITING);
         this.schedulerTask.cancel();
         this.schedulerTask = null;
     }
@@ -84,6 +89,11 @@ public final class GameStartTask implements Runnable {
      */
     @Override
     public void run() {
+        if (getTimeLeft() == 0) {
+            stop();
+            gameMatch.updateState(GameState.PLAYING);
+            return;
+        }
         if (getTimeLeft() == GAME_COUNTDOWN_START || getTimeLeft() == 10 || getTimeLeft() <= 5) {
             gameMatch.getPlayerList().forEach(player -> {
                 player.sendMessage(Component.text(GameConstants.MESSAGE_GLOBAL_STARTING
@@ -94,6 +104,12 @@ public final class GameStartTask implements Runnable {
                 player.playSound(player.getLocation(), Sound.BLOCK_LEVER_CLICK, 2, 2);
             });
         }
+
+        // Update scoreboard
+        gameMatch.getPlayerList().forEach(player -> {
+            TabPlayer tabPlayer = TabAPI.getInstance().getPlayer(player.getUniqueId());
+            BedWarsPlugin.getInstance().getBoardManager().updateScoreboard(tabPlayer);
+        });
 
         this.count.getAndDecrement();
     }

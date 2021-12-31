@@ -41,6 +41,7 @@ public final class GameMatch {
     private final @NotNull List<GameMatchTeam> teamList = new LinkedList<>();
 
     private GameState gameState;
+    private EventSystem eventSystem;
 
     /*
     Constructor
@@ -64,6 +65,7 @@ public final class GameMatch {
         });
 
         updateState(GameState.WAITING);
+        this.eventSystem = new EventSystem(this);
     }
 
     /*

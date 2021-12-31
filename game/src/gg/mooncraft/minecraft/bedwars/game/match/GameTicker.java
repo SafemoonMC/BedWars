@@ -2,6 +2,9 @@ package gg.mooncraft.minecraft.bedwars.game.match;
 
 import lombok.Getter;
 
+import me.neznamy.tab.api.TabAPI;
+import me.neznamy.tab.api.TabPlayer;
+
 import net.kyori.adventure.text.Component;
 
 import org.jetbrains.annotations.NotNull;
@@ -46,11 +49,16 @@ public final class GameTicker implements Runnable {
         switch (gameMatch.getGameState()) {
             case WAITING -> {
                 if (tick % 5 == 0) {
-                    gameMatch.getPlayerList().forEach(player -> player.sendActionBar(Component.text(GameConstants.MESSAGE_ACTIONBAR_WAITING + " " + tick)));
+                    gameMatch.getPlayerList().forEach(player -> player.sendActionBar(Component.text(GameConstants.MESSAGE_ACTIONBAR_WAITING)));
                 }
             }
             case PLAYING -> {
-
+                if (tick % 2 == 0) {
+                    gameMatch.getPlayerList().forEach(player -> {
+                        TabPlayer tabPlayer = TabAPI.getInstance().getPlayer(player.getUniqueId());
+                        BedWarsPlugin.getInstance().getBoardManager().updateScoreboard(tabPlayer);
+                    });
+                }
             }
         }
     }
