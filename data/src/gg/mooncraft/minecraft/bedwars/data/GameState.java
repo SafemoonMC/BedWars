@@ -11,6 +11,7 @@ public enum GameState {
 
     LOADING("Loading..."),
     WAITING("Waiting for players..."),
+    STARTING("Starting in "),
     PLAYING("Playing..."),
     ENDING("Ending..."),
     UNLOADING("Unloading...");
