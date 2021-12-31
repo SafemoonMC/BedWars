@@ -35,7 +35,7 @@ public final class GameTicker implements Runnable {
         this.ticking = new AtomicInteger();
         this.gameStartTask = new GameStartTask(gameMatch);
 
-        BedWarsPlugin.getInstance().getScheduler().asyncRepeating(this, 250, TimeUnit.MILLISECONDS);
+        BedWarsPlugin.getInstance().getScheduler().asyncRepeating(this, 50, TimeUnit.MILLISECONDS);
     }
 
     /*
@@ -53,6 +53,7 @@ public final class GameTicker implements Runnable {
                 }
             }
             case PLAYING -> {
+                gameMatch.getGeneratorSystem().tick();
                 if (tick % 2 == 0) {
                     gameMatch.getPlayerList().forEach(player -> {
                         TabPlayer tabPlayer = TabAPI.getInstance().getPlayer(player.getUniqueId());
