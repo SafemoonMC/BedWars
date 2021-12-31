@@ -19,6 +19,6 @@ public enum GameEvent {
     Fields
      */
     private final @NotNull String display;
-    private final int minutes;
+    private final int maximumTier;
 
 }
