@@ -40,6 +40,7 @@ public class MatchListeners implements Listener {
 
         switch (gameMatch.getGameState()) {
             case PLAYING -> {
+                gameMatch.getEventSystem().play();
                 gameMatch.getScoreboard().unregister();
 
                 for (GameMatchTeam gameMatchTeam : gameMatch.getTeamList()) {
