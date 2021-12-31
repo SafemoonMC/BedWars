@@ -22,9 +22,11 @@ public final class EntityUtilities {
         armorStand.addEquipmentLock(EquipmentSlot.FEET, ArmorStand.LockType.ADDING_OR_CHANGING);
 
         armorStand.setSmall(true);
+        armorStand.setArms(false);
+        armorStand.setBasePlate(false);
+        armorStand.setGravity(false);
         armorStand.setInvisible(true);
         armorStand.setInvulnerable(true);
-
         return armorStand;
     }
 }
