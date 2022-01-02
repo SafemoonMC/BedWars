@@ -12,16 +12,13 @@ import gg.mooncraft.minecraft.bedwars.game.match.tasks.GeneratorTask;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
-public final class GeneratorSystem {
+public final class GeneratorSystem implements TickSystem {
 
     /*
     Fields
      */
     private final @NotNull GameMatch gameMatch;
-    private final @NotNull AtomicInteger diamondTier;
-    private final @NotNull AtomicInteger emeraldTier;
     private final @NotNull List<GeneratorTask> taskList;
 
     /*
@@ -29,43 +26,40 @@ public final class GeneratorSystem {
      */
     public GeneratorSystem(@NotNull GameMatch gameMatch) {
         this.gameMatch = gameMatch;
-        this.diamondTier = new AtomicInteger(1);
-        this.emeraldTier = new AtomicInteger(1);
         this.taskList = new ArrayList<>();
-        gameMatch.getBedWarsMap().map(BedWarsMap::getPointsContainer).map(MapPointsContainer::getMapPointList).ifPresent(list -> {
-            list.forEach(gameMapPoint -> {
-                GeneratorType generatorType;
-                if (gameMapPoint.getType() == PointTypes.MAP.MAP_GENERATOR_DIAMOND) {
-                    generatorType = GeneratorType.DIAMOND;
-                } else if (gameMapPoint.getType() == PointTypes.MAP.MAP_GENERATOR_EMERALD) {
-                    generatorType = GeneratorType.EMERALD;
-                } else {
-                    return;
-                }
+        gameMatch.getBedWarsMap()
+                .map(BedWarsMap::getPointsContainer)
+                .map(MapPointsContainer::getMapPointList)
+                .ifPresent(list -> {
+                    list.stream()
+                            .filter(gameMapPoint -> gameMapPoint.getGameMode() == gameMatch.getGameMode())
+                            .forEach(gameMapPoint -> {
+                                GeneratorType generatorType;
+                                if (gameMapPoint.getType() == PointTypes.MAP.MAP_GENERATOR_DIAMOND) {
+                                    generatorType = GeneratorType.DIAMOND;
+                                } else if (gameMapPoint.getType() == PointTypes.MAP.MAP_GENERATOR_EMERALD) {
+                                    generatorType = GeneratorType.EMERALD;
+                                } else {
+                                    return;
+                                }
 
-                GeneratorTask generatorTask = new GeneratorTask(gameMatch, gameMapPoint, generatorType);
-                this.taskList.add(generatorTask);
-            });
-        });
+                                GeneratorTask generatorTask = new GeneratorTask(gameMatch, gameMapPoint, generatorType);
+                                this.taskList.add(generatorTask);
+                            });
+                });
+    }
+
+    /*
+    Override Methods
+     */
+    @Override
+    public void tick() {
+        this.taskList.forEach(GeneratorTask::run);
     }
 
     /*
     Methods
      */
-    public void tick() {
-        this.taskList.forEach(GeneratorTask::run);
-    }
-
-    public void updateDiamondTier() {
-        if (this.diamondTier.get() == GameEvent.DIAMOND.getMaximumTier()) return;
-        this.diamondTier.incrementAndGet();
-    }
-
-    public void updateEmeraldTier() {
-        if (this.emeraldTier.get() == GameEvent.EMERALD.getMaximumTier()) return;
-        this.emeraldTier.incrementAndGet();
-    }
-
     public int getDiamondTier() {
         long count = this.gameMatch.getEventSystem().getEventList()
                 .stream()
