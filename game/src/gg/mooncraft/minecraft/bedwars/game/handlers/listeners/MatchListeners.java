@@ -23,6 +23,7 @@ import gg.mooncraft.minecraft.bedwars.game.match.GameMatchPlayer;
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatchTeam;
 import gg.mooncraft.minecraft.bedwars.game.match.PlayerStatus;
 import gg.mooncraft.minecraft.bedwars.game.match.tasks.GameMatchEvent;
+import gg.mooncraft.minecraft.bedwars.game.match.tasks.GeneratorTask;
 
 public class MatchListeners implements Listener {
 
@@ -67,6 +68,7 @@ public class MatchListeners implements Listener {
     public void on(@NotNull MatchUpdateGameEvent e) {
         GameMatch gameMatch = e.getGameMatch();
         GameMatchEvent gameMatchEvent = e.getGameMatchEvent();
+        gameMatch.getGeneratorSystem().getTaskList().forEach(GeneratorTask::forceUpdateHologram);
         Bukkit.broadcastMessage(gameMatch.getDimension().getName() + " match event: " + gameMatchEvent.getGameEvent().name());
     }
 

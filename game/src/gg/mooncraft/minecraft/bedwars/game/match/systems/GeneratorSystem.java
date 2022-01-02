@@ -1,6 +1,7 @@
 package gg.mooncraft.minecraft.bedwars.game.match.systems;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.UnmodifiableView;
 
 import gg.mooncraft.minecraft.bedwars.data.map.BedWarsMap;
 import gg.mooncraft.minecraft.bedwars.data.map.MapPointsContainer;
@@ -11,6 +12,7 @@ import gg.mooncraft.minecraft.bedwars.game.match.GeneratorType;
 import gg.mooncraft.minecraft.bedwars.game.match.tasks.GeneratorTask;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public final class GeneratorSystem implements TickSystem {
@@ -84,5 +86,10 @@ public final class GeneratorSystem implements TickSystem {
 
     public int getNextEmeraldTier() {
         return getEmeraldTier() + 1;
+    }
+
+    @UnmodifiableView
+    public @NotNull List<GeneratorTask> getTaskList() {
+        return Collections.unmodifiableList(this.taskList);
     }
 }
