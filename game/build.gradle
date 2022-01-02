@@ -12,6 +12,7 @@ dependencies {
     compileOnly 'org.spigotmc:Airplane:1.17.1'
 
     compileOnly 'me.clip:placeholderapi:2.11.1'
+    compileOnly 'com.gmail.filoghost.holographicdisplays:holographicdisplays-api:2.4.9'
     compileOnly 'com.grinderwolf:slimeworldmanager-api:2.6.2-SNAPSHOT'
 
     compileOnly files('../dependencies/plugins/TAB.jar')
