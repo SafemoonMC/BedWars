@@ -41,14 +41,22 @@ public final class GameConstants {
             "&r",
             "&b  play.mooncraft.gg"
     );
-
-    public static final int GAME_GENERATOR_ANIMATION_TICKNESS = 5;
+    public static final @NotNull List<String> GENERATOR_HOLOGRAM_LINES = Arrays.asList(
+            color("&eTier &c%tier%"),
+            color(""),
+            color("%generator-type%"),
+            color(""),
+            color("&eSpawning in &c%time-left% &e%time-unit%")
+    );
 
     public static final @NotNull String MESSAGE_PLAYER_JOIN = "%vault_rankprefix%%vault_suffix%%player_name% &ehas joined (&b%game-players-count%&e/&b%game-players-capacity%&e)!";
     public static final @NotNull String MESSAGE_PLAYER_QUIT = "%vault_rankprefix%%vault_suffix%%player_name% &ehas quit!";
     public static final @NotNull String MESSAGE_GLOBAL_STARTING = color("&eThe game starts in %time-color%%time-left% %time-unit%!");
     public static final @NotNull String MESSAGE_ACTIONBAR_WAITING = color("&6The game will start once necessary players join");
 
+    /*
+    Static Methods
+     */
     private static @NotNull String color(@NotNull String content) {
         return ChatColor.translateAlternateColorCodes('&', content);
     }
