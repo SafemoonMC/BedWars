@@ -18,7 +18,7 @@ public final class GameConstants {
      */
     public static final @NotNull String DEFAULT_WORLD_NAME = "VoidworldStart";
 
-    public static final @NotNull String SCOREBOARD_TITLE = "&6&lBedWars";
+    public static final @NotNull String SCOREBOARD_TITLE = "&b⁂ &6&lBedWars &b⁂";
     public static final @NotNull List<String> SCOREBOARD_LINES_LOBBY = Arrays.asList(
             "&7%date% &8%server-name%",
             "&r",
