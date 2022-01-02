@@ -46,7 +46,6 @@ public final class MatchOptions {
         public final @NotNull OptionEntry<TimeUnit, Integer> generatorEmeraldStartDelay = new OptionEntry<>(TimeUnit.SECONDS, 10);
         public final int[] generatorDiamondDropRates = {30, 23, 12};
         public final int[] generatorEmeraldDropRates = {65, 55, 27};
-        //303:23=65:
     }
 
     /*
