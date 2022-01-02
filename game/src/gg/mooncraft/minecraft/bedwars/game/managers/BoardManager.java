@@ -80,7 +80,7 @@ public final class BoardManager {
             if (matchOptional.isEmpty()) return "Unknown";
             GameMatch gameMatch = matchOptional.get();
             if (gameMatch.getGameState() != GameState.PLAYING) return "Unknown";
-            Optional<GameMatchEvent> matchEventOptional = gameMatch.getEventSystem().getCurrentEvent();
+            Optional<GameMatchEvent> matchEventOptional = gameMatch.getEventSystem().getNextEvent();
             if (matchEventOptional.isEmpty()) return "Unknown";
             GameMatchEvent gameMatchEvent = matchEventOptional.get();
 

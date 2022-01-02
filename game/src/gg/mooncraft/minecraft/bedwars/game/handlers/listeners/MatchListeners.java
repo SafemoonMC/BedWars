@@ -16,11 +16,13 @@ import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
 import gg.mooncraft.minecraft.bedwars.game.GameConstants;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerJoinEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerQuitEvent;
+import gg.mooncraft.minecraft.bedwars.game.events.MatchUpdateGameEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchUpdateStateEvent;
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatch;
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatchPlayer;
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatchTeam;
 import gg.mooncraft.minecraft.bedwars.game.match.PlayerStatus;
+import gg.mooncraft.minecraft.bedwars.game.match.tasks.GameMatchEvent;
 
 public class MatchListeners implements Listener {
 
@@ -59,6 +61,13 @@ public class MatchListeners implements Listener {
         }
 
         Bukkit.broadcastMessage(gameMatch.getDimension().getName() + " match status: " + gameMatch.getGameState().name());
+    }
+
+    @EventHandler
+    public void on(@NotNull MatchUpdateGameEvent e) {
+        GameMatch gameMatch = e.getGameMatch();
+        GameMatchEvent gameMatchEvent = e.getGameMatchEvent();
+        Bukkit.broadcastMessage(gameMatch.getDimension().getName() + " match event: " + gameMatchEvent.getGameEvent().name());
     }
 
     @EventHandler

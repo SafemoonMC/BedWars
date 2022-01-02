@@ -52,6 +52,7 @@ public final class GameTicker extends GameRunnable {
                 }
             }
             case PLAYING -> {
+                gameMatch.getEventSystem().tick();
                 gameMatch.getGeneratorSystem().tick();
                 if (tick % 2 == 0) {
                     gameMatch.getPlayerList().forEach(player -> {

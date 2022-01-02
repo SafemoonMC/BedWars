@@ -5,7 +5,6 @@ import lombok.Getter;
 
 import org.jetbrains.annotations.NotNull;
 
-import gg.mooncraft.minecraft.bedwars.game.match.EventConsumer;
 import gg.mooncraft.minecraft.bedwars.game.match.GameEvent;
 
 import java.time.Duration;
@@ -14,7 +13,7 @@ import java.util.Objects;
 
 @Getter
 @AllArgsConstructor
-public class GameMatchEvent {
+public final class GameMatchEvent {
 
     /*
     Fields
@@ -22,7 +21,6 @@ public class GameMatchEvent {
     private final int id;
     private final @NotNull GameEvent gameEvent;
     private final @NotNull Instant instant;
-    private final @NotNull EventConsumer event;
 
     /*
     Methods
