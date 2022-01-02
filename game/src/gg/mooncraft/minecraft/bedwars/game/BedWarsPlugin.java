@@ -32,6 +32,7 @@ import gg.mooncraft.minecraft.bedwars.game.managers.MatchManager;
 import gg.mooncraft.minecraft.bedwars.game.managers.SetupManager;
 import gg.mooncraft.minecraft.bedwars.game.managers.SlimeManager;
 import gg.mooncraft.minecraft.bedwars.game.messaging.GameRedisMessenger;
+import gg.mooncraft.minecraft.bedwars.game.papi.TeamExtension;
 import gg.mooncraft.minecraft.bedwars.game.slime.AsyncSlimeLoader;
 import gg.mooncraft.minecraft.bedwars.game.slime.AsyncSlimePlugin;
 import gg.mooncraft.minecraft.bedwars.game.utilities.ServerUtilities;
@@ -173,6 +174,12 @@ public class BedWarsPlugin extends ComplexJavaPlugin {
     }
 
     private boolean loadDependencies() {
+        if (!Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            getLogger().warning("Dependency not found: PlaceholderAPI");
+            return false;
+        } else {
+            new TeamExtension().register();
+        }
         if (!Bukkit.getPluginManager().isPluginEnabled("SlimeWorldManager")) {
             getLogger().warning("Dependency not found: SlimeWorldManager");
             return false;
