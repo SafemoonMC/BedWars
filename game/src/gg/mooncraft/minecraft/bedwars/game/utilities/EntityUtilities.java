@@ -6,12 +6,23 @@ import lombok.NoArgsConstructor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Item;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
+
+import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public final class EntityUtilities {
+
+    public static void spawnItemStack(@NotNull Location location, ItemStack itemStack) {
+        BedWarsPlugin.getInstance().getScheduler().executeSync(() -> {
+            Item item = location.getWorld().dropItem(location, itemStack);
+            item.setVelocity(new Vector(0, 0.1, 0));
+        });
+    }
 
     public static @NotNull ArmorStand createGeneratorStand(@NotNull Location location, @NotNull Material headMaterial) {
         ArmorStand armorStand = location.getWorld().spawn(location, ArmorStand.class);
