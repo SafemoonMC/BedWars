@@ -18,6 +18,6 @@ public final class DisplayUtilities {
     public static @NotNull String getDisplay(long seconds) {
         int secs = (int) (seconds % 60);
         int mins = (int) (seconds / 60);
-        return String.format("%02d:%02d", mins, secs);
+        return String.format("%01d:%02d", mins, secs);
     }
 }

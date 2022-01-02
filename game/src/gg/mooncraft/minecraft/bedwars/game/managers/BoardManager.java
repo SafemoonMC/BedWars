@@ -45,7 +45,10 @@ public final class BoardManager {
         // Register %date%
         TabAPI.getInstance().getPlaceholderManager().registerServerPlaceholder("%date%", -1, () -> new SimpleDateFormat("yyyy/MM/dd").format(new Date()));
         // Register %server-name%
-        TabAPI.getInstance().getPlaceholderManager().registerServerPlaceholder("%server-name%", -1, () -> BedWarsPlugin.getInstance().getServerName());
+        TabAPI.getInstance().getPlaceholderManager().registerServerPlaceholder("%server-name%", -1, () -> {
+            String[] args = BedWarsPlugin.getInstance().getServerName().split("-");
+            return args[0].substring(0, 2) + "-" + args[1].substring(0, 2) + "-" + args[2];
+        });
         // Register %plugin-version%
         TabAPI.getInstance().getPlaceholderManager().registerServerPlaceholder("%plugin-version%", -1, () -> BedWarsPlugin.getInstance().getDescription().getVersion());
         // Register %game-map%

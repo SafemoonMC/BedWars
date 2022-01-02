@@ -8,6 +8,7 @@ import me.neznamy.tab.api.TabAPI;
 import me.neznamy.tab.api.TabPlayer;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.title.Title;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -19,6 +20,7 @@ import gg.mooncraft.minecraft.bedwars.game.GameConstants;
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatch;
 import gg.mooncraft.minecraft.bedwars.game.utilities.NumberUtilities;
 
+import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -96,6 +98,7 @@ public final class GameStartTask implements Runnable {
         }
         if (getTimeLeft() == GAME_COUNTDOWN_START || getTimeLeft() == 10 || getTimeLeft() <= 5) {
             gameMatch.getPlayerList().forEach(player -> {
+                player.showTitle(Title.title(Component.text(getTimeColor().toString() + getTimeLeft()), Component.text(""), Title.Times.of(Duration.ofMillis(125), Duration.ofMillis(500), Duration.ofMillis(125))));
                 player.sendMessage(Component.text(GameConstants.MESSAGE_GLOBAL_STARTING
                         .replaceAll("%time-color%", getTimeColor().toString())
                         .replaceAll("%time-left%", String.valueOf(getTimeLeft()))
