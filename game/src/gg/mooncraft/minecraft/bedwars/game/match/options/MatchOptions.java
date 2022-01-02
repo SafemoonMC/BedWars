@@ -21,7 +21,7 @@ public final class MatchOptions {
         private final @NotNull OptionEntry<TimeUnit, Integer> generatorDiamondStartDelay = new OptionEntry<>(TimeUnit.SECONDS, 0);
         private final @NotNull OptionEntry<TimeUnit, Integer> generatorEmeraldStartDelay = new OptionEntry<>(TimeUnit.SECONDS, 10);
         private final int[] generatorDiamondDropRates = {30, 23, 12};
-        private final int[] generatorEmeraldDropRates = {60, 46, 24};
+        private final int[] generatorEmeraldDropRates = {65, 55, 47};
     }
 
     @Getter
@@ -29,7 +29,7 @@ public final class MatchOptions {
         private final @NotNull OptionEntry<TimeUnit, Integer> generatorDiamondStartDelay = new OptionEntry<>(TimeUnit.SECONDS, 0);
         private final @NotNull OptionEntry<TimeUnit, Integer> generatorEmeraldStartDelay = new OptionEntry<>(TimeUnit.SECONDS, 10);
         private final int[] generatorDiamondDropRates = {30, 23, 12};
-        private final int[] generatorEmeraldDropRates = {60, 46, 24};
+        private final int[] generatorEmeraldDropRates = {65, 55, 47};
     }
 
     @Getter
@@ -37,7 +37,7 @@ public final class MatchOptions {
         private final @NotNull OptionEntry<TimeUnit, Integer> generatorDiamondStartDelay = new OptionEntry<>(TimeUnit.SECONDS, 0);
         private final @NotNull OptionEntry<TimeUnit, Integer> generatorEmeraldStartDelay = new OptionEntry<>(TimeUnit.SECONDS, 10);
         private final int[] generatorDiamondDropRates = {30, 23, 12};
-        private final int[] generatorEmeraldDropRates = {60, 46, 24};
+        private final int[] generatorEmeraldDropRates = {65, 55, 47};
     }
 
     @Getter
@@ -45,7 +45,7 @@ public final class MatchOptions {
         public final @NotNull OptionEntry<TimeUnit, Integer> generatorDiamondStartDelay = new OptionEntry<>(TimeUnit.SECONDS, 0);
         public final @NotNull OptionEntry<TimeUnit, Integer> generatorEmeraldStartDelay = new OptionEntry<>(TimeUnit.SECONDS, 10);
         public final int[] generatorDiamondDropRates = {30, 23, 12};
-        public final int[] generatorEmeraldDropRates = {65, 55, 27};
+        public final int[] generatorEmeraldDropRates = {65, 55, 47};
     }
 
     /*
