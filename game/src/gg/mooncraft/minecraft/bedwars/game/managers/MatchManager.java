@@ -43,6 +43,9 @@ public final class MatchManager {
             gameMatch.findTeamFor(playerList);
             this.matchList.add(gameMatch);
             return gameMatch;
+        }).exceptionally(t -> {
+            BedWarsPlugin.getInstance().getLogger().warning("No match can be created for " + gameMode.name() + " gamemode. Exception: " + t.getMessage());
+            return null;
         });
     }
 
