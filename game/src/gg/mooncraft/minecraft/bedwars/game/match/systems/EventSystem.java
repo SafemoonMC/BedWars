@@ -1,6 +1,7 @@
 package gg.mooncraft.minecraft.bedwars.game.match.systems;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.UnmodifiableView;
 
 import gg.mooncraft.minecraft.bedwars.game.match.GameEvent;
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatch;
@@ -8,6 +9,7 @@ import gg.mooncraft.minecraft.bedwars.game.match.tasks.GameMatchEvent;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
@@ -65,7 +67,16 @@ public final class EventSystem {
         }));
     }
 
+    public @NotNull Optional<GameMatchEvent> getEvent(int id) {
+        return this.eventList.stream().filter(gameMatchEvent -> gameMatchEvent.getId() == id).findFirst();
+    }
+
     public @NotNull Optional<GameMatchEvent> getCurrentEvent() {
         return this.eventList.stream().filter(gameMatchEvent -> gameMatchEvent.getTimeLeft() != -1).min(Comparator.comparingLong(GameMatchEvent::getTimeLeft));
+    }
+
+    @UnmodifiableView
+    public @NotNull List<GameMatchEvent> getEventList() {
+        return Collections.unmodifiableList(this.eventList);
     }
 }

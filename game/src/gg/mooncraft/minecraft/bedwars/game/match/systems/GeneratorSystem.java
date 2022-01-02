@@ -67,18 +67,28 @@ public final class GeneratorSystem {
     }
 
     public int getDiamondTier() {
-        return diamondTier.get();
+        long count = this.gameMatch.getEventSystem().getEventList()
+                .stream()
+                .filter(gameMatchEvent -> gameMatchEvent.getTimeLeft() == -1)
+                .filter(gameMatchEvent -> gameMatchEvent.getGameEvent() == GameEvent.DIAMOND)
+                .count();
+        return (int) (count + 1);
     }
 
     public int getNextDiamondTier() {
-        return diamondTier.get() + 1;
+        return getDiamondTier() + 1;
     }
 
     public int getEmeraldTier() {
-        return emeraldTier.get();
+        long count = this.gameMatch.getEventSystem().getEventList()
+                .stream()
+                .filter(gameMatchEvent -> gameMatchEvent.getTimeLeft() == -1)
+                .filter(gameMatchEvent -> gameMatchEvent.getGameEvent() == GameEvent.EMERALD)
+                .count();
+        return (int) (count + 1);
     }
 
     public int getNextEmeraldTier() {
-        return emeraldTier.get() + 1;
+        return getEmeraldTier() + 1;
     }
 }
