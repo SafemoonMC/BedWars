@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.jetbrains.annotations.NotNull;
 
 import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
@@ -22,6 +23,14 @@ public class GameListeners implements Listener {
     /*
     Handlers
      */
+    @EventHandler
+    public void on(@NotNull PlayerArmorStandManipulateEvent e) {
+        Player player = e.getPlayer();
+        BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player).ifPresent(gameMatch -> {
+            e.setCancelled(true);
+        });
+    }
+
     @EventHandler
     public void on(@NotNull CraftItemEvent e) {
         e.setCancelled(true);
