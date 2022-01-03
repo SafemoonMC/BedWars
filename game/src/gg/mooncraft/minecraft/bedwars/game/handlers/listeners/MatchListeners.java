@@ -2,8 +2,10 @@ package gg.mooncraft.minecraft.bedwars.game.handlers.listeners;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.neznamy.tab.api.TabAPI;
+import me.neznamy.tab.api.TabPlayer;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -49,7 +51,13 @@ public class MatchListeners implements Listener {
                 for (GameMatchTeam gameMatchTeam : gameMatch.getTeamList()) {
                     for (GameMatchPlayer gameMatchPlayer : gameMatchTeam.getMatchPlayerList()) {
                         gameMatchPlayer.getPlayer().ifPresent(player -> {
-                            TabAPI.getInstance().getScoreboardManager().showScoreboard(TabAPI.getInstance().getPlayer(player.getUniqueId()), gameMatchTeam.getScoreboard());
+                            TabPlayer tabPlayer = TabAPI.getInstance().getPlayer(player.getUniqueId());
+                            TabAPI.getInstance().getScoreboardManager().showScoreboard(tabPlayer, gameMatchTeam.getScoreboard());
+                            TabAPI.getInstance().getTeamManager().setPrefix(tabPlayer, GameConstants.NAMETAG_FORMAT
+                                    .replaceAll("%color%", gameMatchTeam.getGameTeam().getChatColor().toString())
+                                    .replaceAll("%team%", String.valueOf(gameMatchTeam.getGameTeam().getLetter()))
+                                    .replaceAll("%player%", player.getName())
+                            );
                         });
                     }
                 }
@@ -78,6 +86,11 @@ public class MatchListeners implements Listener {
         GameMatch gameMatch = e.getGameMatch();
         GameMatchTeam gameMatchTeam = e.getGameMatchTeam();
 
+        // Clear chat
+        for (int i = 0; i < 256; i++) {
+            player.sendMessage(ChatColor.RESET + "");
+        }
+
         // Teleport to spawnpoint
         gameMatch.getBedWarsMap()
                 .flatMap(bedWarsMap -> bedWarsMap.getPointsContainer().getGameMapPoint(PointTypes.MAP.MAP_SPAWNPOINT))
@@ -86,22 +99,26 @@ public class MatchListeners implements Listener {
                     BedWarsPlugin.getInstance().getScheduler().executeSync(() -> player.teleport(location));
                 });
 
-        // Show scoreboard
+        // Show scoreboard and nametags
         BedWarsPlugin.getInstance().getScheduler().executeSync(() -> {
+            TabPlayer tabPlayer = TabAPI.getInstance().getPlayer(player.getUniqueId());
             if (gameMatch.getGameState() == GameState.WAITING) {
-                TabAPI.getInstance().getScoreboardManager().showScoreboard(TabAPI.getInstance().getPlayer(player.getUniqueId()), gameMatch.getScoreboard());
+                TabAPI.getInstance().getScoreboardManager().showScoreboard(tabPlayer, gameMatch.getScoreboard());
             } else {
-                TabAPI.getInstance().getScoreboardManager().showScoreboard(TabAPI.getInstance().getPlayer(player.getUniqueId()), gameMatchTeam.getScoreboard());
+                TabAPI.getInstance().getScoreboardManager().showScoreboard(tabPlayer, gameMatchTeam.getScoreboard());
             }
+            // Force update all the scoreboards
+            gameMatch.getPlayerList().stream()
+                    .map(streamPlayer -> TabAPI.getInstance().getPlayer(streamPlayer.getUniqueId()))
+                    .forEach(streamTabPlayer -> BedWarsPlugin.getInstance().getBoardManager().updateScoreboard(streamTabPlayer));
         });
 
         // Send join message
-        String joinMessage = PlaceholderAPI.setPlaceholders(player, GameConstants.MESSAGE_PLAYER_JOIN);
-        player.sendMessage(joinMessage);
-        gameMatch.getPlayerList().forEach(streamPlayer -> streamPlayer.sendMessage(joinMessage
+        String joinMessage = PlaceholderAPI.setPlaceholders(player, GameConstants.MESSAGE_PLAYER_JOIN)
                 .replaceAll("%game-players-count%", String.valueOf(gameMatch.getPlayersCount()))
-                .replaceAll("%game-players-capacity%", String.valueOf(gameMatch.getPlayersCapacity()))
-        ));
+                .replaceAll("%game-players-capacity%", String.valueOf(gameMatch.getPlayersCapacity()));
+        player.sendMessage(joinMessage);
+        gameMatch.getPlayerList().forEach(streamPlayer -> streamPlayer.sendMessage(joinMessage));
 
         // Try to update GameStarTask if necessary
         if (gameMatch.getGameState() == GameState.WAITING) {
@@ -129,7 +146,12 @@ public class MatchListeners implements Listener {
         String quitMessage = PlaceholderAPI.setPlaceholders(player, GameConstants.MESSAGE_PLAYER_QUIT);
         player.sendMessage(quitMessage);
         gameMatch.getPlayerList().forEach(streamPlayer -> streamPlayer.sendMessage(quitMessage));
-
+        // Force update all the scoreboards
+        BedWarsPlugin.getInstance().getScheduler().executeSync(() -> {
+            gameMatch.getPlayerList().stream()
+                    .map(streamPlayer -> TabAPI.getInstance().getPlayer(streamPlayer.getUniqueId()))
+                    .forEach(streamTabPlayer -> BedWarsPlugin.getInstance().getBoardManager().updateScoreboard(streamTabPlayer));
+        });
         // Try to update GameStarTask if necessary
         if (gameMatch.getGameState() == GameState.WAITING) {
             gameMatch.getGameTicker().getGameStartTask().stop();
