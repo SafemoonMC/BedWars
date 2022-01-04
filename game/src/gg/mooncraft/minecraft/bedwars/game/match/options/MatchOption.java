@@ -11,4 +11,6 @@ public interface MatchOption {
     int[] getGeneratorDiamondDropRates();
 
     int[] getGeneratorEmeraldDropRates();
+
+    int getDefaultResourceDropRate();
 }

@@ -17,6 +17,7 @@ import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
 import gg.mooncraft.minecraft.bedwars.game.events.EventsAPI;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchUpdateStateEvent;
 import gg.mooncraft.minecraft.bedwars.game.match.systems.EventSystem;
+import gg.mooncraft.minecraft.bedwars.game.match.systems.FurnaceSystem;
 import gg.mooncraft.minecraft.bedwars.game.match.systems.GeneratorSystem;
 import gg.mooncraft.minecraft.bedwars.game.slime.SlimeBukkitPair;
 
@@ -44,6 +45,7 @@ public final class GameMatch {
 
     private GameState gameState;
     private EventSystem eventSystem;
+    private FurnaceSystem furnaceSystem;
     private GeneratorSystem generatorSystem;
 
     /*
@@ -69,6 +71,7 @@ public final class GameMatch {
 
         updateState(GameState.WAITING);
         this.eventSystem = new EventSystem(this);
+        this.furnaceSystem = new FurnaceSystem(this);
         this.generatorSystem = new GeneratorSystem(this);
     }
 
