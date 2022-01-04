@@ -2,7 +2,6 @@ package gg.mooncraft.minecraft.bedwars.game.handlers.listeners;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.neznamy.tab.api.TabAPI;
-import me.neznamy.tab.api.TabPlayer;
 
 import net.kyori.adventure.text.Component;
 
@@ -32,9 +31,11 @@ import gg.mooncraft.minecraft.bedwars.game.match.GameMatchTeam;
 import gg.mooncraft.minecraft.bedwars.game.match.PlayerStatus;
 import gg.mooncraft.minecraft.bedwars.game.match.tasks.GameMatchEvent;
 import gg.mooncraft.minecraft.bedwars.game.match.tasks.GeneratorTask;
+import gg.mooncraft.minecraft.bedwars.game.utilities.PointAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class MatchListeners implements Listener {
 
@@ -58,29 +59,35 @@ public class MatchListeners implements Listener {
                 gameMatch.getFurnaceSystem().play();
                 gameMatch.getScoreboard().unregister();
 
+                // Send visual elements and teleport players
                 List<TeamMapPoint> teamMapPointList = gameMatch.getBedWarsMap()
                         .map(BedWarsMap::getPointsContainer)
                         .map(mapPointsContainer -> mapPointsContainer.getTeamMapPoint(gameMatch.getGameMode(), PointTypes.TEAM.TEAM_SPAWNPOINT))
                         .orElse(new ArrayList<>());
                 for (GameMatchTeam gameMatchTeam : gameMatch.getTeamList()) {
-                    for (GameMatchPlayer gameMatchPlayer : gameMatchTeam.getMatchPlayerList()) {
+                    Location location = teamMapPointList
+                            .stream()
+                            .filter(point -> point.getGameTeam() == gameMatchTeam.getGameTeam())
+                            .findFirst()
+                            .map(point -> PointAdapter.adapt(gameMatch, point))
+                            .orElse(null);
+                    if (location == null) {
+                        return;
+                    }
+
+                    gameMatchTeam.broadcastAction(gameMatchPlayer -> {
                         gameMatchPlayer.getPlayer().ifPresent(player -> {
-                            TabPlayer tabPlayer = TabAPI.getInstance().getPlayer(player.getUniqueId());
+                            player.teleportAsync(location);
+                            GameConstants.MESSAGE_STARTING_TIP.forEach(line -> player.sendMessage(Component.text(line)));
+                        });
+                        gameMatchPlayer.getTabPlayer().ifPresent(tabPlayer -> {
                             TabAPI.getInstance().getScoreboardManager().showScoreboard(tabPlayer, gameMatchTeam.getScoreboard());
                             TabAPI.getInstance().getTeamManager().setPrefix(tabPlayer, GameConstants.NAMETAG_FORMAT
                                     .replaceAll("%color%", gameMatchTeam.getGameTeam().getChatColor().toString())
                                     .replaceAll("%team%", String.valueOf(gameMatchTeam.getGameTeam().getLetter()))
                             );
-                            teamMapPointList.stream()
-                                    .filter(teamMapPoint -> teamMapPoint.getGameTeam() == gameMatchTeam.getGameTeam())
-                                    .findFirst()
-                                    .ifPresent(mapPoint -> {
-                                        Location location = gameMatch.getDimension().getLocation(mapPoint.getX(), mapPoint.getY(), mapPoint.getZ(), mapPoint.getYaw(), mapPoint.getPitch());
-                                        player.teleportAsync(location);
-                                    });
-                            GameConstants.MESSAGE_STARTING_TIP.forEach(line -> player.sendMessage(Component.text(line)));
                         });
-                    }
+                    });
                 }
             }
             case ENDING -> {
@@ -105,6 +112,7 @@ public class MatchListeners implements Listener {
     public void on(@NotNull MatchPlayerJoinEvent e) {
         Player player = e.getPlayer();
         GameMatch gameMatch = e.getGameMatch();
+        GameMatchPlayer gameMatchPlayer = e.getGameMatchPlayer();
         GameMatchTeam gameMatchTeam = e.getGameMatchTeam();
 
         // Clear chat
@@ -114,23 +122,25 @@ public class MatchListeners implements Listener {
 
         // Teleport to spawnpoint
         gameMatch.getBedWarsMap()
-                .flatMap(bedWarsMap -> bedWarsMap.getPointsContainer().getGameMapPoint(gameMatch.getGameMode(), PointTypes.MAP.MAP_SPAWNPOINT).stream().findFirst())
-                .ifPresent(gameMapPoint -> {
-                    Location location = gameMatch.getDimension().getLocation(gameMapPoint.getX(), gameMapPoint.getY(), gameMapPoint.getZ(), gameMapPoint.getYaw(), gameMapPoint.getPitch());
-                    BedWarsPlugin.getInstance().getScheduler().executeSync(() -> player.teleport(location));
-                });
+                .map(BedWarsMap::getPointsContainer)
+                .flatMap(pointsContainer -> pointsContainer.getGameMapPoint(gameMatch.getGameMode(), PointTypes.MAP.MAP_SPAWNPOINT).stream().findFirst())
+                .map(point -> PointAdapter.adapt(gameMatch, point))
+                .ifPresent(player::teleportAsync);
 
         // Show scoreboard and nametags
         BedWarsPlugin.getInstance().getScheduler().executeSync(() -> {
-            TabPlayer tabPlayer = TabAPI.getInstance().getPlayer(player.getUniqueId());
-            if (gameMatch.getGameState() == GameState.WAITING) {
-                TabAPI.getInstance().getScoreboardManager().showScoreboard(tabPlayer, gameMatch.getScoreboard());
-            } else {
-                TabAPI.getInstance().getScoreboardManager().showScoreboard(tabPlayer, gameMatchTeam.getScoreboard());
-            }
-            // Force update all the scoreboards
-            gameMatch.getPlayerList().stream()
-                    .map(streamPlayer -> TabAPI.getInstance().getPlayer(streamPlayer.getUniqueId()))
+            gameMatchPlayer.getTabPlayer().ifPresent(tabPlayer -> {
+                if (gameMatch.getGameState() == GameState.WAITING) {
+                    TabAPI.getInstance().getScoreboardManager().showScoreboard(tabPlayer, gameMatch.getScoreboard());
+                } else {
+                    TabAPI.getInstance().getScoreboardManager().showScoreboard(tabPlayer, gameMatchTeam.getScoreboard());
+                }
+            });
+            gameMatch.getMatchPlayerList()
+                    .stream()
+                    .map(GameMatchPlayer::getTabPlayer)
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
                     .forEach(streamTabPlayer -> BedWarsPlugin.getInstance().getBoardManager().updateScoreboard(streamTabPlayer));
         });
 
@@ -165,12 +175,17 @@ public class MatchListeners implements Listener {
         // Send quit message
         String quitMessage = PlaceholderAPI.setPlaceholders(player, GameConstants.MESSAGE_PLAYER_QUIT);
         gameMatch.getPlayerList().forEach(streamPlayer -> streamPlayer.sendMessage(quitMessage));
+
         // Force update all the scoreboards
         BedWarsPlugin.getInstance().getScheduler().executeSync(() -> {
-            gameMatch.getPlayerList().stream()
-                    .map(streamPlayer -> TabAPI.getInstance().getPlayer(streamPlayer.getUniqueId()))
+            gameMatch.getMatchPlayerList()
+                    .stream()
+                    .map(GameMatchPlayer::getTabPlayer)
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
                     .forEach(streamTabPlayer -> BedWarsPlugin.getInstance().getBoardManager().updateScoreboard(streamTabPlayer));
         });
+
         // Try to update GameStarTask if necessary
         if (gameMatch.getGameState() == GameState.WAITING) {
             gameMatch.getGameTicker().getGameStartTask().stop();

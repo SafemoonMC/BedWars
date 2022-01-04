@@ -2,6 +2,9 @@ package gg.mooncraft.minecraft.bedwars.game.match;
 
 import lombok.Getter;
 
+import me.neznamy.tab.api.TabAPI;
+import me.neznamy.tab.api.TabPlayer;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -19,6 +22,8 @@ public final class GameMatchPlayer {
      */
     private final @NotNull UUID uniqueId;
     private @Nullable Player player;
+    private @Nullable TabPlayer tabPlayer;
+
     private @NotNull PlayerStatus playerStatus;
 
     /*
@@ -38,9 +43,16 @@ public final class GameMatchPlayer {
 
     public @NotNull Optional<Player> getPlayer() {
         if (this.player == null || !this.player.isOnline()) {
-            this.player = Bukkit.getPlayer(uniqueId);
+            this.player = Bukkit.getPlayer(this.uniqueId);
         }
         return Optional.ofNullable(this.player);
+    }
+
+    public @NotNull Optional<TabPlayer> getTabPlayer() {
+        if (this.tabPlayer == null || !this.tabPlayer.isOnline()) {
+            this.tabPlayer = TabAPI.getInstance().getPlayer(this.uniqueId);
+        }
+        return Optional.ofNullable(this.tabPlayer);
     }
 
     /*

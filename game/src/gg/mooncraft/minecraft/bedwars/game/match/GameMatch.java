@@ -124,6 +124,11 @@ public final class GameMatch {
         return dimension.world().getPlayers();
     }
 
+    @UnmodifiableView
+    public @NotNull List<GameMatchPlayer> getMatchPlayerList() {
+        return this.teamList.stream().map(GameMatchTeam::getMatchPlayerList).flatMap(List::stream).toList();
+    }
+
     public int getPlayersCount() {
         int amount = 0;
         for (GameMatchTeam gameMatchTeam : this.teamList) {

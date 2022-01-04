@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 @Getter
 public final class GameMatchTeam {
@@ -45,6 +46,10 @@ public final class GameMatchTeam {
      */
     void initScoreboard(@NotNull GameMatch gameMatch) {
         this.scoreboard = BedWarsPlugin.getInstance().getBoardManager().createScoreboard(gameMatch, this);
+    }
+
+    public void broadcastAction(Consumer<GameMatchPlayer> consumer) {
+        this.getMatchPlayerList().forEach(consumer);
     }
 
     public void addPlayer(@NotNull UUID uniqueId) {
