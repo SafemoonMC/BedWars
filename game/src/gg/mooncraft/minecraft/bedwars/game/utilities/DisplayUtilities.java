@@ -3,6 +3,8 @@ package gg.mooncraft.minecraft.bedwars.game.utilities;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import net.md_5.bungee.api.ChatColor;
+
 import org.jetbrains.annotations.NotNull;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -19,5 +21,9 @@ public final class DisplayUtilities {
         int secs = (int) (seconds % 60);
         int mins = (int) (seconds / 60);
         return String.format("%01d:%02d", mins, secs);
+    }
+
+    public static @NotNull String getColored(@NotNull String content) {
+        return ChatColor.translateAlternateColorCodes('&', content);
     }
 }

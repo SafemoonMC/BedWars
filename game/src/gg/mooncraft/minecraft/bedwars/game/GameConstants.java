@@ -3,9 +3,9 @@ package gg.mooncraft.minecraft.bedwars.game;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-import net.md_5.bungee.api.ChatColor;
-
 import org.jetbrains.annotations.NotNull;
+
+import gg.mooncraft.minecraft.bedwars.game.utilities.DisplayUtilities;
 
 import java.util.Arrays;
 import java.util.List;
@@ -43,22 +43,15 @@ public final class GameConstants {
             "&b  play.mooncraft.gg"
     );
     public static final @NotNull List<String> GENERATOR_HOLOGRAM_LINES = Arrays.asList(
-            color("&eTier &c%tier%"),
-            color(""),
-            color("%generator-type%"),
-            color(""),
-            color("&eSpawning in &c%time-left% &e%time-unit%")
+            DisplayUtilities.getColored("&eTier &c%tier%"),
+            DisplayUtilities.getColored(""),
+            DisplayUtilities.getColored("%generator-type%"),
+            DisplayUtilities.getColored(""),
+            DisplayUtilities.getColored("&eSpawning in &c%time-left% &e%time-unit%")
     );
 
     public static final @NotNull String MESSAGE_PLAYER_JOIN = "%vault_rankprefix%%vault_suffix%%player_name% &ehas joined (&b%game-players-count%&e/&b%game-players-capacity%&e)!";
     public static final @NotNull String MESSAGE_PLAYER_QUIT = "%vault_rankprefix%%vault_suffix%%player_name% &ehas quit!";
-    public static final @NotNull String MESSAGE_GLOBAL_STARTING = color("&eThe game starts in %time-color%%time-left% %time-unit%!");
-    public static final @NotNull String MESSAGE_ACTIONBAR_WAITING = color("&6The game will start once necessary players join");
-
-    /*
-    Static Methods
-     */
-    private static @NotNull String color(@NotNull String content) {
-        return ChatColor.translateAlternateColorCodes('&', content);
-    }
+    public static final @NotNull String MESSAGE_GLOBAL_STARTING = DisplayUtilities.getColored("&eThe game starts in %time-color%%time-left% %time-unit%!");
+    public static final @NotNull String MESSAGE_ACTIONBAR_WAITING = DisplayUtilities.getColored("&6The game will start once necessary players join");
 }
