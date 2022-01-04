@@ -25,7 +25,6 @@ public final class SetupListeners implements Listener {
     public void on(@NotNull PlayerQuitEvent e) {
         Player player = e.getPlayer();
         BedWarsPlugin.getInstance().getSetupManager().getMapBuilder(player).ifPresent(mapBuilder -> {
-            mapBuilder.cancel();
             BedWarsPlugin.getInstance().getSetupManager().stopSetup(mapBuilder);
         });
     }
