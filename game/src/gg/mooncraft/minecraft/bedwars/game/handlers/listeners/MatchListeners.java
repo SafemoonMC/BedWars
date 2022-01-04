@@ -20,6 +20,7 @@ import gg.mooncraft.minecraft.bedwars.data.map.point.PointTypes;
 import gg.mooncraft.minecraft.bedwars.data.map.point.TeamMapPoint;
 import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
 import gg.mooncraft.minecraft.bedwars.game.GameConstants;
+import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerDeathEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerJoinEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerQuitEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchUpdateGameEvent;
@@ -190,6 +191,29 @@ public class MatchListeners implements Listener {
         if (gameMatch.getGameState() == GameState.WAITING) {
             gameMatch.getGameTicker().getGameStartTask().stop();
         }
+    }
+
+    @EventHandler
+    public void on(@NotNull MatchPlayerDeathEvent e) {
+        Player player = e.getPlayer();
+        GameMatch gameMatch = e.getGameMatch();
+        GameMatchTeam gameMatchTeam = e.getPlayerMatchTeam();
+        List<TeamMapPoint> teamMapPointList = gameMatch.getBedWarsMap()
+                .map(BedWarsMap::getPointsContainer)
+                .map(mapPointsContainer -> mapPointsContainer.getTeamMapPoint(gameMatch.getGameMode(), PointTypes.TEAM.TEAM_SPAWNPOINT))
+                .orElse(new ArrayList<>());
+        Location location = teamMapPointList
+                .stream()
+                .filter(point -> point.getGameTeam() == gameMatchTeam.getGameTeam())
+                .findFirst()
+                .map(point -> PointAdapter.adapt(gameMatch, point))
+                .orElse(null);
+        if (location == null) {
+            return;
+        }
+
+        player.teleportAsync(location.add(0, 5, 0));
+        Bukkit.broadcastMessage(player.getName() + " death: " + e.getReason().name() + " - " + (e.getReason() == MatchPlayerDeathEvent.Reason.PLAYER ? e.getKillerMatchPlayer().getPlayer().map(Player::getName).orElse("test") : " no killer "));
     }
 
     @EventHandler
