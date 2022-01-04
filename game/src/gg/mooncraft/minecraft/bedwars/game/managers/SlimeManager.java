@@ -119,7 +119,7 @@ public final class SlimeManager {
             // Force-load 400 chunks
             for (int x = -10; x < 10; x++) {
                 for (int z = -10; z < 10; z++) {
-                    newWorld.getChunkAt(x, z).load(true);
+                    newWorld.addPluginChunkTicket(x, z, BedWarsPlugin.getInstance());
                 }
             }
 
