@@ -30,4 +30,13 @@ public final class BukkitScheduler extends AsyncScheduler {
     public Executor sync() {
         return syncExecutor;
     }
+
+    @Override
+    public void executeSync(Runnable runnable) {
+        if (Bukkit.isPrimaryThread()) {
+            runnable.run();
+            return;
+        }
+        super.executeSync(runnable);
+    }
 }
