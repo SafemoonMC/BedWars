@@ -25,7 +25,7 @@ public final class GameRequestManager {
                     BedWarsPlugin.getInstance().getLogger().info(String.format("[GameRequest] [Match] Matchmaking [%s] to %s.", playerListJoin, gameMatch.getId()));
 
                     // Send actually online players to the world
-                    gameMatch.getBedWarsMap().flatMap(bedWarsMap -> bedWarsMap.getPointsContainer().getGameMapPoint(PointTypes.MAP.MAP_SPAWNPOINT)).ifPresent(gameMapPoint ->
+                    gameMatch.getBedWarsMap().flatMap(bedWarsMap -> bedWarsMap.getPointsContainer().getGameMapPoint(gameMatch.getGameMode(), PointTypes.MAP.MAP_SPAWNPOINT).stream().findFirst()).ifPresent(gameMapPoint ->
                             gameRequest.getPlayerList().forEach(uuid -> {
                                 Player player = Bukkit.getPlayer(uuid);
                                 if (player == null) return;

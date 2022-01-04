@@ -6,7 +6,9 @@ import me.eduardwayland.mooncraft.waylander.database.entities.EntityChild;
 import me.eduardwayland.mooncraft.waylander.database.entities.EntityParent;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.UnmodifiableView;
 
+import gg.mooncraft.minecraft.bedwars.data.GameMode;
 import gg.mooncraft.minecraft.bedwars.data.MapPointsDAO;
 import gg.mooncraft.minecraft.bedwars.data.map.point.AbstractMapPoint;
 import gg.mooncraft.minecraft.bedwars.data.map.point.GameMapPoint;
@@ -15,7 +17,6 @@ import gg.mooncraft.minecraft.bedwars.data.map.point.TeamMapPoint;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 @Getter
@@ -66,12 +67,14 @@ public final class MapPointsContainer implements EntityParent<MapPointsContainer
         }
     }
 
-    public @NotNull Optional<GameMapPoint> getGameMapPoint(@NotNull PointTypes.MAP map) {
-        return this.mapPointList.stream().filter(gameMapPoint -> gameMapPoint.getType() == map).findFirst();
+    @UnmodifiableView
+    public @NotNull List<GameMapPoint> getGameMapPoint(@NotNull GameMode gameMode, @NotNull PointTypes.MAP map) {
+        return this.mapPointList.stream().filter(gameMapPoint -> gameMapPoint.getGameMode() == gameMode && gameMapPoint.getType() == map).toList();
     }
 
-    public @NotNull Optional<TeamMapPoint> getTeamMapPoint(@NotNull PointTypes.TEAM map) {
-        return this.teamPointList.stream().filter(teamMapPoint -> teamMapPoint.getType() == map).findFirst();
+    @UnmodifiableView
+    public @NotNull List<TeamMapPoint> getTeamMapPoint(@NotNull GameMode gameMode, @NotNull PointTypes.TEAM map) {
+        return this.teamPointList.stream().filter(teamMapPoint -> teamMapPoint.getGameMode() == gameMode && teamMapPoint.getType() == map).toList();
     }
 
     /*

@@ -14,7 +14,9 @@ import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 
 import gg.mooncraft.minecraft.bedwars.data.GameState;
+import gg.mooncraft.minecraft.bedwars.data.map.BedWarsMap;
 import gg.mooncraft.minecraft.bedwars.data.map.point.PointTypes;
+import gg.mooncraft.minecraft.bedwars.data.map.point.TeamMapPoint;
 import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
 import gg.mooncraft.minecraft.bedwars.game.GameConstants;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerJoinEvent;
@@ -28,6 +30,9 @@ import gg.mooncraft.minecraft.bedwars.game.match.GameMatchTeam;
 import gg.mooncraft.minecraft.bedwars.game.match.PlayerStatus;
 import gg.mooncraft.minecraft.bedwars.game.match.tasks.GameMatchEvent;
 import gg.mooncraft.minecraft.bedwars.game.match.tasks.GeneratorTask;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MatchListeners implements Listener {
 
@@ -48,8 +53,13 @@ public class MatchListeners implements Listener {
         switch (gameMatch.getGameState()) {
             case PLAYING -> {
                 gameMatch.getEventSystem().play();
+                gameMatch.getFurnaceSystem().play();
                 gameMatch.getScoreboard().unregister();
 
+                List<TeamMapPoint> teamMapPointList = gameMatch.getBedWarsMap()
+                        .map(BedWarsMap::getPointsContainer)
+                        .map(mapPointsContainer -> mapPointsContainer.getTeamMapPoint(gameMatch.getGameMode(), PointTypes.TEAM.TEAM_SPAWNPOINT))
+                        .orElse(new ArrayList<>());
                 for (GameMatchTeam gameMatchTeam : gameMatch.getTeamList()) {
                     for (GameMatchPlayer gameMatchPlayer : gameMatchTeam.getMatchPlayerList()) {
                         gameMatchPlayer.getPlayer().ifPresent(player -> {
@@ -60,6 +70,13 @@ public class MatchListeners implements Listener {
                                     .replaceAll("%team%", String.valueOf(gameMatchTeam.getGameTeam().getLetter()))
                                     .replaceAll("%player%", player.getName())
                             );
+                            teamMapPointList.stream()
+                                    .filter(teamMapPoint -> teamMapPoint.getGameTeam() == gameMatchTeam.getGameTeam())
+                                    .findFirst()
+                                    .ifPresent(mapPoint -> {
+                                        Location location = gameMatch.getDimension().getLocation(mapPoint.getX(), mapPoint.getY(), mapPoint.getZ(), mapPoint.getYaw(), mapPoint.getPitch());
+                                        player.teleportAsync(location);
+                                    });
                         });
                     }
                 }
@@ -95,7 +112,7 @@ public class MatchListeners implements Listener {
 
         // Teleport to spawnpoint
         gameMatch.getBedWarsMap()
-                .flatMap(bedWarsMap -> bedWarsMap.getPointsContainer().getGameMapPoint(PointTypes.MAP.MAP_SPAWNPOINT))
+                .flatMap(bedWarsMap -> bedWarsMap.getPointsContainer().getGameMapPoint(gameMatch.getGameMode(), PointTypes.MAP.MAP_SPAWNPOINT).stream().findFirst())
                 .ifPresent(gameMapPoint -> {
                     Location location = gameMatch.getDimension().getLocation(gameMapPoint.getX(), gameMapPoint.getY(), gameMapPoint.getZ(), gameMapPoint.getYaw(), gameMapPoint.getPitch());
                     BedWarsPlugin.getInstance().getScheduler().executeSync(() -> player.teleport(location));

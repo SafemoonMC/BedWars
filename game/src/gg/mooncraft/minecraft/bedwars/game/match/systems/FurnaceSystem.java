@@ -25,18 +25,24 @@ public final class FurnaceSystem implements TickSystem {
     public FurnaceSystem(@NotNull GameMatch gameMatch) {
         this.gameMatch = gameMatch;
         this.taskList = new ArrayList<>();
+    }
+
+    /*
+    Methods
+     */
+    public void play() {
         gameMatch.getBedWarsMap()
                 .map(BedWarsMap::getPointsContainer)
                 .map(MapPointsContainer::getTeamPointList)
-                .ifPresent(list -> {
-                    list.stream()
-                            .filter(mapPoint -> mapPoint.getGameMode() == gameMatch.getGameMode())
-                            .filter(mapPoint -> mapPoint.getType() == PointTypes.TEAM.TEAM_GENERATOR)
-                            .forEach(mapPoint -> {
-                                FurnaceTask furnaceTask = new FurnaceTask(gameMatch, mapPoint.getGameTeam(), mapPoint);
-                                this.taskList.add(furnaceTask);
-                            });
-                });
+                .ifPresent(list -> list.stream()
+                        .filter(mapPoint -> mapPoint.getGameMode() == gameMatch.getGameMode())
+                        .filter(mapPoint -> mapPoint.getType() == PointTypes.TEAM.TEAM_GENERATOR)
+                        .forEach(mapPoint -> {
+                            FurnaceTask furnaceTask = new FurnaceTask(gameMatch, mapPoint.getGameTeam(), mapPoint);
+                            this.taskList.add(furnaceTask);
+                        }));
+        // Tick
+        tick();
     }
 
     /*
@@ -46,5 +52,4 @@ public final class FurnaceSystem implements TickSystem {
     public void tick() {
         this.taskList.forEach(FurnaceTask::run);
     }
-
 }
