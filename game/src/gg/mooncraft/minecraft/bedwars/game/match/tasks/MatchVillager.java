@@ -12,7 +12,6 @@ import gg.mooncraft.minecraft.bedwars.data.map.point.AbstractMapPoint;
 import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatch;
 import gg.mooncraft.minecraft.bedwars.game.match.VillagerType;
-import gg.mooncraft.minecraft.bedwars.game.utilities.DisplayUtilities;
 
 @Getter
 public final class MatchVillager {
