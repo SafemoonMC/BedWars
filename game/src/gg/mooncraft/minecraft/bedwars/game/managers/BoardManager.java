@@ -135,7 +135,7 @@ public final class BoardManager {
     Methods
      */
     public @NotNull Scoreboard createScoreboard(@NotNull GameMatch gameMatch) {
-        return TabAPI.getInstance().getScoreboardManager().createScoreboard(String.format("bw-map-%s", gameMatch.getId()), GameConstants.SCOREBOARD_TITLE, GameConstants.SCOREBOARD_LINES_LOBBY);
+        return TabAPI.getInstance().getScoreboardManager().createScoreboard(String.format("bw-map-%s", gameMatch.getUniqueId()), GameConstants.SCOREBOARD_TITLE, GameConstants.SCOREBOARD_LINES_LOBBY);
     }
 
     public @NotNull Scoreboard createScoreboard(@NotNull GameMatch gameMatch, @NotNull GameMatchTeam gameMatchTeam) {
@@ -157,7 +157,7 @@ public final class BoardManager {
             }
         }
 
-        return TabAPI.getInstance().getScoreboardManager().createScoreboard(String.format("bw-map-%s-%s", gameMatch.getId(), gameMatchTeam.getGameTeam().name()), GameConstants.SCOREBOARD_TITLE, lines);
+        return TabAPI.getInstance().getScoreboardManager().createScoreboard(String.format("bw-map-%s-%s", gameMatch.getUniqueId(), gameMatchTeam.getGameTeam().name()), GameConstants.SCOREBOARD_TITLE, lines);
     }
 
     public void updateScoreboard(@NotNull TabPlayer tabPlayer) {

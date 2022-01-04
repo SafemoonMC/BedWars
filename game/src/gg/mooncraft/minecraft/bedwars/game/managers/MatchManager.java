@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public final class MatchManager {
@@ -23,7 +22,6 @@ public final class MatchManager {
     /*
     Fields
      */
-    private final @NotNull AtomicInteger indexCounter = new AtomicInteger();
     private final @NotNull List<GameMatch> matchList = new ArrayList<>();
 
     /*
@@ -57,9 +55,9 @@ public final class MatchManager {
         }
         BedWarsMap bedWarsMap = mapOptional.get();
 
-        int id = indexCounter.getAndIncrement();
-        return BedWarsPlugin.getInstance().getSlimeManager().createTemporaryPairAsync(bedWarsMap.getIdentifier(), String.format("%s-%d", bedWarsMap.getIdentifier(), id))
-                .thenApply(newSlimePair -> new GameMatch(id, bedWarsMap.getIdentifier(), gameMode, newSlimePair));
+        UUID uniqueId = UUID.randomUUID();
+        return BedWarsPlugin.getInstance().getSlimeManager().createTemporaryPairAsync(bedWarsMap.getIdentifier(), String.format("%s-%s", bedWarsMap.getIdentifier(), uniqueId))
+                .thenApply(newSlimePair -> new GameMatch(uniqueId, bedWarsMap.getIdentifier(), gameMode, newSlimePair));
     }
 
     public @NotNull Optional<GameMatch> getGameMatch(@NotNull Player player) {

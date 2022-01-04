@@ -34,7 +34,7 @@ public final class GameMatch {
     /*
     Fields
      */
-    private final int id;
+    private final UUID uniqueId;
     private final @NotNull String identifier;
     private final @NotNull GameMode gameMode;
     private final @NotNull SlimeBukkitPair dimension;
@@ -53,8 +53,8 @@ public final class GameMatch {
     /*
     Constructor
      */
-    public GameMatch(int id, @NotNull String identifier, @NotNull GameMode gameMode, @NotNull SlimeBukkitPair dimension) {
-        this.id = id;
+    public GameMatch(UUID uniqueId, @NotNull String identifier, @NotNull GameMode gameMode, @NotNull SlimeBukkitPair dimension) {
+        this.uniqueId = uniqueId;
         this.identifier = identifier;
         this.gameMode = gameMode;
         this.dimension = dimension;
@@ -149,11 +149,11 @@ public final class GameMatch {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GameMatch gameMatch = (GameMatch) o;
-        return getId() == gameMatch.getId() && getIdentifier().equals(gameMatch.getIdentifier()) && getGameMode() == gameMatch.getGameMode();
+        return getUniqueId() == gameMatch.getUniqueId() && getIdentifier().equals(gameMatch.getIdentifier()) && getGameMode() == gameMatch.getGameMode();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getIdentifier(), getGameMode());
+        return Objects.hash(getUniqueId(), getIdentifier(), getGameMode());
     }
 }

@@ -97,6 +97,7 @@ public class MatchListeners implements Listener {
                 }
             }
         }
+        BedWarsPlugin.getInstance().getGameServerManager().sendGameServerMessage();
 
         Bukkit.broadcastMessage(gameMatch.getDimension().getName() + " match status: " + gameMatch.getGameState().name());
     }

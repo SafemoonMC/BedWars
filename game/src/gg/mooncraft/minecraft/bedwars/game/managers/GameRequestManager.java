@@ -22,7 +22,7 @@ public final class GameRequestManager {
                 .thenAccept(gameMatch -> {
                     // Logging
                     String playerListJoin = gameRequest.getPlayerList().stream().map(UUID::toString).collect(Collectors.joining(", "));
-                    BedWarsPlugin.getInstance().getLogger().info(String.format("[GameRequest] [Match] Matchmaking [%s] to %s.", playerListJoin, gameMatch.getId()));
+                    BedWarsPlugin.getInstance().getLogger().info(String.format("[GameRequest] [Match] Matchmaking [%s] to %s.", playerListJoin, gameMatch.getUniqueId()));
 
                     // Send actually online players to the world
                     gameMatch.getBedWarsMap().flatMap(bedWarsMap -> bedWarsMap.getPointsContainer().getGameMapPoint(gameMatch.getGameMode(), PointTypes.MAP.MAP_SPAWNPOINT).stream().findFirst()).ifPresent(gameMapPoint ->
