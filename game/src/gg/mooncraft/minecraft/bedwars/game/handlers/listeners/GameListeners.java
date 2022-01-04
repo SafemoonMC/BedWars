@@ -26,9 +26,7 @@ public class GameListeners implements Listener {
     @EventHandler
     public void on(@NotNull PlayerArmorStandManipulateEvent e) {
         Player player = e.getPlayer();
-        BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player).ifPresent(gameMatch -> {
-            e.setCancelled(true);
-        });
+        BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player).ifPresent(gameMatch -> e.setCancelled(true));
     }
 
     @EventHandler
