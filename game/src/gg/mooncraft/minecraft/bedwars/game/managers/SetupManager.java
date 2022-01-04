@@ -45,10 +45,9 @@ public final class SetupManager {
             player.setAllowFlight(true);
             player.setGameMode(GameMode.CREATIVE);
         } else {
-            BedWarsPlugin.getInstance().getSlimeManager().createPairAsync(mapName).thenAccept(slimeBukkitPair -> {
-                BedWarsMap bedWarsMap = new BedWarsMap(mapName, new MapInfo(mapName, Timestamp.from(Instant.now())));
-                MapDAO.create(bedWarsMap).thenAccept(newBedWarsMap -> {
-                    MapBuilder mapBuilder = new MapBuilder(player, mapName, newBedWarsMap, slimeBukkitPair);
+            MapDAO.create(new BedWarsMap(mapName, new MapInfo(mapName, Timestamp.from(Instant.now())))).thenAccept(bedWarsMap -> {
+                BedWarsPlugin.getInstance().getSlimeManager().createPairAsync(mapName).thenAccept(slimeBukkitPair -> {
+                    MapBuilder mapBuilder = new MapBuilder(player, mapName, bedWarsMap, slimeBukkitPair);
                     this.mapBuilderList.add(mapBuilder);
 
                     BedWarsPlugin.getInstance().getScheduler().executeSync(() -> {
