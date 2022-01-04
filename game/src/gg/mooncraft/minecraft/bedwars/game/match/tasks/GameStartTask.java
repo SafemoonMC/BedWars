@@ -92,8 +92,10 @@ public final class GameStartTask implements Runnable {
     @Override
     public void run() {
         if (getTimeLeft() == 0) {
-            stop();
             gameMatch.updateState(GameState.PLAYING);
+
+            this.schedulerTask.cancel();
+            this.schedulerTask = null;
             return;
         }
         if (getTimeLeft() == GAME_COUNTDOWN_START || getTimeLeft() == 10 || getTimeLeft() <= 5) {
