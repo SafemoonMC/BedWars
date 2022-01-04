@@ -34,7 +34,7 @@ public final class MatchVillager {
         Location location = gameMatch.getDimension().getLocation(mapPoint.getX(), mapPoint.getY(), mapPoint.getZ(), mapPoint.getYaw(), mapPoint.getPitch());
         BedWarsPlugin.getInstance().getScheduler().executeSync(() -> {
             this.villager = (Villager) location.getWorld().spawnEntity(location, EntityType.VILLAGER);
-            this.villager.setProfession(Villager.Profession.TOOLSMITH);
+            this.villager.setProfession(Villager.Profession.WEAPONSMITH);
             this.villager.setAI(false);
             this.villager.setGravity(false);
             this.villager.setInvulnerable(true);
