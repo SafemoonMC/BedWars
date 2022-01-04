@@ -33,11 +33,9 @@ public final class FurnaceSystem implements TickSystem {
                             .filter(mapPoint -> mapPoint.getGameMode() == gameMatch.getGameMode())
                             .filter(mapPoint -> mapPoint.getType() == PointTypes.TEAM.TEAM_GENERATOR)
                             .forEach(mapPoint -> {
-                                System.out.println("MapPoint: " + mapPoint.getGameTeam().name());
                                 FurnaceTask furnaceTask = new FurnaceTask(gameMatch, mapPoint.getGameTeam(), mapPoint);
                                 this.taskList.add(furnaceTask);
                             });
-                    System.out.println("List A: " + list.size() + " = " + taskList.size());
                 });
     }
 
