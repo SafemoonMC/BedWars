@@ -20,7 +20,7 @@ public final class EntityUtilities {
     public static void spawnItemStack(@NotNull Location location, ItemStack itemStack) {
         BedWarsPlugin.getInstance().getScheduler().executeSync(() -> {
             Item item = location.getWorld().dropItem(location, itemStack);
-            item.setVelocity(new Vector(0, 0.1, 0));
+            item.setVelocity(new Vector(0, 0.15, 0));
         });
     }
 
