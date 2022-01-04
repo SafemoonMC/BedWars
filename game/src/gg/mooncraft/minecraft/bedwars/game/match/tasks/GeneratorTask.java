@@ -20,6 +20,7 @@ import gg.mooncraft.minecraft.bedwars.game.match.options.MatchOptions;
 import gg.mooncraft.minecraft.bedwars.game.match.options.OptionEntry;
 import gg.mooncraft.minecraft.bedwars.game.utilities.DisplayUtilities;
 import gg.mooncraft.minecraft.bedwars.game.utilities.EntityUtilities;
+import gg.mooncraft.minecraft.bedwars.game.utilities.ItemsUtilities;
 
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
@@ -90,7 +91,7 @@ public class GeneratorTask extends GameRunnable {
             if (this.countdown == 0) {
                 this.countdown = type == GeneratorType.DIAMOND ? MatchOptions.getMatchOption(gameMatch.getGameMode()).getGeneratorDiamondDropRates()[gameMatch.getGeneratorSystem().getDiamondTier() - 1] : MatchOptions.getMatchOption(gameMatch.getGameMode()).getGeneratorEmeraldDropRates()[gameMatch.getGeneratorSystem().getEmeraldTier() - 1];
 
-                ItemStack itemStack = new ItemStack(type.getDropMaterial());
+                ItemStack itemStack = ItemsUtilities.createPureItem(type.getDropMaterial());
                 EntityUtilities.spawnItemStack(this.location, itemStack);
             }
             forceUpdateHologram();
