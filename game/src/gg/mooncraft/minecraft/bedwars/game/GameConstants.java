@@ -18,7 +18,7 @@ public final class GameConstants {
      */
     public static final @NotNull String DEFAULT_WORLD_NAME = "VoidworldStart";
 
-    public static final @NotNull String NAMETAG_FORMAT = "%color%%team% &8| %color%%player%";
+    public static final @NotNull String NAMETAG_FORMAT = "%color%%team% &8| %color%";
     public static final @NotNull String SCOREBOARD_TITLE = "&b⁂ &6&lBedWars &b⁂";
     public static final @NotNull List<String> SCOREBOARD_LINES_LOBBY = Arrays.asList(
             "&7%date% &8%server-name%",
@@ -54,4 +54,14 @@ public final class GameConstants {
     public static final @NotNull String MESSAGE_PLAYER_QUIT = "%vault_rankprefix%%vault_suffix%%player_name% &ehas quit!";
     public static final @NotNull String MESSAGE_GLOBAL_STARTING = DisplayUtilities.getColored("&eThe game starts in %time-color%%time-left% %time-unit%!");
     public static final @NotNull String MESSAGE_ACTIONBAR_WAITING = DisplayUtilities.getColored("&6The game will start once necessary players join");
+    public static final @NotNull List<String> MESSAGE_STARTING_TIP = Arrays.asList(
+            DisplayUtilities.getColored("&b&m                                                                             &r"),
+            DisplayUtilities.getColored("                                &3&lBED WARS"),
+            DisplayUtilities.getColored(""),
+            DisplayUtilities.getColored("         &f&lProtect your bed and destroy enemy beds."),
+            DisplayUtilities.getColored("     &f&lUpgrade yourself and your team by collecting"),
+            DisplayUtilities.getColored("                  &f&lminerals from Generators."),
+            DisplayUtilities.getColored(""),
+            DisplayUtilities.getColored("&b&m                                                                             &r")
+    );
 }

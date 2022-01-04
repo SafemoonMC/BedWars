@@ -4,6 +4,8 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import me.neznamy.tab.api.TabAPI;
 import me.neznamy.tab.api.TabPlayer;
 
+import net.kyori.adventure.text.Component;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -68,7 +70,6 @@ public class MatchListeners implements Listener {
                             TabAPI.getInstance().getTeamManager().setPrefix(tabPlayer, GameConstants.NAMETAG_FORMAT
                                     .replaceAll("%color%", gameMatchTeam.getGameTeam().getChatColor().toString())
                                     .replaceAll("%team%", String.valueOf(gameMatchTeam.getGameTeam().getLetter()))
-                                    .replaceAll("%player%", player.getName())
                             );
                             teamMapPointList.stream()
                                     .filter(teamMapPoint -> teamMapPoint.getGameTeam() == gameMatchTeam.getGameTeam())
@@ -77,6 +78,7 @@ public class MatchListeners implements Listener {
                                         Location location = gameMatch.getDimension().getLocation(mapPoint.getX(), mapPoint.getY(), mapPoint.getZ(), mapPoint.getYaw(), mapPoint.getPitch());
                                         player.teleportAsync(location);
                                     });
+                            GameConstants.MESSAGE_STARTING_TIP.forEach(line -> player.sendMessage(Component.text(line)));
                         });
                     }
                 }
@@ -136,7 +138,6 @@ public class MatchListeners implements Listener {
         String joinMessage = PlaceholderAPI.setPlaceholders(player, GameConstants.MESSAGE_PLAYER_JOIN)
                 .replaceAll("%game-players-count%", String.valueOf(gameMatch.getPlayersCount()))
                 .replaceAll("%game-players-capacity%", String.valueOf(gameMatch.getPlayersCapacity()));
-        player.sendMessage(joinMessage);
         gameMatch.getPlayerList().forEach(streamPlayer -> streamPlayer.sendMessage(joinMessage));
 
         // Try to update GameStarTask if necessary
@@ -163,7 +164,6 @@ public class MatchListeners implements Listener {
 
         // Send quit message
         String quitMessage = PlaceholderAPI.setPlaceholders(player, GameConstants.MESSAGE_PLAYER_QUIT);
-        player.sendMessage(quitMessage);
         gameMatch.getPlayerList().forEach(streamPlayer -> streamPlayer.sendMessage(quitMessage));
         // Force update all the scoreboards
         BedWarsPlugin.getInstance().getScheduler().executeSync(() -> {
