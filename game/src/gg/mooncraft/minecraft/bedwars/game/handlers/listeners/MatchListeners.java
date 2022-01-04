@@ -10,6 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 
 import gg.mooncraft.minecraft.bedwars.data.GameState;
@@ -20,6 +21,7 @@ import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerJoinEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerQuitEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchUpdateGameEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchUpdateStateEvent;
+import gg.mooncraft.minecraft.bedwars.game.events.MatchVillagerInteractEvent;
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatch;
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatchPlayer;
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatchTeam;
@@ -156,5 +158,11 @@ public class MatchListeners implements Listener {
         if (gameMatch.getGameState() == GameState.WAITING) {
             gameMatch.getGameTicker().getGameStartTask().stop();
         }
+    }
+
+    @EventHandler
+    public void on(@NotNull MatchVillagerInteractEvent e) {
+        Inventory inventory = Bukkit.createInventory(null, 54, e.getMatchVillager().getVillagerType().getDisplay());
+        e.getPlayer().openInventory(inventory);
     }
 }

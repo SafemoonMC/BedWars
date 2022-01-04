@@ -19,6 +19,7 @@ import gg.mooncraft.minecraft.bedwars.game.events.MatchUpdateStateEvent;
 import gg.mooncraft.minecraft.bedwars.game.match.systems.EventSystem;
 import gg.mooncraft.minecraft.bedwars.game.match.systems.FurnaceSystem;
 import gg.mooncraft.minecraft.bedwars.game.match.systems.GeneratorSystem;
+import gg.mooncraft.minecraft.bedwars.game.match.systems.VillagersSystem;
 import gg.mooncraft.minecraft.bedwars.game.slime.SlimeBukkitPair;
 
 import java.util.LinkedList;
@@ -47,6 +48,7 @@ public final class GameMatch {
     private EventSystem eventSystem;
     private FurnaceSystem furnaceSystem;
     private GeneratorSystem generatorSystem;
+    private VillagersSystem villagersSystem;
 
     /*
     Constructor
@@ -73,6 +75,7 @@ public final class GameMatch {
         this.eventSystem = new EventSystem(this);
         this.furnaceSystem = new FurnaceSystem(this);
         this.generatorSystem = new GeneratorSystem(this);
+        this.villagersSystem = new VillagersSystem(this);
     }
 
     /*
