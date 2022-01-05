@@ -26,8 +26,14 @@ public class MatchPlayerJoinEvent extends Event {
      */
     private final @NotNull Player player;
     private final @NotNull GameMatch gameMatch;
-    private final @NotNull GameMatchTeam gameMatchTeam;
     private final @NotNull GameMatchPlayer gameMatchPlayer;
+
+    /*
+    Methods
+     */
+    public @NotNull GameMatchTeam getGameMatchTeam() {
+        return this.gameMatchPlayer.getParent();
+    }
 
     /*
     Static Methods

@@ -25,9 +25,15 @@ public class MatchVillagerInteractEvent extends Event {
     Fields
      */
     private final @NotNull Player player;
-    private final @NotNull GameMatchTeam gameMatchTeam;
     private final @NotNull GameMatchPlayer gameMatchPlayer;
     private final @NotNull MatchVillager matchVillager;
+
+    /*
+    Methods
+     */
+    public @NotNull GameMatchTeam getGameMatchTeam() {
+        return this.gameMatchPlayer.getParent();
+    }
 
     /*
     Static Methods

@@ -20,6 +20,8 @@ public final class GameMatchPlayer {
     /*
     Fields
      */
+    private final @NotNull GameMatchTeam parent;
+
     private final @NotNull UUID uniqueId;
     private @Nullable Player player;
     private @Nullable TabPlayer tabPlayer;
@@ -29,7 +31,8 @@ public final class GameMatchPlayer {
     /*
     Constructor
      */
-    public GameMatchPlayer(@NotNull UUID uniqueId) {
+    public GameMatchPlayer(@NotNull GameMatchTeam gameMatchTeam, @NotNull UUID uniqueId) {
+        this.parent = gameMatchTeam;
         this.uniqueId = uniqueId;
         this.playerStatus = PlayerStatus.ALIVE;
     }

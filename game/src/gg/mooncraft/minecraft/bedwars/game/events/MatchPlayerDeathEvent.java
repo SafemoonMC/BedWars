@@ -12,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatch;
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatchPlayer;
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatchTeam;
+import gg.mooncraft.minecraft.bedwars.game.match.damage.PlayerDamage;
 
 @Getter
 @AllArgsConstructor
@@ -37,9 +38,7 @@ public class MatchPlayerDeathEvent extends Event {
     private final @NotNull GameMatchTeam playerMatchTeam;
     private final @NotNull GameMatchPlayer playerMatchPlayer;
     private final @NotNull Reason reason;
-    private final @Nullable Player killer;
-    private final @Nullable GameMatchTeam killerMatchTeam;
-    private final @Nullable GameMatchPlayer killerMatchPlayer;
+    private final @Nullable PlayerDamage lastPlayerDamage;
 
     /*
     Static Methods

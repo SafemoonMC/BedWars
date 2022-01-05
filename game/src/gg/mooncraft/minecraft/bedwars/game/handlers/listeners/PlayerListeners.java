@@ -1,16 +1,23 @@
 package gg.mooncraft.minecraft.bedwars.game.handlers.listeners;
 
+import net.kyori.adventure.text.Component;
+
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
 import gg.mooncraft.minecraft.bedwars.game.events.EventsAPI;
@@ -18,6 +25,9 @@ import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerDeathEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerJoinEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerQuitEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchVillagerInteractEvent;
+import gg.mooncraft.minecraft.bedwars.game.match.damage.PlayerDamage;
+
+import java.util.Optional;
 
 public class PlayerListeners implements Listener {
 
@@ -35,11 +45,9 @@ public class PlayerListeners implements Listener {
     public void on(@NotNull PlayerJoinEvent e) {
         Player player = e.getPlayer();
         BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player)
-                .ifPresent(gameMatch -> {
-                    gameMatch.getTeamOf(player)
-                            .ifPresent(gameMatchTeam -> gameMatchTeam.getPlayer(player.getUniqueId())
-                                    .ifPresent(gameMatchPlayer -> EventsAPI.callEventSync(new MatchPlayerJoinEvent(player, gameMatch, gameMatchTeam, gameMatchPlayer))));
-                });
+                .ifPresent(gameMatch -> gameMatch.getDataOf(player)
+                        .ifPresent(gameMatchPlayer -> EventsAPI.callEventSync(new MatchPlayerJoinEvent(player, gameMatch, gameMatchPlayer)))
+                );
         e.joinMessage(null);
     }
 
@@ -47,11 +55,9 @@ public class PlayerListeners implements Listener {
     public void on(@NotNull PlayerQuitEvent e) {
         Player player = e.getPlayer();
         BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player)
-                .ifPresent(gameMatch -> {
-                    gameMatch.getTeamOf(player)
-                            .ifPresent(gameMatchTeam -> gameMatchTeam.getPlayer(player.getUniqueId())
-                                    .ifPresent(gameMatchPlayer -> EventsAPI.callEventSync(new MatchPlayerQuitEvent(player, gameMatch, gameMatchTeam, gameMatchPlayer))));
-                });
+                .ifPresent(gameMatch -> gameMatch.getDataOf(player)
+                        .ifPresent(gameMatchPlayer -> EventsAPI.callEventSync(new MatchPlayerQuitEvent(player, gameMatch, gameMatchPlayer)))
+                );
         e.quitMessage(null);
     }
 
@@ -61,48 +67,68 @@ public class PlayerListeners implements Listener {
         if (e.getRightClicked() instanceof Villager villager) {
             BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player)
                     .ifPresent(gameMatch -> gameMatch.getVillagersSystem().getMatchVillager(villager)
-                            .ifPresent(matchVillager -> gameMatch.getTeamOf(player)
-                                    .ifPresent(gameMatchTeam -> gameMatchTeam.getPlayer(player.getUniqueId())
-                                            .ifPresent(gameMatchPlayer -> {
-                                                e.setCancelled(true);
-                                                EventsAPI.callEventSync(new MatchVillagerInteractEvent(player, gameMatchTeam, gameMatchPlayer, matchVillager));
-                                            }))));
+                            .ifPresent(matchVillager -> gameMatch.getDataOf(player)
+                                    .ifPresent(gameMatchPlayer -> {
+                                        e.setCancelled(true);
+                                        EventsAPI.callEventSync(new MatchVillagerInteractEvent(player, gameMatchPlayer, matchVillager));
+                                    })
+                            )
+                    );
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void on(@NotNull EntityDamageByEntityEvent e) {
+        if (!(e.getEntity() instanceof Player player)) return;
+        Player damager = lookupPlayer(e.getEntity());
+        if (damager != null) {
+            BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player).ifPresent(gameMatch -> gameMatch.getDamageSystem().trackPlayer(player, damager, e.getFinalDamage()));
         }
     }
 
     @EventHandler
     public void on(@NotNull PlayerDeathEvent e) {
         Player player = e.getPlayer();
-        BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player)
-                .ifPresent(gameMatch -> gameMatch.getTeamOf(player)
-                        .ifPresent(gameMatchTeam -> gameMatchTeam.getPlayer(player.getUniqueId())
-                                .ifPresent(gameMatchPlayer -> {
-                                    BedWarsPlugin.getInstance().getScheduler().executeSync(() -> {
-                                        player.spigot().respawn();
+        BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player).ifPresent(gameMatch -> {
+            gameMatch.getDataOf(player).ifPresent(gameMatchPlayer -> {
+                BedWarsPlugin.getInstance().getScheduler().executeSync(() -> {
+                    player.spigot().respawn();
 
-                                        Player killer = player.getKiller();
-                                        if (killer != null) {
-                                            gameMatch.getTeamOf(killer).ifPresent(killerMatchTeam -> {
-                                                killerMatchTeam.getPlayer(killer.getUniqueId()).ifPresent(killerMatchPlayer -> {
-                                                    new MatchPlayerDeathEvent(player, gameMatch, gameMatchTeam, gameMatchPlayer, MatchPlayerDeathEvent.Reason.UNKNOWN, killer, killerMatchTeam, killerMatchPlayer).callEvent();
-                                                });
-                                            });
-                                        } else {
-                                            new MatchPlayerDeathEvent(player, gameMatch, gameMatchTeam, gameMatchPlayer, MatchPlayerDeathEvent.Reason.UNKNOWN, null, null, null).callEvent();
-                                        }
-                                    });
-                                    e.setCancelled(true);
-                                })));
+                    Optional<PlayerDamage> optionalPlayerDamage = gameMatch.getDamageSystem().getHighestTracker(player);
+                    optionalPlayerDamage.ifPresentOrElse(playerDamage -> {
+                        new MatchPlayerDeathEvent(player, gameMatch, gameMatchPlayer.getParent(), gameMatchPlayer, MatchPlayerDeathEvent.Reason.PLAYER, playerDamage).callEvent();
+                    }, () -> {
+                        new MatchPlayerDeathEvent(player, gameMatch, gameMatchPlayer.getParent(), gameMatchPlayer, MatchPlayerDeathEvent.Reason.UNKNOWN, null).callEvent();
+                    });
+                });
+                e.setCancelled(true);
+                e.setKeepLevel(false);
+                e.setKeepInventory(false);
+                Bukkit.broadcastMessage("PlayerDeath");
+            });
+        });
+        e.deathMessage(Component.empty());
     }
 
     @EventHandler
     public void on(@NotNull PlayerMoveEvent e) {
         Player player = e.getPlayer();
-        if (e.getFrom().getBlockX() == e.getTo().getBlockX() && e.getFrom().getBlockY() == e.getTo().getBlockY() && e.getFrom().getBlockZ() == e.getTo().getBlockZ()) {
-            return;
+        if (e.getTo().getBlockY() <= 0) {
+            player.setHealth(0D);
         }
-        if (e.getTo().getBlockY() < 0) {
-            player.damage(player.getHealth());
+    }
+
+    /*
+    Methods
+     */
+    private @Nullable Player lookupPlayer(@NotNull Entity entity) {
+        if (!(entity instanceof Player)) {
+            if (entity instanceof Projectile projectile && projectile.getShooter() instanceof Player projectileOwner) {
+                return projectileOwner;
+            }
+        } else {
+            return (Player) entity;
         }
+        return null;
     }
 }

@@ -8,6 +8,7 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -32,6 +33,7 @@ import gg.mooncraft.minecraft.bedwars.game.match.GameMatchTeam;
 import gg.mooncraft.minecraft.bedwars.game.match.PlayerStatus;
 import gg.mooncraft.minecraft.bedwars.game.match.tasks.GameMatchEvent;
 import gg.mooncraft.minecraft.bedwars.game.match.tasks.GeneratorTask;
+import gg.mooncraft.minecraft.bedwars.game.utilities.DisplayUtilities;
 import gg.mooncraft.minecraft.bedwars.game.utilities.PointAdapter;
 
 import java.util.ArrayList;
@@ -198,23 +200,29 @@ public class MatchListeners implements Listener {
     public void on(@NotNull MatchPlayerDeathEvent e) {
         Player player = e.getPlayer();
         GameMatch gameMatch = e.getGameMatch();
-        GameMatchTeam gameMatchTeam = e.getPlayerMatchTeam();
-        List<TeamMapPoint> teamMapPointList = gameMatch.getBedWarsMap()
+        Optional<Location> optionalLocation = gameMatch.getBedWarsMap()
                 .map(BedWarsMap::getPointsContainer)
-                .map(mapPointsContainer -> mapPointsContainer.getTeamMapPoint(gameMatch.getGameMode(), PointTypes.TEAM.TEAM_SPAWNPOINT))
-                .orElse(new ArrayList<>());
-        Location location = teamMapPointList
-                .stream()
-                .filter(point -> point.getGameTeam() == gameMatchTeam.getGameTeam())
-                .findFirst()
-                .map(point -> PointAdapter.adapt(gameMatch, point))
-                .orElse(null);
-        if (location == null) {
-            return;
-        }
+                .flatMap(container -> container.getGameMapPoint(gameMatch.getGameMode(), PointTypes.MAP.MAP_CENTER)
+                        .stream()
+                        .findFirst())
+                .map(gameMapPoint -> PointAdapter.adapt(gameMatch, gameMapPoint));
+        optionalLocation.ifPresent(player::teleportAsync);
+        gameMatch.getPlayerList().forEach(streamPlayer -> {
+            if (e.getReason() == MatchPlayerDeathEvent.Reason.PLAYER) {
+                streamPlayer.sendMessage(Component.text(GameConstants.MESSAGE_PLAYER_KILL
+                        .replaceAll("%killer%", player.getName())
+                        .replaceAll("%killed%", e.getLastPlayerDamage().getPlayer().getName())
+                        .replaceAll("%weapon%", DisplayUtilities.getDisplay(e.getLastPlayerDamage().getWeapon()))
+                ));
+            } else {
+                streamPlayer.sendMessage(Component.text(GameConstants.MESSAGE_PLAYER_DIES
+                        .replaceAll("%player%", player.getName())
+                ));
+            }
+        });
 
-        player.teleportAsync(location.add(0, 5, 0));
-        Bukkit.broadcastMessage(player.getName() + " death: " + e.getReason().name() + " - " + (e.getReason() == MatchPlayerDeathEvent.Reason.PLAYER ? e.getKillerMatchPlayer().getPlayer().map(Player::getName).orElse("test") : " no killer "));
+        player.playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_HURT, 2, 2);
+        Bukkit.broadcastMessage("PlayerDeath Custom");
     }
 
     @EventHandler

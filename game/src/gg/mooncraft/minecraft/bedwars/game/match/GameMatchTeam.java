@@ -53,7 +53,7 @@ public final class GameMatchTeam {
     }
 
     public void addPlayer(@NotNull UUID uniqueId) {
-        this.matchPlayerList.add(new GameMatchPlayer(uniqueId));
+        this.matchPlayerList.add(new GameMatchPlayer(this, uniqueId));
     }
 
     public void delPlayer(@NotNull UUID uniqueId) {
