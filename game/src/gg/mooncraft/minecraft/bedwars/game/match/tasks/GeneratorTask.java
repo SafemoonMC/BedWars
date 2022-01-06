@@ -69,7 +69,7 @@ public class GeneratorTask extends GameRunnable {
             this.spawnedArmorStand = true;
 
             BedWarsPlugin.getInstance().getScheduler().executeSync(() -> {
-                this.armorStand = EntityUtilities.createGeneratorStand(this.location.clone().add(0, 1, 0), type.getHeadMaterial());
+                this.armorStand = EntityUtilities.createGeneratorStand(this.location.clone().add(0, 1.5, 0), type.getHeadMaterial());
                 this.armorStandHologram = HologramsAPI.createHologram(BedWarsPlugin.getInstance(), this.location.clone().add(0, 4, 0));
                 this.armorStandHologram.setAllowPlaceholders(false);
 
