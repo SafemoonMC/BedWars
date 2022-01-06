@@ -10,7 +10,7 @@ import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatch;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -69,7 +69,7 @@ public final class MatchManager {
 
     @UnmodifiableView
     public @NotNull List<GameMatch> getMatchList() {
-        return Collections.unmodifiableList(this.matchList);
+        return this.matchList.stream().sorted(Comparator.comparingInt(o -> o.getPlayersCapacity() - o.getPlayersCount())).toList();
     }
 
     @UnmodifiableView
