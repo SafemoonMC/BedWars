@@ -3,6 +3,7 @@ package gg.mooncraft.minecraft.bedwars.game.handlers.listeners;
 import net.kyori.adventure.text.Component;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -16,9 +17,12 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import gg.mooncraft.minecraft.bedwars.data.map.BedWarsMap;
+import gg.mooncraft.minecraft.bedwars.data.map.point.PointTypes;
 import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
 import gg.mooncraft.minecraft.bedwars.game.events.EventsAPI;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerDeathEvent;
@@ -26,6 +30,7 @@ import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerJoinEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerQuitEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchVillagerInteractEvent;
 import gg.mooncraft.minecraft.bedwars.game.match.damage.PlayerDamage;
+import gg.mooncraft.minecraft.bedwars.game.utilities.PointAdapter;
 
 import java.util.Optional;
 
@@ -80,7 +85,7 @@ public class PlayerListeners implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void on(@NotNull EntityDamageByEntityEvent e) {
         if (!(e.getEntity() instanceof Player player)) return;
-        Player damager = lookupPlayer(e.getEntity());
+        Player damager = lookupPlayer(e.getDamager());
         if (damager != null) {
             BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player).ifPresent(gameMatch -> gameMatch.getDamageSystem().trackPlayer(player, damager, e.getFinalDamage()));
         }
@@ -116,6 +121,20 @@ public class PlayerListeners implements Listener {
         if (e.getTo().getBlockY() <= 0) {
             player.setHealth(0D);
         }
+    }
+
+    @EventHandler
+    public void on(@NotNull PlayerRespawnEvent e) {
+        Player player = e.getPlayer();
+        BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player).ifPresent(gameMatch -> {
+            Optional<Location> optionalLocation = gameMatch.getBedWarsMap()
+                    .map(BedWarsMap::getPointsContainer)
+                    .flatMap(container -> container.getGameMapPoint(gameMatch.getGameMode(), PointTypes.MAP.MAP_CENTER)
+                            .stream()
+                            .findFirst())
+                    .map(gameMapPoint -> PointAdapter.adapt(gameMatch, gameMapPoint));
+            optionalLocation.ifPresent(e::setRespawnLocation);
+        });
     }
 
     /*

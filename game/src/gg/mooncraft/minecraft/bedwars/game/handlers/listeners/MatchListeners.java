@@ -152,6 +152,7 @@ public class MatchListeners implements Listener {
         String joinMessage = PlaceholderAPI.setPlaceholders(player, GameConstants.MESSAGE_PLAYER_JOIN)
                 .replaceAll("%game-players-count%", String.valueOf(gameMatch.getPlayersCount()))
                 .replaceAll("%game-players-capacity%", String.valueOf(gameMatch.getPlayersCapacity()));
+        player.sendMessage(joinMessage);
         gameMatch.getPlayerList().forEach(streamPlayer -> streamPlayer.sendMessage(joinMessage));
 
         // Try to update GameStarTask if necessary
@@ -160,6 +161,9 @@ public class MatchListeners implements Listener {
                 gameMatch.getGameTicker().getGameStartTask().play();
             }
         }
+
+        // Send update message to lobby
+        BedWarsPlugin.getInstance().getGameServerManager().sendGameServerMessage();
     }
 
     @EventHandler
@@ -194,24 +198,20 @@ public class MatchListeners implements Listener {
         if (gameMatch.getGameState() == GameState.WAITING) {
             gameMatch.getGameTicker().getGameStartTask().stop();
         }
+
+        // Send update message to lobby
+        BedWarsPlugin.getInstance().getGameServerManager().sendGameServerMessage();
     }
 
     @EventHandler
     public void on(@NotNull MatchPlayerDeathEvent e) {
         Player player = e.getPlayer();
         GameMatch gameMatch = e.getGameMatch();
-        Optional<Location> optionalLocation = gameMatch.getBedWarsMap()
-                .map(BedWarsMap::getPointsContainer)
-                .flatMap(container -> container.getGameMapPoint(gameMatch.getGameMode(), PointTypes.MAP.MAP_CENTER)
-                        .stream()
-                        .findFirst())
-                .map(gameMapPoint -> PointAdapter.adapt(gameMatch, gameMapPoint));
-        optionalLocation.ifPresent(player::teleportAsync);
         gameMatch.getPlayerList().forEach(streamPlayer -> {
             if (e.getReason() == MatchPlayerDeathEvent.Reason.PLAYER) {
                 streamPlayer.sendMessage(Component.text(GameConstants.MESSAGE_PLAYER_KILL
-                        .replaceAll("%killer%", player.getName())
-                        .replaceAll("%killed%", e.getLastPlayerDamage().getPlayer().getName())
+                        .replaceAll("%killer%", e.getLastPlayerDamage().getPlayer().getName())
+                        .replaceAll("%killed%", player.getName())
                         .replaceAll("%weapon%", DisplayUtilities.getDisplay(e.getLastPlayerDamage().getWeapon()))
                 ));
             } else {
