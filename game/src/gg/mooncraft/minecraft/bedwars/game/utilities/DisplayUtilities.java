@@ -30,7 +30,7 @@ public final class DisplayUtilities {
         if (itemStack.hasItemMeta() && itemStack.getItemMeta().hasDisplayName()) {
             return itemStack.getItemMeta().displayName().toString();
         } else {
-            return WordUtils.capitalizeFully(itemStack.getType().name());
+            return WordUtils.capitalizeFully(itemStack.getType().name().replaceAll("_", " "));
         }
     }
 
