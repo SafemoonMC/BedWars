@@ -87,7 +87,14 @@ public class PlayerListeners implements Listener {
         if (!(e.getEntity() instanceof Player player)) return;
         Player damager = lookupPlayer(e.getDamager());
         if (damager != null) {
-            BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player).ifPresent(gameMatch -> gameMatch.getDamageSystem().trackPlayer(player, damager, e.getFinalDamage()));
+            BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player).ifPresent(gameMatch -> {
+                if (gameMatch.getTeamOf(player).map(gameMatchTeam -> gameMatchTeam.hasPlayer(damager.getUniqueId())).orElse(false)) {
+                    e.setDamage(0);
+                    e.setCancelled(true);
+                    return;
+                }
+                gameMatch.getDamageSystem().trackPlayer(player, damager, e.getFinalDamage());
+            });
         }
     }
 
