@@ -41,7 +41,7 @@ public final class Commands {
                                             if (player == null) return;
                                             GameMode gameMode = GameMode.valueOf(arguments.getArgument("mode", String.class));
                                             PartyUtilities.getParty(player).handle((partyData, throwable) -> {
-                                                if (throwable == null) return null;
+                                                if (throwable != null) return null;
                                                 return partyData;
                                             }).thenAccept(partyData -> {
                                                 if (partyData == null) {
