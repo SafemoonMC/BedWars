@@ -6,6 +6,7 @@ import net.kyori.adventure.text.Component;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -21,7 +22,10 @@ import gg.mooncraft.minecraft.bedwars.game.match.GameMatchTeam;
 import gg.mooncraft.minecraft.bedwars.game.shop.Shop;
 import gg.mooncraft.minecraft.bedwars.game.shop.ShopCategory;
 import gg.mooncraft.minecraft.bedwars.game.shop.ShopElement;
+import gg.mooncraft.minecraft.bedwars.game.shop.ShopElementItem;
+import gg.mooncraft.minecraft.bedwars.game.shop.ShopElementItemDynamic;
 import gg.mooncraft.minecraft.bedwars.game.shop.Shops;
+import gg.mooncraft.minecraft.bedwars.game.utilities.ItemsUtilities;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -53,6 +57,7 @@ public final class ShopMenu implements ShopInterface {
     /*
     Fields
      */
+    private final @NotNull Player player;
     private final @NotNull GameMatch gameMatch;
     private final @NotNull Inventory inventory;
     private final @NotNull Map<Integer, ShopCategory> categoryMap;
@@ -62,7 +67,8 @@ public final class ShopMenu implements ShopInterface {
     /*
     Constructor
      */
-    public ShopMenu(@NotNull GameMatch gameMatch) {
+    public ShopMenu(@NotNull Player player, @NotNull GameMatch gameMatch) {
+        this.player = player;
         this.gameMatch = gameMatch;
         this.inventory = Bukkit.createInventory(this, 54, Component.text(GameConstants.SHOP_ITEMS_TITLE));
         this.categoryMap = new HashMap<>();
@@ -110,7 +116,7 @@ public final class ShopMenu implements ShopInterface {
         ShopCategory shopCategory = categoryMap.get(categorySlot);
         for (ShopElement shopElement : shopCategory.getElementList()) {
             int slot = ELEMENTS[index];
-            this.inventory.setItem(slot, shopElement.getIconItem());
+            this.inventory.setItem(slot, shopElement.getIconItem(player));
             index++;
         }
 
@@ -125,6 +131,28 @@ public final class ShopMenu implements ShopInterface {
         if (this.categoryMap.containsKey(slot)) {
             select(slot);
             return;
+        }
+        int element = slot - 19;
+        ShopCategory shopCategory = this.categoryMap.get(selectedCategorySlot);
+        if (element < shopCategory.getElementList().size()) {
+            ShopElement shopElement = shopCategory.getElementList().get(element);
+
+            if (!ItemsUtilities.hasEnoughItems(player, shopElement.getCostEntry().getKey(), shopElement.getCostEntry().getValue())) {
+                player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
+                return;
+            }
+
+            if (shopElement instanceof ShopElementItem shopElementItem) {
+                player.getInventory().removeItem(new ItemStack(shopElement.getCostEntry().getKey(), shopElement.getCostEntry().getValue()));
+                player.getInventory().addItem(shopElementItem.getItemStack());
+            }
+            if (shopElement instanceof ShopElementItemDynamic shopElementItemDynamic) {
+                player.getInventory().removeItem(new ItemStack(shopElement.getCostEntry().getKey(), shopElement.getCostEntry().getValue()));
+                player.getInventory().addItem(shopElementItemDynamic.getItemStackFunction().apply(gameMatchPlayer));
+            }
+
+            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_TRADE, 1, 1);
+            select(selectedCategorySlot);
         }
     }
 }

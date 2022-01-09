@@ -231,7 +231,7 @@ public class MatchListeners implements Listener {
     @EventHandler
     public void on(@NotNull MatchVillagerInteractEvent e) {
         if (e.getMatchVillager().getVillagerType() == VillagerType.ITEM_SHOP) {
-            ShopMenu shopMenu = new ShopMenu(e.getGameMatch());
+            ShopMenu shopMenu = new ShopMenu(e.getPlayer(), e.getGameMatch());
             e.getPlayer().openInventory(shopMenu.getInventory());
         }
     }

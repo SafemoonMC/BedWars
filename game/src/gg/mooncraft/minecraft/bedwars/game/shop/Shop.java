@@ -26,72 +26,72 @@ public final class Shop {
         this.categoryList = new ArrayList<>();
         this.categoryList.add(new ShopCategory(
                         "blocks",
-                        ItemStackCreator.using(Material.STONE).meta()
-                                .display("&6Blocks")
+                        ItemStackCreator.using(Material.WHITE_WOOL).meta()
+                                .display("&9Blocks &8(&7Click&8)")
                                 .lore(Arrays.asList(
-                                        "&7Description",
-                                        "&7Description"
+                                        "&7Useful blocks you can",
+                                        "&7place."
                                 ))
                                 .stack().create()
                 )
         );
         this.categoryList.add(new ShopCategory(
-                        "melee", ItemStackCreator.using(Material.STONE).meta()
-                        .display("&6Melee")
+                        "melee", ItemStackCreator.using(Material.WOODEN_SWORD).meta()
+                        .display("&9Melee &8(&7Click&8)")
                         .lore(Arrays.asList(
-                                "&7Description",
-                                "&7Description"
+                                "&7Everything you need for",
+                                "&7a face-to-face situation."
                         ))
                         .stack().create()
                 )
         );
         this.categoryList.add(new ShopCategory(
                         "armor",
-                        ItemStackCreator.using(Material.STONE).meta()
-                                .display("&6Armor")
+                        ItemStackCreator.using(Material.CHAINMAIL_BOOTS).meta()
+                                .display("&9Armor &8(&7Click&8)")
                                 .lore(Arrays.asList(
-                                        "&7Description",
-                                        "&7Description"
+                                        "&7You need to defend yourself",
+                                        "&7somehow!"
                                 ))
                                 .stack().create()
                 )
         );
         this.categoryList.add(new ShopCategory(
-                        "tools", ItemStackCreator.using(Material.STONE).meta()
-                        .display("&6Tools")
+                        "tools", ItemStackCreator.using(Material.STONE_AXE).meta()
+                        .display("&9Tools &8(&7Click&8)")
                         .lore(Arrays.asList(
-                                "&7Description",
-                                "&7Description"
+                                "&7The right tool can make",
+                                "&7the difference."
                         ))
                         .stack().create()
                 )
         );
         this.categoryList.add(new ShopCategory(
-                        "ranged", ItemStackCreator.using(Material.STONE).meta()
-                        .display("&6Ranged")
+                        "ranged", ItemStackCreator.using(Material.BOW).meta()
+                        .display("&9Ranged &8(&7Click&8)")
                         .lore(Arrays.asList(
-                                "&7Description",
-                                "&7Description"
+                                "&7You can fight others even at",
+                                "&7long distances!"
                         ))
                         .stack().create()
                 )
         );
         this.categoryList.add(new ShopCategory(
-                        "potions", ItemStackCreator.using(Material.STONE).meta()
-                        .display("&6Potions")
+                        "potions", ItemStackCreator.using(Material.BREWING_STAND).meta()
+                        .display("&9Potions &8(&7Click&8)")
                         .lore(Arrays.asList(
-                                "&7Description",
-                                "&7Description"
+                                "&7Drink this and empower",
+                                "&7yourself!"
                         ))
                         .stack().create()
                 )
         );
         this.categoryList.add(new ShopCategory(
-                        "utility", ItemStackCreator.using(Material.STONE).meta()
-                        .display("&6Utility")
+                        "utility", ItemStackCreator.using(Material.TNT).meta()
+                        .display("&9Utility &8(&7Click&8)")
                         .lore(Arrays.asList(
-                                "&7Description",
-                                "&7Description"
+                                "&7There are some utilities",
+                                "&7that will change your game."
                         ))
                         .stack().create()
                 )
