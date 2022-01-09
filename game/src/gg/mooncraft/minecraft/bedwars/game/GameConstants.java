@@ -50,8 +50,8 @@ public final class GameConstants {
             DisplayUtilities.getColored("&eSpawning in &c%time-left% &e%time-unit%")
     );
 
-    public static final @NotNull String SHOP_ITEMS_TITLE = DisplayUtilities.getColored("&6Items Shop");
-    public static final @NotNull String SHOP_UPGRADES_TITLE = DisplayUtilities.getColored("&6Upgrades Shop");
+    public static final @NotNull String SHOP_ITEMS_TITLE = DisplayUtilities.getColored("&8Items Shop");
+    public static final @NotNull String SHOP_UPGRADES_TITLE = DisplayUtilities.getColored("&8Upgrades Shop");
 
     public static final @NotNull String MESSAGE_PLAYER_DIES = DisplayUtilities.getColored("&7&o%player% died!");
     public static final @NotNull String MESSAGE_PLAYER_KILL = DisplayUtilities.getColored("&7&o%killer% killed %killed% with %weapon%!");
