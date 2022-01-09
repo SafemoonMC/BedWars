@@ -7,6 +7,7 @@ import net.kyori.adventure.text.Component;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -82,6 +83,7 @@ public class MatchListeners implements Listener {
                     gameMatchTeam.broadcastAction(gameMatchPlayer -> {
                         gameMatchPlayer.getPlayer().ifPresent(player -> {
                             player.teleportAsync(location);
+                            player.setGameMode(GameMode.SURVIVAL);
                             GameConstants.MESSAGE_STARTING_TIP.forEach(line -> player.sendMessage(Component.text(line)));
                         });
                         gameMatchPlayer.getTabPlayer().ifPresent(tabPlayer -> {
@@ -158,6 +160,7 @@ public class MatchListeners implements Listener {
 
         // Try to update GameStarTask if necessary
         if (gameMatch.getGameState() == GameState.WAITING) {
+            player.setGameMode(GameMode.ADVENTURE);
             if (gameMatch.getPlayersCount() == gameMatch.getPlayersCapacity()) {
                 gameMatch.getGameTicker().getGameStartTask().play();
             }

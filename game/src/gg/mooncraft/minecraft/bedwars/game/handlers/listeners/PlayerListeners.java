@@ -11,6 +11,8 @@ import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
@@ -64,6 +66,34 @@ public class PlayerListeners implements Listener {
                         .ifPresent(gameMatchPlayer -> EventsAPI.callEventSync(new MatchPlayerQuitEvent(player, gameMatch, gameMatchPlayer)))
                 );
         e.quitMessage(null);
+    }
+
+    @EventHandler
+    public void on(@NotNull BlockPlaceEvent e) {
+        Player player = e.getPlayer();
+        BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player).ifPresent(gameMatch -> {
+            if (!gameMatch.getBlocksSystem().canPlace(e.getBlock().getLocation())) {
+                e.setBuild(false);
+                e.setCancelled(true);
+                return;
+            }
+            gameMatch.getBlocksSystem().placeBlock(e.getBlock().getLocation());
+        });
+    }
+
+    @EventHandler
+    public void on(@NotNull BlockBreakEvent e) {
+        Player player = e.getPlayer();
+        BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player).ifPresent(gameMatch -> {
+            if (!gameMatch.getBlocksSystem().canBreak(e.getBlock().getLocation())) {
+                e.setCancelled(true);
+                return;
+            }
+            e.setExpToDrop(0);
+            e.setDropItems(false);
+            e.getBlock().getDrops(player.getInventory().getItemInMainHand()).forEach(itemStack -> player.getInventory().addItem(itemStack));
+            gameMatch.getBlocksSystem().breakBlock(e.getBlock().getLocation());
+        });
     }
 
     @EventHandler
