@@ -22,6 +22,7 @@ import gg.mooncraft.minecraft.bedwars.data.UserDAO;
 import gg.mooncraft.minecraft.bedwars.game.handlers.commands.Commands;
 import gg.mooncraft.minecraft.bedwars.game.handlers.listeners.GameListeners;
 import gg.mooncraft.minecraft.bedwars.game.handlers.listeners.MatchListeners;
+import gg.mooncraft.minecraft.bedwars.game.handlers.listeners.MenuListeners;
 import gg.mooncraft.minecraft.bedwars.game.handlers.listeners.PlayerListeners;
 import gg.mooncraft.minecraft.bedwars.game.handlers.listeners.SetupListeners;
 import gg.mooncraft.minecraft.bedwars.game.managers.BoardManager;
@@ -104,6 +105,7 @@ public class BedWarsPlugin extends ComplexJavaPlugin {
         new MatchListeners();
         new PlayerListeners();
         new GameListeners();
+        new MenuListeners();
 
         // Show enabling information
         getLogger().info("Running on " + serverName + "...");

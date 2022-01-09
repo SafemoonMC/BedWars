@@ -12,7 +12,6 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 
 import gg.mooncraft.minecraft.bedwars.data.GameState;
@@ -31,8 +30,10 @@ import gg.mooncraft.minecraft.bedwars.game.match.GameMatch;
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatchPlayer;
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatchTeam;
 import gg.mooncraft.minecraft.bedwars.game.match.PlayerStatus;
+import gg.mooncraft.minecraft.bedwars.game.match.VillagerType;
 import gg.mooncraft.minecraft.bedwars.game.match.tasks.GameMatchEvent;
 import gg.mooncraft.minecraft.bedwars.game.match.tasks.GeneratorTask;
+import gg.mooncraft.minecraft.bedwars.game.menu.ShopMenu;
 import gg.mooncraft.minecraft.bedwars.game.utilities.DisplayUtilities;
 import gg.mooncraft.minecraft.bedwars.game.utilities.PointAdapter;
 
@@ -222,12 +223,13 @@ public class MatchListeners implements Listener {
         });
 
         player.playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_HURT, 2, 2);
-        Bukkit.broadcastMessage("PlayerDeath Custom");
     }
 
     @EventHandler
     public void on(@NotNull MatchVillagerInteractEvent e) {
-        Inventory inventory = Bukkit.createInventory(null, 54, e.getMatchVillager().getVillagerType().getDisplay());
-        e.getPlayer().openInventory(inventory);
+        if (e.getMatchVillager().getVillagerType() == VillagerType.ITEM_SHOP) {
+            ShopMenu shopMenu = new ShopMenu(e.getGameMatch());
+            e.getPlayer().openInventory(shopMenu.getInventory());
+        }
     }
 }
