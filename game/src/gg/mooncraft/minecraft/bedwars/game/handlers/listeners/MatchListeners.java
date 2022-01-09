@@ -122,10 +122,11 @@ public class MatchListeners implements Listener {
         GameMatchPlayer gameMatchPlayer = e.getGameMatchPlayer();
         GameMatchTeam gameMatchTeam = e.getGameMatchTeam();
 
-        // Clear chat
+        // Clear chat and inventory
         for (int i = 0; i < 256; i++) {
             player.sendMessage(ChatColor.RESET + "");
         }
+        player.getInventory().clear();
 
         // Teleport to spawnpoint
         gameMatch.getBedWarsMap()
