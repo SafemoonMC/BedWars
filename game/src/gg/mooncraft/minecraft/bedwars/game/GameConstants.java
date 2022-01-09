@@ -50,6 +50,9 @@ public final class GameConstants {
             DisplayUtilities.getColored("&eSpawning in &c%time-left% &e%time-unit%")
     );
 
+    public static final @NotNull String SHOP_ITEMS_TITLE = DisplayUtilities.getColored("&6Items Shop");
+    public static final @NotNull String SHOP_UPGRADES_TITLE = DisplayUtilities.getColored("&6Upgrades Shop");
+
     public static final @NotNull String MESSAGE_PLAYER_DIES = DisplayUtilities.getColored("&7&o%player% died!");
     public static final @NotNull String MESSAGE_PLAYER_KILL = DisplayUtilities.getColored("&7&o%killer% killed %killed% with %weapon%!");
     public static final @NotNull String MESSAGE_PLAYER_JOIN = "%vault_rankprefix%%vault_suffix%%player_name% &ehas joined (&b%game-players-count%&e/&b%game-players-capacity%&e)!";
