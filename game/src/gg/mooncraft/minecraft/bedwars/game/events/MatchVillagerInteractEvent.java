@@ -8,6 +8,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
+import gg.mooncraft.minecraft.bedwars.game.match.GameMatch;
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatchPlayer;
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatchTeam;
 import gg.mooncraft.minecraft.bedwars.game.match.tasks.MatchVillager;
@@ -31,6 +32,10 @@ public class MatchVillagerInteractEvent extends Event {
     /*
     Methods
      */
+    public @NotNull GameMatch getGameMatch() {
+        return this.matchVillager.getGameMatch();
+    }
+
     public @NotNull GameMatchTeam getGameMatchTeam() {
         return this.gameMatchPlayer.getParent();
     }
