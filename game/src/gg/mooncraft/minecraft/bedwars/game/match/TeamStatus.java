@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum TeamStatus {
-    ALIVE("&a&l✓"), NOT_ALIVE("&c&l✘");
+    ALIVE("&a&l✓"), NOT_ALIVE("&c❌");
 
     /*
     Fields

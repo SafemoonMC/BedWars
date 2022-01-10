@@ -11,8 +11,8 @@ import gg.mooncraft.minecraft.bedwars.game.utilities.DisplayUtilities;
 @AllArgsConstructor
 public enum VillagerType {
 
-    ITEM_SHOP(DisplayUtilities.getColored("&6&lItem Shop")),
-    UPGRADE_SHOP(DisplayUtilities.getColored("&4&lUpgrade Shop"));
+    ITEM_SHOP(DisplayUtilities.getColored("&3&lITEM SHOP")),
+    UPGRADE_SHOP(DisplayUtilities.getColored("&b&lUPGRADE SHOP"));
 
     /*
     Fields
