@@ -60,7 +60,8 @@ public final class GameConstants {
     public static final @NotNull String MESSAGE_PLAYER_JOIN = "%vault_rankprefix%%vault_suffix%%player_name% &ehas joined (&b%game-players-count%&e/&b%game-players-capacity%&e)!";
     public static final @NotNull String MESSAGE_PLAYER_QUIT = "%vault_rankprefix%%vault_suffix%%player_name% &ehas quit!";
     public static final @NotNull String MESSAGE_GLOBAL_STARTING = DisplayUtilities.getColored("&eThe game starts in %time-color%%time-left% %time-unit%!");
-    public static final @NotNull String MESSAGE_ACTIONBAR_WAITING = DisplayUtilities.getColored("&6The game will start once necessary players join");
+    public static final @NotNull String MESSAGE_ACTIONBAR_WAITING = DisplayUtilities.getColored("&6The game will start once the necessary players join");
+    public static final @NotNull List<String> MESSAGE_PLAYER_MOVE = Arrays.asList(DisplayUtilities.getColored("&8Sending you to %server-name%..."), "", "");
     public static final @NotNull List<String> MESSAGE_STARTING_TIP = Arrays.asList(
             DisplayUtilities.getColored("&b&m                                                                             &r"),
             DisplayUtilities.getColored("                                &3&lBED WARS"),

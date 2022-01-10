@@ -10,6 +10,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.block.data.type.Bed;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -130,6 +131,10 @@ public class MatchListeners implements Listener {
             player.sendMessage(ChatColor.RESET + "");
         }
         player.getInventory().clear();
+        GameConstants.MESSAGE_PLAYER_MOVE.forEach(line -> {
+            String[] args = BedWarsPlugin.getInstance().getServerName().split("-");
+            player.sendMessage(Component.text(line.replaceAll("%server-name%", args[0].substring(0, 2) + "-" + args[1].substring(0, 2) + "-" + args[2])));
+        });
 
         // Teleport to spawnpoint
         gameMatch.getBedWarsMap()
@@ -228,6 +233,10 @@ public class MatchListeners implements Listener {
         Player player = e.getPlayer();
         Location location = e.getLocation();
         GameMatch gameMatch = e.getGameMatch();
+
+        if (location.getBlock().getType().name().contains("BED")) {
+            Bed bed = (Bed) location.getBlock().getBlockData();
+        }
 
         if (!gameMatch.getBlocksSystem().canBreak(location)) {
             e.setCancelled(true);
