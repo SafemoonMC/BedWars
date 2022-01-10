@@ -17,10 +17,13 @@ import org.jetbrains.annotations.NotNull;
 
 import gg.mooncraft.minecraft.bedwars.data.GameState;
 import gg.mooncraft.minecraft.bedwars.data.map.BedWarsMap;
+import gg.mooncraft.minecraft.bedwars.data.map.MapPointsContainer;
 import gg.mooncraft.minecraft.bedwars.data.map.point.PointTypes;
 import gg.mooncraft.minecraft.bedwars.data.map.point.TeamMapPoint;
 import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
 import gg.mooncraft.minecraft.bedwars.game.GameConstants;
+import gg.mooncraft.minecraft.bedwars.game.events.MatchBlockBreakEvent;
+import gg.mooncraft.minecraft.bedwars.game.events.MatchBlockPlaceEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerDeathEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerJoinEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerQuitEvent;
@@ -37,6 +40,7 @@ import gg.mooncraft.minecraft.bedwars.game.match.tasks.GeneratorTask;
 import gg.mooncraft.minecraft.bedwars.game.menu.ShopMenu;
 import gg.mooncraft.minecraft.bedwars.game.utilities.DisplayUtilities;
 import gg.mooncraft.minecraft.bedwars.game.utilities.PointAdapter;
+import gg.mooncraft.minecraft.bedwars.game.utilities.WorldUtilities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -206,6 +210,31 @@ public class MatchListeners implements Listener {
 
         // Send update message to lobby
         BedWarsPlugin.getInstance().getGameServerManager().sendGameServerMessage();
+    }
+
+    @EventHandler
+    public void on(@NotNull MatchBlockPlaceEvent e) {
+        Location location = e.getLocation();
+        GameMatch gameMatch = e.getGameMatch();
+        if (!gameMatch.getBlocksSystem().canPlace(location)) {
+            e.setCancelled(true);
+            return;
+        }
+        gameMatch.getBlocksSystem().placeBlock(location);
+    }
+
+    @EventHandler
+    public void on(@NotNull MatchBlockBreakEvent e) {
+        Player player = e.getPlayer();
+        Location location = e.getLocation();
+        GameMatch gameMatch = e.getGameMatch();
+
+        if (!gameMatch.getBlocksSystem().canBreak(location)) {
+            e.setCancelled(true);
+            return;
+        }
+        location.getBlock().getDrops(player.getInventory().getItemInMainHand()).forEach(itemStack -> player.getInventory().addItem(itemStack));
+        gameMatch.getBlocksSystem().breakBlock(location);
     }
 
     @EventHandler

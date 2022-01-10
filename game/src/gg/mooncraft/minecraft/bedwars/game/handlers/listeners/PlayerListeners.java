@@ -27,6 +27,8 @@ import gg.mooncraft.minecraft.bedwars.data.map.BedWarsMap;
 import gg.mooncraft.minecraft.bedwars.data.map.point.PointTypes;
 import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
 import gg.mooncraft.minecraft.bedwars.game.events.EventsAPI;
+import gg.mooncraft.minecraft.bedwars.game.events.MatchBlockBreakEvent;
+import gg.mooncraft.minecraft.bedwars.game.events.MatchBlockPlaceEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerDeathEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerJoinEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerQuitEvent;
@@ -72,12 +74,13 @@ public class PlayerListeners implements Listener {
     public void on(@NotNull BlockPlaceEvent e) {
         Player player = e.getPlayer();
         BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player).ifPresent(gameMatch -> {
-            if (!gameMatch.getBlocksSystem().canPlace(e.getBlock().getLocation())) {
-                e.setBuild(false);
-                e.setCancelled(true);
-                return;
-            }
-            gameMatch.getBlocksSystem().placeBlock(e.getBlock().getLocation());
+            gameMatch.getDataOf(player).ifPresent(gameMatchPlayer -> {
+                boolean cancelled = !new MatchBlockPlaceEvent(player, e.getBlock().getLocation(), gameMatch, gameMatchPlayer).callEvent();
+                if (cancelled) {
+                    e.setBuild(false);
+                    e.setCancelled(true);
+                }
+            });
         });
     }
 
@@ -85,14 +88,15 @@ public class PlayerListeners implements Listener {
     public void on(@NotNull BlockBreakEvent e) {
         Player player = e.getPlayer();
         BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player).ifPresent(gameMatch -> {
-            if (!gameMatch.getBlocksSystem().canBreak(e.getBlock().getLocation())) {
-                e.setCancelled(true);
-                return;
-            }
             e.setExpToDrop(0);
             e.setDropItems(false);
-            e.getBlock().getDrops(player.getInventory().getItemInMainHand()).forEach(itemStack -> player.getInventory().addItem(itemStack));
-            gameMatch.getBlocksSystem().breakBlock(e.getBlock().getLocation());
+
+            gameMatch.getDataOf(player).ifPresent(gameMatchPlayer -> {
+                boolean cancelled = !new MatchBlockBreakEvent(player, e.getBlock().getLocation(), gameMatch, gameMatchPlayer).callEvent();
+                if (cancelled) {
+                    e.setCancelled(true);
+                }
+            });
         });
     }
 
