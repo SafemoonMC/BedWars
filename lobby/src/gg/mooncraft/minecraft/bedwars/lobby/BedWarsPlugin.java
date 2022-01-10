@@ -16,7 +16,6 @@ import gg.mooncraft.minecraft.bedwars.common.messaging.RedisChannel;
 import gg.mooncraft.minecraft.bedwars.common.messaging.RedisMessenger;
 import gg.mooncraft.minecraft.bedwars.common.utilities.IOUtils;
 import gg.mooncraft.minecraft.bedwars.data.UserDAO;
-import gg.mooncraft.minecraft.bedwars.lobby.factory.UserFactory;
 import gg.mooncraft.minecraft.bedwars.lobby.handlers.commands.Commands;
 import gg.mooncraft.minecraft.bedwars.lobby.handlers.listeners.PlayerListeners;
 import gg.mooncraft.minecraft.bedwars.lobby.managers.GameServerManager;
@@ -35,7 +34,6 @@ public class BedWarsPlugin extends ComplexJavaPlugin {
     /*
     Fields
      */
-    private UserFactory userFactory;
     private GameServerManager gameServerManager;
 
     /*
@@ -61,9 +59,6 @@ public class BedWarsPlugin extends ComplexJavaPlugin {
 
         // Load daos
         UserDAO.registerDAO(getDatabase());
-
-        // Load factories
-        this.userFactory = new UserFactory();
 
         // Load managers
         this.gameServerManager = new GameServerManager();

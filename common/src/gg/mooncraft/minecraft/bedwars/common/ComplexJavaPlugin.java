@@ -12,6 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import gg.mooncraft.minecraft.bedwars.common.factory.UserFactory;
 import gg.mooncraft.minecraft.bedwars.common.messaging.Messenger;
 import gg.mooncraft.minecraft.bedwars.common.messaging.RedisMessenger;
 import gg.mooncraft.minecraft.bedwars.common.scheduler.BukkitScheduler;
@@ -32,6 +33,8 @@ public abstract class ComplexJavaPlugin extends JavaPlugin {
     private @Nullable RedisMessenger messenger;
 
     private final @NotNull BukkitScheduler scheduler;
+
+    private @Nullable UserFactory userFactory;
 
     /*
     Constructor
@@ -125,6 +128,8 @@ public abstract class ComplexJavaPlugin extends JavaPlugin {
             getLogger().severe("The plugin cannot be loaded. Connection to the database cannot be created. Error: ");
             e.printStackTrace();
         }
+
+        this.userFactory = new UserFactory();
     }
 
 
