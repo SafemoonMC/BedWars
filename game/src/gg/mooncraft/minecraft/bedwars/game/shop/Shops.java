@@ -72,8 +72,8 @@ public final class Shops {
                         "Wood",
                         "&7Good block to defend your bed.\n&7Strong agains pickaxes.",
                         new OptionEntry<>(Material.GOLD_INGOT, 4),
-                        Material.OAK_WOOD,
-                        ItemStackCreator.using(Material.OAK_WOOD).amount(16).create()
+                        Material.OAK_PLANKS,
+                        ItemStackCreator.using(Material.OAK_PLANKS).amount(16).create()
                 )
         );
         SOLO_SHOP.addItem("blocks", new ShopElementItem(
@@ -129,8 +129,8 @@ public final class Shops {
                         "Wood",
                         "&7Good block to defend your bed.\n&7Strong agains pickaxes.",
                         new OptionEntry<>(Material.GOLD_INGOT, 4),
-                        Material.OAK_WOOD,
-                        ItemStackCreator.using(Material.OAK_WOOD).amount(16).create()
+                        Material.OAK_PLANKS,
+                        ItemStackCreator.using(Material.OAK_PLANKS).amount(16).create()
                 )
         );
         DUOS_SHOP.addItem("blocks", new ShopElementItem(
@@ -186,8 +186,8 @@ public final class Shops {
                         "Wood",
                         "&7Good block to defend your bed.\n&7Strong agains pickaxes.",
                         new OptionEntry<>(Material.GOLD_INGOT, 4),
-                        Material.OAK_WOOD,
-                        ItemStackCreator.using(Material.OAK_WOOD).amount(16).create()
+                        Material.OAK_PLANKS,
+                        ItemStackCreator.using(Material.OAK_PLANKS).amount(16).create()
                 )
         );
         TRIOS_SHOP.addItem("blocks", new ShopElementItem(
@@ -243,8 +243,8 @@ public final class Shops {
                         "Wood",
                         "&7Good block to defend your bed.\n&7Strong agains pickaxes.",
                         new OptionEntry<>(Material.GOLD_INGOT, 4),
-                        Material.OAK_WOOD,
-                        ItemStackCreator.using(Material.OAK_WOOD).amount(16).create()
+                        Material.OAK_PLANKS,
+                        ItemStackCreator.using(Material.OAK_PLANKS).amount(16).create()
                 )
         );
         QUADS_SHOP.addItem("blocks", new ShopElementItem(
