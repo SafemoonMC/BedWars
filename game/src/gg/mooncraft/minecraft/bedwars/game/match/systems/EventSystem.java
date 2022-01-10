@@ -56,7 +56,7 @@ public final class EventSystem implements TickSystem {
 
         // After 5 minutes DIAMOND generator will upgrade to Tier 2
         long currentTimeMillis = System.currentTimeMillis();
-        this.eventList.add(new GameMatchEvent(0, GameEvent.DIAMOND, Instant.ofEpochMilli(currentTimeMillis).plus(1, ChronoUnit.MINUTES)));
+        this.eventList.add(new GameMatchEvent(0, GameEvent.DIAMOND, Instant.ofEpochMilli(currentTimeMillis).plus(5, ChronoUnit.MINUTES)));
         // After 11 (+6) minutes EMERALD generator will upgrade to Tier 2
         this.eventList.add(new GameMatchEvent(1, GameEvent.EMERALD, Instant.ofEpochMilli(currentTimeMillis).plus(11, ChronoUnit.MINUTES)));
         // After 17 (+6) minutes DIAMOND generator will max out at Tier 3
