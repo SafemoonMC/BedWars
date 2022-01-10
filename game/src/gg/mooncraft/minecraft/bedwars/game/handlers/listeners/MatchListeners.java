@@ -17,7 +17,6 @@ import org.jetbrains.annotations.NotNull;
 
 import gg.mooncraft.minecraft.bedwars.data.GameState;
 import gg.mooncraft.minecraft.bedwars.data.map.BedWarsMap;
-import gg.mooncraft.minecraft.bedwars.data.map.MapPointsContainer;
 import gg.mooncraft.minecraft.bedwars.data.map.point.PointTypes;
 import gg.mooncraft.minecraft.bedwars.data.map.point.TeamMapPoint;
 import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
@@ -40,7 +39,6 @@ import gg.mooncraft.minecraft.bedwars.game.match.tasks.GeneratorTask;
 import gg.mooncraft.minecraft.bedwars.game.menu.ShopMenu;
 import gg.mooncraft.minecraft.bedwars.game.utilities.DisplayUtilities;
 import gg.mooncraft.minecraft.bedwars.game.utilities.PointAdapter;
-import gg.mooncraft.minecraft.bedwars.game.utilities.WorldUtilities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,6 +86,7 @@ public class MatchListeners implements Listener {
                         gameMatchPlayer.getPlayer().ifPresent(player -> {
                             player.teleportAsync(location);
                             player.setGameMode(GameMode.SURVIVAL);
+                            player.hideBossBar(BedWarsPlugin.getInstance().getBossBar());
                             GameConstants.MESSAGE_STARTING_TIP.forEach(line -> player.sendMessage(Component.text(line)));
                         });
                         gameMatchPlayer.getTabPlayer().ifPresent(tabPlayer -> {
@@ -166,6 +165,7 @@ public class MatchListeners implements Listener {
         // Try to update GameStarTask if necessary
         if (gameMatch.getGameState() == GameState.WAITING) {
             player.setGameMode(GameMode.ADVENTURE);
+            player.showBossBar(BedWarsPlugin.getInstance().getBossBar());
             if (gameMatch.getPlayersCount() == gameMatch.getPlayersCapacity()) {
                 gameMatch.getGameTicker().getGameStartTask().play();
             }

@@ -10,6 +10,9 @@ import me.eduardwayland.mooncraft.waylander.database.connection.hikari.impl.Mari
 import me.eduardwayland.mooncraft.waylander.database.scheme.db.NormalDatabaseScheme;
 import me.eduardwayland.mooncraft.waylander.database.scheme.file.NormalSchemeFile;
 
+import net.kyori.adventure.bossbar.BossBar;
+import net.kyori.adventure.text.Component;
+
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
@@ -64,6 +67,8 @@ public class BedWarsPlugin extends ComplexJavaPlugin {
     private GameServerManager gameServerManager;
     private GameRequestManager gameRequestManager;
 
+    private BossBar bossBar;
+
     /*
     Override Methods
      */
@@ -97,6 +102,8 @@ public class BedWarsPlugin extends ComplexJavaPlugin {
         this.mapManager = new MapManager();
         this.gameServerManager = new GameServerManager();
         this.gameRequestManager = new GameRequestManager();
+
+        this.bossBar = BossBar.bossBar(Component.text(GameConstants.BOSSBAR_TITLE), 1.0f, BossBar.Color.BLUE, BossBar.Overlay.PROGRESS);
 
         // Load commands
         Commands.loadAll();

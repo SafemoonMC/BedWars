@@ -18,8 +18,9 @@ public final class GameConstants {
      */
     public static final @NotNull String DEFAULT_WORLD_NAME = "VoidworldStart";
 
-    public static final @NotNull String NAMETAG_FORMAT = "%color%%team% &8| %color%";
-    public static final @NotNull String SCOREBOARD_TITLE = "&b⁂ &6&lBedWars &b⁂";
+    public static final @NotNull String BOSSBAR_TITLE = DisplayUtilities.getColored("&f&lPlaying &3&lBEDWARS &f&lon &3&lPLAY.MOONCRAFT.GG");
+    public static final @NotNull String NAMETAG_FORMAT = "%color%%team% &7| %color%";
+    public static final @NotNull String SCOREBOARD_TITLE = "&b☄ &3&lBEDWARS &b☄";
     public static final @NotNull List<String> SCOREBOARD_LINES_LOBBY = Arrays.asList(
             "&7%date% &8%server-name%",
             "&r",
@@ -31,7 +32,7 @@ public final class GameConstants {
             "&3&l| &fMode: &a%game-mode%",
             "&3&l| &fVersion: &7v%plugin-version%",
             "&r",
-            "&b  play.mooncraft.gg"
+            "&b    play.mooncraft.gg"
     );
     public static final @NotNull List<String> SCOREBOARD_LINES_PLAY = Arrays.asList(
             "&7%date%  &8%server-name%",
@@ -40,7 +41,7 @@ public final class GameConstants {
             "&r",
             "{teams}",
             "&r",
-            "&b  play.mooncraft.gg"
+            "&b    play.mooncraft.gg"
     );
     public static final @NotNull List<String> GENERATOR_HOLOGRAM_LINES = Arrays.asList(
             DisplayUtilities.getColored("&eTier &c%tier%"),
