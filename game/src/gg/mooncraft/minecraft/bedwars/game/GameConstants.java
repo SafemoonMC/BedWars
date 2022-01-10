@@ -55,6 +55,7 @@ public final class GameConstants {
     public static final @NotNull String SHOP_UPGRADES_TITLE = DisplayUtilities.getColored("&8Upgrades Shop");
 
     public static final @NotNull String MESSAGE_BED_YOUR = DisplayUtilities.getColored("&cYou cannot break your bed!");
+    public static final @NotNull String MESSAGE_BLOCK_HEIGHT_LIMIT = DisplayUtilities.getColored("&cBuild height limit reached!");
     public static final @NotNull String MESSAGE_PLAYER_DIES = DisplayUtilities.getColored("&7&o%player% died!");
     public static final @NotNull String MESSAGE_PLAYER_KILL = DisplayUtilities.getColored("&7&o%killer% killed %killed% with %weapon%!");
     public static final @NotNull String MESSAGE_PLAYER_JOIN = "%vault_rankprefix%%vault_suffix%%player_name% &ehas joined (&b%game-players-count%&e/&b%game-players-capacity%&e)!";

@@ -3,8 +3,6 @@ package gg.mooncraft.minecraft.bedwars.game.handlers.listeners;
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.neznamy.tab.api.TabAPI;
 
-import net.kyori.adventure.text.Component;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -18,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 import gg.mooncraft.minecraft.bedwars.data.GameState;
 import gg.mooncraft.minecraft.bedwars.data.map.BedWarsMap;
+import gg.mooncraft.minecraft.bedwars.data.map.MapPointsContainer;
 import gg.mooncraft.minecraft.bedwars.data.map.point.PointTypes;
 import gg.mooncraft.minecraft.bedwars.data.map.point.TeamMapPoint;
 import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
@@ -88,7 +87,7 @@ public class MatchListeners implements Listener {
                             player.teleportAsync(location);
                             player.setGameMode(GameMode.SURVIVAL);
                             player.hideBossBar(BedWarsPlugin.getInstance().getBossBar());
-                            GameConstants.MESSAGE_STARTING_TIP.forEach(line -> player.sendMessage(Component.text(line)));
+                            GameConstants.MESSAGE_STARTING_TIP.forEach(player::sendMessage);
                         });
                         gameMatchPlayer.getTabPlayer().ifPresent(tabPlayer -> {
                             TabAPI.getInstance().getScoreboardManager().showScoreboard(tabPlayer, gameMatchTeam.getScoreboard());
@@ -133,7 +132,7 @@ public class MatchListeners implements Listener {
         player.getInventory().clear();
         GameConstants.MESSAGE_PLAYER_MOVE.forEach(line -> {
             String[] args = BedWarsPlugin.getInstance().getServerName().split("-");
-            player.sendMessage(Component.text(line.replaceAll("%server-name%", args[0].substring(0, 2) + "-" + args[1].substring(0, 2) + "-" + args[2])));
+            player.sendMessage(line.replaceAll("%server-name%", args[0].substring(0, 2) + "-" + args[1].substring(0, 2) + "-" + args[2]));
         });
 
         // Teleport to spawnpoint
@@ -219,8 +218,14 @@ public class MatchListeners implements Listener {
 
     @EventHandler
     public void on(@NotNull MatchBlockPlaceEvent e) {
+        Player player = e.getPlayer();
         Location location = e.getLocation();
         GameMatch gameMatch = e.getGameMatch();
+        if (location.getBlockY() > gameMatch.getBedWarsMap().map(BedWarsMap::getPointsContainer).map(MapPointsContainer::getMaximumBlockHeight).orElse(0) || location.getBlockY() < gameMatch.getBedWarsMap().map(BedWarsMap::getPointsContainer).map(MapPointsContainer::getMinimumBlockHeight).orElse(0)) {
+            player.sendMessage(GameConstants.MESSAGE_BLOCK_HEIGHT_LIMIT);
+            e.setCancelled(true);
+            return;
+        }
         if (!gameMatch.getBlocksSystem().canPlace(location)) {
             e.setCancelled(true);
             return;
@@ -252,15 +257,15 @@ public class MatchListeners implements Listener {
         GameMatch gameMatch = e.getGameMatch();
         gameMatch.getPlayerList().forEach(streamPlayer -> {
             if (e.getReason() == MatchPlayerDeathEvent.Reason.PLAYER) {
-                streamPlayer.sendMessage(Component.text(GameConstants.MESSAGE_PLAYER_KILL
+                streamPlayer.sendMessage(GameConstants.MESSAGE_PLAYER_KILL
                         .replaceAll("%killer%", e.getLastPlayerDamage().getPlayer().getName())
                         .replaceAll("%killed%", player.getName())
-                        .replaceAll("%weapon%", DisplayUtilities.getDisplay(e.getLastPlayerDamage().getWeapon()))
-                ));
+                        .replaceAll("%weapon%", DisplayUtilities.getDisplay(e.getLastPlayerDamage().getWeapon())
+                        ));
             } else {
-                streamPlayer.sendMessage(Component.text(GameConstants.MESSAGE_PLAYER_DIES
+                streamPlayer.sendMessage(GameConstants.MESSAGE_PLAYER_DIES
                         .replaceAll("%player%", player.getName())
-                ));
+                );
             }
         });
 
