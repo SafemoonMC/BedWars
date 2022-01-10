@@ -9,7 +9,10 @@ import me.eduardwayland.mooncraft.waylander.command.LiteralCommand;
 import me.eduardwayland.mooncraft.waylander.command.builders.LiteralCommandBuilder;
 import me.eduardwayland.mooncraft.waylander.command.builders.RequiredCommandBuilder;
 
+import net.kyori.adventure.text.Component;
+
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 
@@ -219,7 +222,13 @@ public final class Commands {
                 )
                 .build();
 
+        LiteralCommand<?> leaveCommand = LiteralCommandBuilder
+                .<Player>name("leave").aliases("l")
+                .executes(commandSender -> commandSender.kick(Component.text("Teleporting you to the lobby..."), PlayerKickEvent.Cause.PLUGIN))
+                .build();
+
         BedWarsPlugin.getInstance().registerCommand(command);
+        BedWarsPlugin.getInstance().registerCommand(leaveCommand);
         BedWarsPlugin.getInstance().getLogger().info("Commands have been loaded.");
     }
 }
