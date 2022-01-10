@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import org.bukkit.ChatColor;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,4 +20,7 @@ public final class StringUtilities {
         return textLineList.stream().map(StringUtilities::getColoredString).collect(Collectors.toList());
     }
 
+    public static boolean isBlankOrEmpty(@NotNull String content) {
+        return content.isEmpty() || content.isBlank();
+    }
 }

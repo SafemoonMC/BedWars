@@ -389,109 +389,109 @@ public final class Shops {
         );
         // Armor SOLO
         SOLO_SHOP.addItem("armor", new ShopElementItem(
-                        "&6Chain Boots",
-                        "Description",
-                        new OptionEntry<>(Material.IRON_INGOT, 2),
+                        "Permanent Chainmail Armor",
+                        "&7Chainmail leggings and boots\n&7which you will always spawn\n&7with.",
+                        new OptionEntry<>(Material.IRON_INGOT, 30),
                         Material.CHAINMAIL_BOOTS,
                         ItemStackCreator.using(Material.CHAINMAIL_BOOTS).amount(1).create()
                 )
         );
         SOLO_SHOP.addItem("armor", new ShopElementItem(
-                        "&6Iron Boots",
-                        "Description",
-                        new OptionEntry<>(Material.IRON_INGOT, 2),
+                        "Permanent Iron Armor",
+                        "&7Iron leggings and boots which\n&7you will always spawn with.",
+                        new OptionEntry<>(Material.GOLD_INGOT, 12),
                         Material.IRON_BOOTS,
                         ItemStackCreator.using(Material.IRON_BOOTS).amount(1).create()
                 )
         );
         SOLO_SHOP.addItem("armor", new ShopElementItem(
-                        "&6Diamond Boots",
-                        "Description",
-                        new OptionEntry<>(Material.IRON_INGOT, 2),
+                        "Permanent Diamond Armor",
+                        "&7Diamond leggings and boots which\n&7you will always crush with.",
+                        new OptionEntry<>(Material.EMERALD, 6),
                         Material.DIAMOND_BOOTS,
                         ItemStackCreator.using(Material.DIAMOND_BOOTS).amount(1).create()
                 )
         );
         // Armor DUOS
         DUOS_SHOP.addItem("armor", new ShopElementItem(
-                        "&6Chain Boots",
-                        "Description",
-                        new OptionEntry<>(Material.IRON_INGOT, 2),
+                        "Permanent Chainmail Armor",
+                        "&7Chainmail leggings and boots\n&7which you will always spawn\n&7with.",
+                        new OptionEntry<>(Material.IRON_INGOT, 30),
                         Material.CHAINMAIL_BOOTS,
                         ItemStackCreator.using(Material.CHAINMAIL_BOOTS).amount(1).create()
                 )
         );
         DUOS_SHOP.addItem("armor", new ShopElementItem(
-                        "&6Iron Boots",
-                        "Description",
-                        new OptionEntry<>(Material.IRON_INGOT, 2),
+                        "Permanent Iron Armor",
+                        "&7Iron leggings and boots which\n&7you will always spawn with.",
+                        new OptionEntry<>(Material.GOLD_INGOT, 12),
                         Material.IRON_BOOTS,
                         ItemStackCreator.using(Material.IRON_BOOTS).amount(1).create()
                 )
         );
         DUOS_SHOP.addItem("armor", new ShopElementItem(
-                        "&6Diamond Boots",
-                        "Description",
-                        new OptionEntry<>(Material.IRON_INGOT, 2),
+                        "Permanent Diamond Armor",
+                        "&7Diamond leggings and boots which\n&7you will always crush with.",
+                        new OptionEntry<>(Material.EMERALD, 6),
                         Material.DIAMOND_BOOTS,
                         ItemStackCreator.using(Material.DIAMOND_BOOTS).amount(1).create()
                 )
         );
         // Armor TRIOS
         TRIOS_SHOP.addItem("armor", new ShopElementItem(
-                        "&6Chain Boots",
-                        "Description",
-                        new OptionEntry<>(Material.IRON_INGOT, 2),
+                        "Permanent Chainmail Armor",
+                        "&7Chainmail leggings and boots\n&7which you will always spawn\n&7with.",
+                        new OptionEntry<>(Material.IRON_INGOT, 30),
                         Material.CHAINMAIL_BOOTS,
                         ItemStackCreator.using(Material.CHAINMAIL_BOOTS).amount(1).create()
                 )
         );
         TRIOS_SHOP.addItem("armor", new ShopElementItem(
-                        "&6Iron Boots",
-                        "Description",
-                        new OptionEntry<>(Material.IRON_INGOT, 2),
+                        "Permanent Iron Armor",
+                        "&7Iron leggings and boots which\n&7you will always spawn with.",
+                        new OptionEntry<>(Material.GOLD_INGOT, 12),
                         Material.IRON_BOOTS,
                         ItemStackCreator.using(Material.IRON_BOOTS).amount(1).create()
                 )
         );
         TRIOS_SHOP.addItem("armor", new ShopElementItem(
-                        "&6Diamond Boots",
-                        "Description",
-                        new OptionEntry<>(Material.IRON_INGOT, 2),
+                        "Permanent Diamond Armor",
+                        "&7Diamond leggings and boots which\n&7you will always crush with.",
+                        new OptionEntry<>(Material.EMERALD, 6),
                         Material.DIAMOND_BOOTS,
                         ItemStackCreator.using(Material.DIAMOND_BOOTS).amount(1).create()
                 )
         );
         // Armor QUADS
         QUADS_SHOP.addItem("armor", new ShopElementItem(
-                        "&6Chain Boots",
-                        "Description",
-                        new OptionEntry<>(Material.IRON_INGOT, 2),
+                        "Permanent Chainmail Armor",
+                        "&7Chainmail leggings and boots\n&7which you will always spawn\n&7with.",
+                        new OptionEntry<>(Material.IRON_INGOT, 30),
                         Material.CHAINMAIL_BOOTS,
                         ItemStackCreator.using(Material.CHAINMAIL_BOOTS).amount(1).create()
                 )
         );
         QUADS_SHOP.addItem("armor", new ShopElementItem(
-                        "&6Iron Boots",
-                        "Description",
-                        new OptionEntry<>(Material.IRON_INGOT, 2),
+                        "Permanent Iron Armor",
+                        "&7Iron leggings and boots which\n&7you will always spawn with.",
+                        new OptionEntry<>(Material.GOLD_INGOT, 12),
                         Material.IRON_BOOTS,
                         ItemStackCreator.using(Material.IRON_BOOTS).amount(1).create()
                 )
         );
         QUADS_SHOP.addItem("armor", new ShopElementItem(
-                        "&6Diamond Boots",
-                        "Description",
-                        new OptionEntry<>(Material.IRON_INGOT, 2),
+                        "Permanent Diamond Armor",
+                        "&7Diamond leggings and boots which\n&7you will always crush with.",
+                        new OptionEntry<>(Material.EMERALD, 6),
                         Material.DIAMOND_BOOTS,
                         ItemStackCreator.using(Material.DIAMOND_BOOTS).amount(1).create()
                 )
         );
         // Tools SOLO
         SOLO_SHOP.addItem("tools", new ShopElementItem(
-                        "&6Shears",
-                        "Description",
-                        new OptionEntry<>(Material.IRON_INGOT, 2),
+                        "Permanent Shears",
+                        "&7Great job to get rid of wool. You\n&7will always spawn with these\n&7shears.",
+                        new OptionEntry<>(Material.IRON_INGOT, 20),
                         Material.SHEARS,
                         ItemStackCreator.using(Material.SHEARS).amount(1).create()
                 )
@@ -514,9 +514,9 @@ public final class Shops {
         );
         // Tools DUOS
         DUOS_SHOP.addItem("tools", new ShopElementItem(
-                        "&6Shears",
-                        "Description",
-                        new OptionEntry<>(Material.IRON_INGOT, 2),
+                        "Permanent Shears",
+                        "&7Great job to get rid of wool. You\n&7will always spawn with these\n&7shears.",
+                        new OptionEntry<>(Material.IRON_INGOT, 20),
                         Material.SHEARS,
                         ItemStackCreator.using(Material.SHEARS).amount(1).create()
                 )
@@ -539,9 +539,9 @@ public final class Shops {
         );
         // Tools TRIOS
         TRIOS_SHOP.addItem("tools", new ShopElementItem(
-                        "&6Shears",
-                        "Description",
-                        new OptionEntry<>(Material.IRON_INGOT, 2),
+                        "Permanent Shears",
+                        "&7Great job to get rid of wool. You\n&7will always spawn with these\n&7shears.",
+                        new OptionEntry<>(Material.IRON_INGOT, 20),
                         Material.SHEARS,
                         ItemStackCreator.using(Material.SHEARS).amount(1).create()
                 )
@@ -564,9 +564,9 @@ public final class Shops {
         );
         // Tools QUADS
         QUADS_SHOP.addItem("tools", new ShopElementItem(
-                        "&6Shears",
-                        "Description",
-                        new OptionEntry<>(Material.IRON_INGOT, 2),
+                        "Permanent Shears",
+                        "&7Great job to get rid of wool. You\n&7will always spawn with these\n&7shears.",
+                        new OptionEntry<>(Material.IRON_INGOT, 20),
                         Material.SHEARS,
                         ItemStackCreator.using(Material.SHEARS).amount(1).create()
                 )
@@ -589,132 +589,132 @@ public final class Shops {
         );
         // Ranged SOLO
         SOLO_SHOP.addItem("ranged", new ShopElementItem(
-                        "&6Arrows",
-                        "Description",
-                        new OptionEntry<>(Material.IRON_INGOT, 2),
+                        "Arrow",
+                        "",
+                        new OptionEntry<>(Material.GOLD_INGOT, 2),
                         Material.ARROW,
                         ItemStackCreator.using(Material.ARROW).amount(6).create()
                 )
         );
         SOLO_SHOP.addItem("ranged", new ShopElementItem(
-                        "&6Bow",
-                        "Description",
-                        new OptionEntry<>(Material.IRON_INGOT, 2),
+                        "Bow",
+                        "",
+                        new OptionEntry<>(Material.GOLD_INGOT, 12),
                         Material.BOW,
                         ItemStackCreator.using(Material.BOW).amount(1).create()
                 )
         );
         SOLO_SHOP.addItem("ranged", new ShopElementItem(
-                        "&6Bow",
-                        "Description",
-                        new OptionEntry<>(Material.IRON_INGOT, 2),
+                        "Bow (Power I)",
+                        "",
+                        new OptionEntry<>(Material.GOLD_INGOT, 20),
                         Material.BOW,
                         ItemStackCreator.using(Material.BOW).amount(1).enchant(Enchantment.ARROW_DAMAGE, 1).create()
                 )
         );
         SOLO_SHOP.addItem("ranged", new ShopElementItem(
-                        "&6Bow",
-                        "Description",
-                        new OptionEntry<>(Material.IRON_INGOT, 2),
+                        "Bow (Power I, Punch I)",
+                        "",
+                        new OptionEntry<>(Material.EMERALD, 6),
                         Material.BOW,
                         ItemStackCreator.using(Material.BOW).amount(1).enchant(Enchantment.ARROW_DAMAGE, 1).enchant(Enchantment.ARROW_KNOCKBACK, 1).create()
                 )
         );
         // Ranged DUOS
         DUOS_SHOP.addItem("ranged", new ShopElementItem(
-                        "&6Arrows",
-                        "Description",
-                        new OptionEntry<>(Material.IRON_INGOT, 2),
+                        "Arrow",
+                        "",
+                        new OptionEntry<>(Material.GOLD_INGOT, 2),
                         Material.ARROW,
                         ItemStackCreator.using(Material.ARROW).amount(6).create()
                 )
         );
         DUOS_SHOP.addItem("ranged", new ShopElementItem(
-                        "&6Bow",
-                        "Description",
-                        new OptionEntry<>(Material.IRON_INGOT, 2),
+                        "Bow",
+                        "",
+                        new OptionEntry<>(Material.GOLD_INGOT, 12),
                         Material.BOW,
                         ItemStackCreator.using(Material.BOW).amount(1).create()
                 )
         );
         DUOS_SHOP.addItem("ranged", new ShopElementItem(
-                        "&6Bow",
-                        "Description",
-                        new OptionEntry<>(Material.IRON_INGOT, 2),
+                        "Bow (Power I)",
+                        "",
+                        new OptionEntry<>(Material.GOLD_INGOT, 20),
                         Material.BOW,
                         ItemStackCreator.using(Material.BOW).amount(1).enchant(Enchantment.ARROW_DAMAGE, 1).create()
                 )
         );
         DUOS_SHOP.addItem("ranged", new ShopElementItem(
-                        "&6Bow",
-                        "Description",
-                        new OptionEntry<>(Material.IRON_INGOT, 2),
+                        "Bow (Power I, Punch I)",
+                        "",
+                        new OptionEntry<>(Material.EMERALD, 6),
                         Material.BOW,
                         ItemStackCreator.using(Material.BOW).amount(1).enchant(Enchantment.ARROW_DAMAGE, 1).enchant(Enchantment.ARROW_KNOCKBACK, 1).create()
                 )
         );
         // Ranged TRIOS
         TRIOS_SHOP.addItem("ranged", new ShopElementItem(
-                        "&6Arrows",
-                        "Description",
-                        new OptionEntry<>(Material.IRON_INGOT, 2),
+                        "Arrow",
+                        "",
+                        new OptionEntry<>(Material.GOLD_INGOT, 2),
                         Material.ARROW,
                         ItemStackCreator.using(Material.ARROW).amount(6).create()
                 )
         );
         TRIOS_SHOP.addItem("ranged", new ShopElementItem(
-                        "&6Bow",
-                        "Description",
-                        new OptionEntry<>(Material.IRON_INGOT, 2),
+                        "Bow",
+                        "",
+                        new OptionEntry<>(Material.GOLD_INGOT, 12),
                         Material.BOW,
                         ItemStackCreator.using(Material.BOW).amount(1).create()
                 )
         );
         TRIOS_SHOP.addItem("ranged", new ShopElementItem(
-                        "&6Bow",
-                        "Description",
-                        new OptionEntry<>(Material.IRON_INGOT, 2),
+                        "Bow (Power I)",
+                        "",
+                        new OptionEntry<>(Material.GOLD_INGOT, 20),
                         Material.BOW,
                         ItemStackCreator.using(Material.BOW).amount(1).enchant(Enchantment.ARROW_DAMAGE, 1).create()
                 )
         );
         TRIOS_SHOP.addItem("ranged", new ShopElementItem(
-                        "&6Bow",
-                        "Description",
-                        new OptionEntry<>(Material.IRON_INGOT, 2),
+                        "Bow (Power I, Punch I)",
+                        "",
+                        new OptionEntry<>(Material.EMERALD, 6),
                         Material.BOW,
                         ItemStackCreator.using(Material.BOW).amount(1).enchant(Enchantment.ARROW_DAMAGE, 1).enchant(Enchantment.ARROW_KNOCKBACK, 1).create()
                 )
         );
         // Ranged QUADS
         QUADS_SHOP.addItem("ranged", new ShopElementItem(
-                        "&6Arrows",
-                        "Description",
-                        new OptionEntry<>(Material.IRON_INGOT, 2),
+                        "Arrow",
+                        "",
+                        new OptionEntry<>(Material.GOLD_INGOT, 2),
                         Material.ARROW,
                         ItemStackCreator.using(Material.ARROW).amount(6).create()
                 )
         );
         QUADS_SHOP.addItem("ranged", new ShopElementItem(
-                        "&6Bow",
-                        "Description",
-                        new OptionEntry<>(Material.IRON_INGOT, 2),
+                        "Bow",
+                        "",
+                        new OptionEntry<>(Material.GOLD_INGOT, 12),
                         Material.BOW,
                         ItemStackCreator.using(Material.BOW).amount(1).create()
                 )
         );
         QUADS_SHOP.addItem("ranged", new ShopElementItem(
-                        "&6Bow",
-                        "Description",
-                        new OptionEntry<>(Material.IRON_INGOT, 2),
+                        "Bow (Power I)",
+                        "",
+                        new OptionEntry<>(Material.GOLD_INGOT, 20),
                         Material.BOW,
                         ItemStackCreator.using(Material.BOW).amount(1).enchant(Enchantment.ARROW_DAMAGE, 1).create()
                 )
         );
         QUADS_SHOP.addItem("ranged", new ShopElementItem(
-                        "&6Bow",
-                        "Description",
-                        new OptionEntry<>(Material.IRON_INGOT, 2),
+                        "Bow (Power I, Punch I)",
+                        "",
+                        new OptionEntry<>(Material.EMERALD, 6),
                         Material.BOW,
                         ItemStackCreator.using(Material.BOW).amount(1).enchant(Enchantment.ARROW_DAMAGE, 1).enchant(Enchantment.ARROW_KNOCKBACK, 1).create()
                 )

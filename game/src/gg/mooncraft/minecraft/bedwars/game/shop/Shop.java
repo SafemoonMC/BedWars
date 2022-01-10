@@ -26,8 +26,8 @@ public final class Shop {
         this.categoryList = new ArrayList<>();
         this.categoryList.add(new ShopCategory(
                         "blocks",
-                        ItemStackCreator.using(Material.WHITE_WOOL).meta()
-                                .display("&9Blocks &8(&7Click&8)")
+                        ItemStackCreator.using(Material.TERRACOTTA).meta()
+                                .display("&bBlocks &8(&7Click&8)")
                                 .lore(Arrays.asList(
                                         "&7Useful blocks you can",
                                         "&7place."
@@ -36,8 +36,8 @@ public final class Shop {
                 )
         );
         this.categoryList.add(new ShopCategory(
-                        "melee", ItemStackCreator.using(Material.WOODEN_SWORD).meta()
-                        .display("&9Melee &8(&7Click&8)")
+                        "melee", ItemStackCreator.using(Material.GOLDEN_SWORD).meta()
+                        .display("&bMelee &8(&7Click&8)")
                         .lore(Arrays.asList(
                                 "&7Everything you need for",
                                 "&7a face-to-face situation."
@@ -48,7 +48,7 @@ public final class Shop {
         this.categoryList.add(new ShopCategory(
                         "armor",
                         ItemStackCreator.using(Material.CHAINMAIL_BOOTS).meta()
-                                .display("&9Armor &8(&7Click&8)")
+                                .display("&bArmor &8(&7Click&8)")
                                 .lore(Arrays.asList(
                                         "&7You need to defend yourself",
                                         "&7somehow!"
@@ -57,8 +57,8 @@ public final class Shop {
                 )
         );
         this.categoryList.add(new ShopCategory(
-                        "tools", ItemStackCreator.using(Material.STONE_AXE).meta()
-                        .display("&9Tools &8(&7Click&8)")
+                        "tools", ItemStackCreator.using(Material.STONE_PICKAXE).meta()
+                        .display("&bTools &8(&7Click&8)")
                         .lore(Arrays.asList(
                                 "&7The right tool can make",
                                 "&7the difference."
@@ -68,7 +68,7 @@ public final class Shop {
         );
         this.categoryList.add(new ShopCategory(
                         "ranged", ItemStackCreator.using(Material.BOW).meta()
-                        .display("&9Ranged &8(&7Click&8)")
+                        .display("&bRanged &8(&7Click&8)")
                         .lore(Arrays.asList(
                                 "&7You can fight others even at",
                                 "&7long distances!"
@@ -78,7 +78,7 @@ public final class Shop {
         );
         this.categoryList.add(new ShopCategory(
                         "potions", ItemStackCreator.using(Material.BREWING_STAND).meta()
-                        .display("&9Potions &8(&7Click&8)")
+                        .display("&bPotions &8(&7Click&8)")
                         .lore(Arrays.asList(
                                 "&7Drink this and empower",
                                 "&7yourself!"
@@ -88,7 +88,7 @@ public final class Shop {
         );
         this.categoryList.add(new ShopCategory(
                         "utility", ItemStackCreator.using(Material.TNT).meta()
-                        .display("&9Utility &8(&7Click&8)")
+                        .display("&bUtility &8(&7Click&8)")
                         .lore(Arrays.asList(
                                 "&7There are some utilities",
                                 "&7that will change your game."

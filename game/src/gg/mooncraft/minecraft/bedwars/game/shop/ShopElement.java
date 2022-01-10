@@ -3,15 +3,16 @@ package gg.mooncraft.minecraft.bedwars.game.shop;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import org.apache.commons.lang.WordUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import gg.mooncraft.minecraft.bedwars.game.items.ItemStackCreator;
 import gg.mooncraft.minecraft.bedwars.game.match.options.OptionEntry;
 import gg.mooncraft.minecraft.bedwars.game.utilities.ItemsUtilities;
+import gg.mooncraft.minecraft.bedwars.game.utilities.StringUtilities;
 
 import java.util.Arrays;
 
@@ -32,22 +33,20 @@ public class ShopElement {
      */
     public @NotNull ItemStack getIconItem(@NotNull Player player) {
         String color = ItemsUtilities.hasEnoughItems(player, this.costEntry.getKey(), this.costEntry.getValue()) ? "&a" : "&c";
-        String lastLine = ItemsUtilities.hasEnoughItems(player, this.costEntry.getKey(), this.costEntry.getValue()) ? "&aClick to purchase!" : "&cYou can't afford this.";
-        return ItemStackCreator.using(getDisplayIcon())
+        String lastLine = ItemsUtilities.hasEnoughItems(player, this.costEntry.getKey(), this.costEntry.getValue()) ? "&eClick to purchase!" : "&cYou can't afford this.";
+        ItemStack itemStack = ItemStackCreator.using(getDisplayIcon())
                 .meta()
                 .display(color + getDisplay())
-                .lore(Arrays.asList(
-                        "&7Cost: " + getCost(),
-                        "",
-                        getDescription(),
-                        "",
-                        lastLine
-                ))
+                .lore(StringUtilities.isBlankOrEmpty(getDescription()) ? Arrays.asList("&7Cost: " + getCost(), "", lastLine) : Arrays.asList("&7Cost: " + getCost(), "", getDescription(), "", lastLine))
                 .stack().create();
+        itemStack.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+
+        return itemStack;
     }
 
     private @NotNull String getCost() {
+        String material = this.costEntry.getKey() == Material.IRON_INGOT ? "Iron" : this.costEntry.getKey() == Material.GOLD_INGOT ? "Gold" : this.costEntry.getKey() == Material.DIAMOND ? "Diamond" : "Emerald";
         String color = this.costEntry.getKey() == Material.IRON_INGOT ? "&f" : this.costEntry.getKey() == Material.GOLD_INGOT ? "&6" : this.costEntry.getKey() == Material.DIAMOND ? "&b" : "&2";
-        return color + this.costEntry.getValue() + " " + WordUtils.capitalizeFully(this.costEntry.getKey().name().replaceAll("_", " "));
+        return color + this.costEntry.getValue() + " " + material;
     }
 }
