@@ -48,6 +48,9 @@ public final class BlocksSystem {
     }
 
     public boolean canPlace(@NotNull Location location) {
+        if (location.getBlockY() > gameMatch.getBedWarsMap().map(BedWarsMap::getPointsContainer).map(MapPointsContainer::getMaximumBlockHeight).orElse(0) || location.getBlockY() < gameMatch.getBedWarsMap().map(BedWarsMap::getPointsContainer).map(MapPointsContainer::getMinimumBlockHeight).orElse(0)) {
+            return false;
+        }
         return gameMatch.getBedWarsMap().map(BedWarsMap::getPointsContainer).map(MapPointsContainer::getMapPointList).stream().flatMap(List::stream).noneMatch(gameMapPoint -> {
             Location pointLocation = PointAdapter.adapt(gameMatch, gameMapPoint);
             return WorldUtilities.isSameArea(location, pointLocation, 3, 3, 3, true);

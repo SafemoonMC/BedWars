@@ -28,6 +28,8 @@ public final class MapPointsContainer implements EntityParent<MapPointsContainer
     private final @NotNull BedWarsMap parent;
     private final @NotNull List<GameMapPoint> mapPointList;
     private final @NotNull List<TeamMapPoint> teamPointList;
+    private int minimumBlockHeight;
+    private int maximumBlockHeight;
 
     /*
     Constructor
@@ -84,6 +86,10 @@ public final class MapPointsContainer implements EntityParent<MapPointsContainer
     public @NotNull CompletableFuture<MapPointsContainer> withChildren() {
         CompletableFuture<?> futureGamePoint = MapPointsDAO.readGamePoint(this).thenAccept(this.mapPointList::addAll);
         CompletableFuture<?> futureTeamPoint = MapPointsDAO.readTeamPoint(this).thenAccept(this.teamPointList::addAll);
-        return CompletableFuture.allOf(futureGamePoint, futureTeamPoint).thenApply(v -> this);
+        return CompletableFuture.allOf(futureGamePoint, futureTeamPoint).thenApply(v -> {
+            this.maximumBlockHeight = (int) (this.mapPointList.stream().filter(gameMapPoint -> gameMapPoint.getType() != PointTypes.MAP.MAP_CENTER && gameMapPoint.getType() != PointTypes.MAP.MAP_SPAWNPOINT).mapToDouble(GameMapPoint::getY).average().orElse(0) + 21);
+            this.minimumBlockHeight = (int) (this.teamPointList.stream().mapToDouble(TeamMapPoint::getY).average().orElse(0) - 12);
+            return this;
+        });
     }
 }
