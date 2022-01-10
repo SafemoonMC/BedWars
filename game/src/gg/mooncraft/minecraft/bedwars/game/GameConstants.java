@@ -54,6 +54,9 @@ public final class GameConstants {
     public static final @NotNull String SHOP_ITEMS_TITLE = DisplayUtilities.getColored("&8Items Shop");
     public static final @NotNull String SHOP_UPGRADES_TITLE = DisplayUtilities.getColored("&8Upgrades Shop");
 
+    public static final @NotNull String MESSAGE_SHOP_CANNOT_AFFORD = DisplayUtilities.getColored("&cYou don't have enough materials!");
+    public static final @NotNull String MESSAGE_SHOP_BUY = DisplayUtilities.getColored("&bYou purchased &3%shop-item%");
+
     public static final @NotNull String MESSAGE_BED_YOUR = DisplayUtilities.getColored("&cYou cannot break your bed!");
     public static final @NotNull String MESSAGE_BLOCK_HEIGHT_LIMIT = DisplayUtilities.getColored("&cBuild height limit reached!");
     public static final @NotNull String MESSAGE_PLAYER_DIES = DisplayUtilities.getColored("&7&o%player% died!");

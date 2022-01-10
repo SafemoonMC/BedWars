@@ -25,6 +25,7 @@ import gg.mooncraft.minecraft.bedwars.game.shop.ShopElement;
 import gg.mooncraft.minecraft.bedwars.game.shop.ShopElementItem;
 import gg.mooncraft.minecraft.bedwars.game.shop.ShopElementItemDynamic;
 import gg.mooncraft.minecraft.bedwars.game.shop.Shops;
+import gg.mooncraft.minecraft.bedwars.game.utilities.DisplayUtilities;
 import gg.mooncraft.minecraft.bedwars.game.utilities.ItemsUtilities;
 
 import java.util.Arrays;
@@ -138,6 +139,7 @@ public final class ShopMenu implements ShopInterface {
             ShopElement shopElement = shopCategory.getElementList().get(element);
 
             if (!ItemsUtilities.hasEnoughItems(player, shopElement.getCostEntry().getKey(), shopElement.getCostEntry().getValue())) {
+                player.sendMessage(GameConstants.MESSAGE_SHOP_CANNOT_AFFORD);
                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
                 return;
             }
@@ -145,10 +147,12 @@ public final class ShopMenu implements ShopInterface {
             if (shopElement instanceof ShopElementItem shopElementItem) {
                 player.getInventory().removeItem(new ItemStack(shopElement.getCostEntry().getKey(), shopElement.getCostEntry().getValue()));
                 player.getInventory().addItem(shopElementItem.getItemStack());
+                player.sendMessage(GameConstants.MESSAGE_SHOP_BUY.replaceAll("%shop-item%", DisplayUtilities.getDisplay(shopElementItem.getItemStack())));
             }
             if (shopElement instanceof ShopElementItemDynamic shopElementItemDynamic) {
                 player.getInventory().removeItem(new ItemStack(shopElement.getCostEntry().getKey(), shopElement.getCostEntry().getValue()));
                 player.getInventory().addItem(shopElementItemDynamic.getItemStackFunction().apply(gameMatchPlayer));
+                player.sendMessage(GameConstants.MESSAGE_SHOP_BUY.replaceAll("%shop-item%", DisplayUtilities.getDisplay(shopElementItemDynamic.getItemStackFunction().apply(gameMatchPlayer))));
             }
 
             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_TRADE, 1, 1);
