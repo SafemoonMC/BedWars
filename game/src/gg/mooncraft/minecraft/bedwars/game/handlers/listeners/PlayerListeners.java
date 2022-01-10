@@ -23,6 +23,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import gg.mooncraft.minecraft.bedwars.data.GameState;
 import gg.mooncraft.minecraft.bedwars.data.map.BedWarsMap;
 import gg.mooncraft.minecraft.bedwars.data.map.point.PointTypes;
 import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
@@ -122,7 +123,7 @@ public class PlayerListeners implements Listener {
         Player damager = lookupPlayer(e.getDamager());
         if (damager != null) {
             BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player).ifPresent(gameMatch -> {
-                if (gameMatch.getTeamOf(player).map(gameMatchTeam -> gameMatchTeam.hasPlayer(damager.getUniqueId())).orElse(false)) {
+                if (gameMatch.getGameState() != GameState.PLAYING || gameMatch.getTeamOf(player).map(gameMatchTeam -> gameMatchTeam.hasPlayer(damager.getUniqueId())).orElse(false)) {
                     e.setDamage(0);
                     e.setCancelled(true);
                     return;
