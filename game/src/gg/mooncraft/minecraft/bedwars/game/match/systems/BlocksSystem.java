@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 
 import gg.mooncraft.minecraft.bedwars.data.map.BedWarsMap;
 import gg.mooncraft.minecraft.bedwars.data.map.MapPointsContainer;
+import gg.mooncraft.minecraft.bedwars.data.map.point.PointTypes;
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatch;
 import gg.mooncraft.minecraft.bedwars.game.utilities.PointAdapter;
 import gg.mooncraft.minecraft.bedwars.game.utilities.WorldUtilities;
@@ -51,9 +52,16 @@ public final class BlocksSystem {
         if (location.getBlockY() > gameMatch.getBedWarsMap().map(BedWarsMap::getPointsContainer).map(MapPointsContainer::getMaximumBlockHeight).orElse(0) || location.getBlockY() < gameMatch.getBedWarsMap().map(BedWarsMap::getPointsContainer).map(MapPointsContainer::getMinimumBlockHeight).orElse(0)) {
             return false;
         }
-        return gameMatch.getBedWarsMap().map(BedWarsMap::getPointsContainer).map(MapPointsContainer::getMapPointList).stream().flatMap(List::stream).noneMatch(gameMapPoint -> {
+        boolean gamePointPlacing = !gameMatch.getBedWarsMap().map(BedWarsMap::getPointsContainer).map(MapPointsContainer::getMapPointList).stream().flatMap(List::stream).noneMatch(gameMapPoint -> {
             Location pointLocation = PointAdapter.adapt(gameMatch, gameMapPoint);
             return WorldUtilities.isSameArea(location, pointLocation, 3, 3, 3, true);
+        });
+        if (gamePointPlacing) {
+            return false;
+        }
+        return gameMatch.getBedWarsMap().map(BedWarsMap::getPointsContainer).map(MapPointsContainer::getTeamPointList).stream().flatMap(List::stream).filter(teamMapPoint -> teamMapPoint.getType() != PointTypes.TEAM.TEAM_BED).noneMatch(gameMapPoint -> {
+            Location pointLocation = PointAdapter.adapt(gameMatch, gameMapPoint);
+            return WorldUtilities.isSameArea(location, pointLocation, 5, 5, 5, true);
         });
     }
 
