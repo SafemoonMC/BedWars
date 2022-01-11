@@ -98,7 +98,7 @@ public class ItemMetaCreator {
     }
 
     @SuppressWarnings("unchecked")
-    static <T extends ItemMetaCreator> T using(@NotNull ItemStackCreator itemStackCreator, @NotNull ItemMeta itemMeta, @NotNull Class<T> metaCreatorClass) {
+    static <T extends ItemMetaCreator> @NotNull T using(@NotNull ItemStackCreator itemStackCreator, @NotNull ItemMeta itemMeta, @NotNull Class<T> metaCreatorClass) {
         if (ItemMetaCreator.class.equals(metaCreatorClass))
             return (T) new ItemMetaCreator(itemStackCreator, itemMeta);
         try {

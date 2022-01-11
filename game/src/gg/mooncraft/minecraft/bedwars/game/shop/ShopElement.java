@@ -5,7 +5,6 @@ import lombok.Getter;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -35,14 +34,11 @@ public class ShopElement {
     public @NotNull ItemStack getIconItem(@NotNull Player player, @NotNull GameMatchPlayer gameMatchPlayer) {
         String color = ItemsUtilities.hasEnoughItems(player, this.costEntry.getKey(), this.costEntry.getValue()) ? "&a" : "&c";
         String lastLine = ItemsUtilities.hasEnoughItems(player, this.costEntry.getKey(), this.costEntry.getValue()) ? "&eClick to purchase!" : "&cYou can't afford this.";
-        ItemStack itemStack = ItemStackCreator.using(getDisplayIcon())
+        return ItemStackCreator.using(ItemsUtilities.createPureItem(getDisplayIcon()))
                 .meta()
                 .display(color + getDisplay())
                 .lore(StringUtilities.isBlankOrEmpty(getDescription()) ? Arrays.asList("&7Cost: " + getCost(), "", lastLine) : Arrays.asList("&7Cost: " + getCost(), "", getDescription(), "", lastLine))
                 .stack().create();
-        itemStack.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-
-        return itemStack;
     }
 
     private @NotNull String getCost() {

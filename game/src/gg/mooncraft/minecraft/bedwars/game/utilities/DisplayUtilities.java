@@ -28,7 +28,7 @@ public final class DisplayUtilities {
     public static @NotNull String getDisplay(@NotNull ItemStack itemStack) {
         if (itemStack.getType().isAir()) return "hand";
         if (itemStack.hasItemMeta() && itemStack.getItemMeta().hasDisplayName()) {
-            return itemStack.getItemMeta().displayName().toString();
+            return itemStack.getItemMeta().getDisplayName();
         } else {
             return WordUtils.capitalizeFully(itemStack.getType().name().replaceAll("_", " "));
         }

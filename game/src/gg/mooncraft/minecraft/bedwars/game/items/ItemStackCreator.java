@@ -56,14 +56,16 @@ public final class ItemStackCreator {
     }
 
     public ItemMetaCreator meta() {
-        if (itemStack.getItemMeta() == null)
+        if (itemStack.getItemMeta() == null) {
             throw new IllegalArgumentException("This ItemStack doesn't have an ItemMeta instance!");
+        }
         return ItemMetaCreator.using(this, itemStack.getItemMeta());
     }
 
     public <T extends ItemMetaCreator> T meta(Class<T> metaClass) {
-        if (itemStack.getItemMeta() == null)
+        if (itemStack.getItemMeta() == null) {
             throw new IllegalArgumentException("This ItemStack doesn't have an ItemMeta instance!");
+        }
         return ItemMetaCreator.using(this, itemStack.getItemMeta(), metaClass);
     }
 

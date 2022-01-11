@@ -254,6 +254,7 @@ public class MatchListeners implements Listener {
 
         // Check if it's a breakable block
         if (!gameMatch.getBlocksSystem().canBreak(location)) {
+            player.sendMessage(GameConstants.MESSAGE_BLOCK_UNBREAKABLE);
             e.setCancelled(true);
             return;
         }

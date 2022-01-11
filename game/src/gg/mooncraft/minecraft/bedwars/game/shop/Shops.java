@@ -3,12 +3,16 @@ package gg.mooncraft.minecraft.bedwars.game.shop;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.potion.PotionType;
 import org.jetbrains.annotations.NotNull;
 
 import gg.mooncraft.minecraft.bedwars.data.GameMode;
 import gg.mooncraft.minecraft.bedwars.game.items.ItemStackCreator;
+import gg.mooncraft.minecraft.bedwars.game.items.PotionMetaCreator;
 import gg.mooncraft.minecraft.bedwars.game.match.options.OptionEntry;
 import gg.mooncraft.minecraft.bedwars.game.utilities.ItemsUtilities;
 
@@ -717,6 +721,107 @@ public final class Shops {
                         new OptionEntry<>(Material.EMERALD, 6),
                         Material.BOW,
                         ItemStackCreator.using(Material.BOW).amount(1).enchant(Enchantment.ARROW_DAMAGE, 1).enchant(Enchantment.ARROW_KNOCKBACK, 1).create()
+                )
+        );
+
+        // Potions SOLO
+        SOLO_SHOP.addItem("potions", new ShopElementItem(
+                        "Speed II Potion (45 seconds)",
+                        "&9Speed II (0:45).",
+                        new OptionEntry<>(Material.EMERALD, 1),
+                        Material.POTION,
+                        ItemStackCreator.using(Material.POTION).amount(1).meta(PotionMetaCreator.class).color(Color.TEAL).effect(PotionEffectType.SPEED, 900, 1, false, false, true).stack().create()
+                )
+        );
+        SOLO_SHOP.addItem("potions", new ShopElementItem(
+                        "Jump V Potion (45 seconds)",
+                        "&9Jump Boost V (0:45).",
+                        new OptionEntry<>(Material.EMERALD, 1),
+                        Material.POTION,
+                        ItemStackCreator.using(Material.POTION).amount(1).meta(PotionMetaCreator.class).color(Color.LIME).effect(PotionEffectType.JUMP, 900, 4, false, false, true).stack().create()
+                )
+        );
+        SOLO_SHOP.addItem("potions", new ShopElementItem(
+                        "Invisibility Potion (30 seconds)",
+                        "&9Complete Invisibility (0:30).",
+                        new OptionEntry<>(Material.EMERALD, 2),
+                        Material.POTION,
+                        ItemStackCreator.using(Material.POTION).amount(1).meta(PotionMetaCreator.class).color(Color.SILVER).effect(PotionEffectType.INVISIBILITY, 600, 0, false, false, true).stack().create()
+                )
+        );
+        // Potions DUOS
+        DUOS_SHOP.addItem("potions", new ShopElementItem(
+                        "Speed II Potion (45 seconds)",
+                        "&9Speed II (0:45).",
+                        new OptionEntry<>(Material.EMERALD, 1),
+                        Material.POTION,
+                        ItemStackCreator.using(Material.POTION).amount(1).meta(PotionMetaCreator.class).color(Color.BLUE).effect(PotionEffectType.SPEED, 900, 1, false, false, true).stack().create()
+                )
+        );
+        DUOS_SHOP.addItem("potions", new ShopElementItem(
+                        "Jump V Potion (45 seconds)",
+                        "&9Jump Boost V (0:45).",
+                        new OptionEntry<>(Material.EMERALD, 1),
+                        Material.POTION,
+                        ItemStackCreator.using(Material.POTION).amount(1).meta(PotionMetaCreator.class).color(Color.LIME).type(PotionType.JUMP).effect(PotionEffectType.JUMP, 900, 4, false, false, true).stack().create()
+                )
+        );
+        DUOS_SHOP.addItem("potions", new ShopElementItem(
+                        "Invisibility Potion (30 seconds)",
+                        "&9Complete Invisibility (0:30).",
+                        new OptionEntry<>(Material.EMERALD, 2),
+                        Material.POTION,
+                        ItemStackCreator.using(Material.POTION).amount(1).meta(PotionMetaCreator.class).color(Color.SILVER).type(PotionType.INVISIBILITY).effect(PotionEffectType.INVISIBILITY, 600, 0, false, false, true).stack().create()
+                )
+        );
+        // Potions TRIOS
+        TRIOS_SHOP.addItem("potions", new ShopElementItem(
+                        "Speed II Potion (45 seconds)",
+                        "&9Speed II (0:45).",
+                        new OptionEntry<>(Material.EMERALD, 1),
+                        Material.POTION,
+                        ItemStackCreator.using(Material.POTION).amount(1).meta(PotionMetaCreator.class).color(Color.BLUE).effect(PotionEffectType.SPEED, 900, 1, false, false, true).stack().create()
+                )
+        );
+        TRIOS_SHOP.addItem("potions", new ShopElementItem(
+                        "Jump V Potion (45 seconds)",
+                        "&9Jump Boost V (0:45).",
+                        new OptionEntry<>(Material.EMERALD, 1),
+                        Material.POTION,
+                        ItemStackCreator.using(Material.POTION).amount(1).meta(PotionMetaCreator.class).color(Color.LIME).type(PotionType.JUMP).effect(PotionEffectType.JUMP, 900, 4, false, false, true).stack().create()
+                )
+        );
+        TRIOS_SHOP.addItem("potions", new ShopElementItem(
+                        "Invisibility Potion (30 seconds)",
+                        "&9Complete Invisibility (0:30).",
+                        new OptionEntry<>(Material.EMERALD, 2),
+                        Material.POTION,
+                        ItemStackCreator.using(Material.POTION).amount(1).meta(PotionMetaCreator.class).color(Color.SILVER).type(PotionType.INVISIBILITY).effect(PotionEffectType.INVISIBILITY, 600, 0, false, false, true).stack().create()
+                )
+        );
+        // Potions QUADS
+        QUADS_SHOP.addItem("potions", new ShopElementItem(
+                        "Speed II Potion (45 seconds)",
+                        "&9Speed II (0:45).",
+                        new OptionEntry<>(Material.EMERALD, 1),
+                        Material.POTION,
+                        ItemStackCreator.using(Material.POTION).amount(1).meta(PotionMetaCreator.class).color(Color.BLUE).effect(PotionEffectType.SPEED, 900, 1, false, false, true).stack().create()
+                )
+        );
+        QUADS_SHOP.addItem("potions", new ShopElementItem(
+                        "Jump V Potion (45 seconds)",
+                        "&9Jump Boost V (0:45).",
+                        new OptionEntry<>(Material.EMERALD, 1),
+                        Material.POTION,
+                        ItemStackCreator.using(Material.POTION).amount(1).meta(PotionMetaCreator.class).color(Color.LIME).type(PotionType.JUMP).effect(PotionEffectType.JUMP, 900, 4, false, false, true).stack().create()
+                )
+        );
+        QUADS_SHOP.addItem("potions", new ShopElementItem(
+                        "Invisibility Potion (30 seconds)",
+                        "&9Complete Invisibility (0:30).",
+                        new OptionEntry<>(Material.EMERALD, 2),
+                        Material.POTION,
+                        ItemStackCreator.using(Material.POTION).amount(1).meta(PotionMetaCreator.class).color(Color.SILVER).type(PotionType.INVISIBILITY).effect(PotionEffectType.INVISIBILITY, 600, 0, false, false, true).stack().create()
                 )
         );
     }
