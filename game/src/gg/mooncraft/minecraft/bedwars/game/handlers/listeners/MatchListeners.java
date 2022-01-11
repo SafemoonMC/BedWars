@@ -72,6 +72,7 @@ public class MatchListeners implements Listener {
             case PLAYING -> {
                 gameMatch.getEventSystem().play();
                 gameMatch.getFurnaceSystem().play();
+                gameMatch.getGeneratorSystem().play();
                 gameMatch.getScoreboard().unregister();
 
                 // Send visual elements and teleport players

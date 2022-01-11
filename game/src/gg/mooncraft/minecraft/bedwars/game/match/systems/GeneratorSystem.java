@@ -29,7 +29,13 @@ public final class GeneratorSystem implements TickSystem {
     public GeneratorSystem(@NotNull GameMatch gameMatch) {
         this.gameMatch = gameMatch;
         this.taskList = new ArrayList<>();
-        gameMatch.getBedWarsMap()
+    }
+
+    /*
+    Override Methods
+     */
+    public void play() {
+        this.gameMatch.getBedWarsMap()
                 .map(BedWarsMap::getPointsContainer)
                 .map(MapPointsContainer::getMapPointList)
                 .ifPresent(list -> {
@@ -51,9 +57,6 @@ public final class GeneratorSystem implements TickSystem {
                 });
     }
 
-    /*
-    Override Methods
-     */
     @Override
     public void tick() {
         this.taskList.forEach(GeneratorTask::run);
