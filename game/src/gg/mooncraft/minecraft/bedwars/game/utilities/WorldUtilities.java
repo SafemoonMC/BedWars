@@ -7,6 +7,7 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.type.Bed;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -14,6 +15,20 @@ import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class WorldUtilities {
+
+    public static Location[] getBedParts(@NotNull Block block) {
+        Location[] locations = new Location[2];
+        locations[0] = block.getLocation();
+
+        Bed bed = (Bed) block.getBlockData();
+        if (bed.getPart() == Bed.Part.HEAD) {
+            locations[1] = block.getRelative(bed.getFacing().getOppositeFace()).getLocation();
+        } else {
+            locations[1] = block.getRelative(bed.getFacing()).getLocation();
+        }
+
+        return locations;
+    }
 
     public static @NotNull List<Block> getBlocksBetween(@NotNull Location firstLocation, @NotNull Location secondLocation) {
         Location minimumLocation = new Location(firstLocation.getWorld(), Math.min(firstLocation.getX(), secondLocation.getX()), Math.min(firstLocation.getY(), secondLocation.getY()), Math.min(firstLocation.getZ(), secondLocation.getZ()));

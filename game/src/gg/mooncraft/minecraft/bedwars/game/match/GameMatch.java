@@ -71,7 +71,7 @@ public final class GameMatch {
                     .map(TeamMapPoint::getGameTeam)
                     .sorted((o1, o2) -> o1.getDisplay().compareToIgnoreCase(o2.getDisplay()))
                     .distinct()
-                    .forEach(gameTeam -> this.teamList.add(new GameMatchTeam(this.teamList.size(), gameTeam)));
+                    .forEach(gameTeam -> this.teamList.add(new GameMatchTeam(this, this.teamList.size(), gameTeam)));
             this.teamList.forEach(gameMatchTeam -> gameMatchTeam.initScoreboard(this));
         });
 

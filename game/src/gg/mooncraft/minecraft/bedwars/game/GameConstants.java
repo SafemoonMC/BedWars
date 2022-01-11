@@ -58,6 +58,19 @@ public final class GameConstants {
     public static final @NotNull String MESSAGE_SHOP_BUY = DisplayUtilities.getColored("&bYou purchased &3%shop-item%");
 
     public static final @NotNull String MESSAGE_BED_YOUR = DisplayUtilities.getColored("&cYou cannot break your bed!");
+    public static final @NotNull String MESSAGE_BED_DESTRUCTION_TITLE = DisplayUtilities.getColored("&cBED DESTROYED!");
+    public static final @NotNull String MESSAGE_BED_DESTRUCTION_SUBTITLE = DisplayUtilities.getColored("&fYou will no longer respawn!");
+    public static final @NotNull List<String> MESSAGE_BED_DESTRUCTION_YOUR = Arrays.asList(
+            "",
+            DisplayUtilities.getColored("&f&lBED DESTRUCTION > &r&7Your Bed was destroyed by %destroyer-team-color%%destroyer-player-name%&7!"),
+            ""
+    );
+    public static final @NotNull List<String> MESSAGE_BED_DESTRUCTION_OTHERS = Arrays.asList(
+            "",
+            DisplayUtilities.getColored("&f&lBED DESTRUCTION > &r%team-color%%team-name% &7Bed was destroyed by %destroyer-team-color%%destroyer-player-name%&7!"),
+            ""
+    );
+
     public static final @NotNull String MESSAGE_BLOCK_HEIGHT_LIMIT = DisplayUtilities.getColored("&cBuild height limit reached!");
     public static final @NotNull String MESSAGE_PLAYER_DIES = DisplayUtilities.getColored("&7&o%player% died!");
     public static final @NotNull String MESSAGE_PLAYER_KILL = DisplayUtilities.getColored("&7&o%killer% killed %killed% with %weapon%!");

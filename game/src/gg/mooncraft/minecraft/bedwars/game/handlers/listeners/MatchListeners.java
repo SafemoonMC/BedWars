@@ -3,12 +3,14 @@ package gg.mooncraft.minecraft.bedwars.game.handlers.listeners;
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.neznamy.tab.api.TabAPI;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.title.Title;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Sound;
-import org.bukkit.block.data.type.Bed;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,6 +23,7 @@ import gg.mooncraft.minecraft.bedwars.data.map.point.PointTypes;
 import gg.mooncraft.minecraft.bedwars.data.map.point.TeamMapPoint;
 import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
 import gg.mooncraft.minecraft.bedwars.game.GameConstants;
+import gg.mooncraft.minecraft.bedwars.game.events.MatchBedBreakEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchBlockBreakEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchBlockPlaceEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerDeathEvent;
@@ -39,8 +42,10 @@ import gg.mooncraft.minecraft.bedwars.game.match.tasks.GeneratorTask;
 import gg.mooncraft.minecraft.bedwars.game.menu.ShopMenu;
 import gg.mooncraft.minecraft.bedwars.game.utilities.DisplayUtilities;
 import gg.mooncraft.minecraft.bedwars.game.utilities.PointAdapter;
+import gg.mooncraft.minecraft.bedwars.game.utilities.WorldUtilities;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -239,16 +244,58 @@ public class MatchListeners implements Listener {
         Location location = e.getLocation();
         GameMatch gameMatch = e.getGameMatch();
 
+        // Check if it's a bed
         if (location.getBlock().getType().name().contains("BED")) {
-            Bed bed = (Bed) location.getBlock().getBlockData();
+            Location[] parts = WorldUtilities.getBedParts(location.getBlock());
+            boolean cancelled = !new MatchBedBreakEvent(player, parts, e.getGameMatch(), e.getGameMatchPlayer()).callEvent();
+            e.setCancelled(cancelled);
+            return;
         }
 
+        // Check if it's a breakable block
         if (!gameMatch.getBlocksSystem().canBreak(location)) {
             e.setCancelled(true);
             return;
         }
         location.getBlock().getDrops(player.getInventory().getItemInMainHand()).forEach(itemStack -> player.getInventory().addItem(itemStack));
         gameMatch.getBlocksSystem().breakBlock(location);
+    }
+
+    @EventHandler
+    public void on(@NotNull MatchBedBreakEvent e) {
+        Player player = e.getPlayer();
+
+        // Check bed's team ownership
+        if (e.isOwnBed()) {
+            player.sendMessage(GameConstants.MESSAGE_BED_YOUR);
+            e.setCancelled(true);
+            return;
+        }
+        Optional<GameMatchTeam> optionalBedTeamOwner = e.getGameMatchTeamOwner();
+        optionalBedTeamOwner.ifPresent(gameMatchTeam -> {
+            // Create explosion effect and play sound
+            Arrays.stream(e.getBedParts()).forEach(location -> location.getWorld().createExplosion(location, 1, false, false));
+            gameMatchTeam.broadcastAction(gameMatchPlayer -> gameMatchPlayer.getPlayer().ifPresent(streamPlayer -> streamPlayer.playSound(streamPlayer.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, 1, 1)));
+
+            // Broadcast messages
+            e.getGameMatch().getPlayerList().forEach(streamPlayer -> {
+                if (gameMatchTeam.hasPlayer(streamPlayer.getUniqueId())) {
+                    streamPlayer.showTitle(Title.title(Component.text(GameConstants.MESSAGE_BED_DESTRUCTION_TITLE), Component.text(GameConstants.MESSAGE_BED_DESTRUCTION_SUBTITLE)));
+                    GameConstants.MESSAGE_BED_DESTRUCTION_YOUR.forEach(line -> streamPlayer.sendMessage(line
+                            .replaceAll("%destroyer-team-color%", e.getGameMatchTeam().getGameTeam().getChatColor().toString())
+                            .replaceAll("%destroyer-player-name%", player.getName())
+                    ));
+                } else {
+                    GameConstants.MESSAGE_BED_DESTRUCTION_OTHERS.forEach(line -> streamPlayer.sendMessage(line
+                            .replaceAll("%team-color%", gameMatchTeam.getGameTeam().getChatColor().toString())
+                            .replaceAll("%team-name%", gameMatchTeam.getGameTeam().getDisplay())
+                            .replaceAll("%destroyer-team-color%", e.getGameMatchTeam().getGameTeam().getChatColor().toString())
+                            .replaceAll("%destroyer-team-name%", e.getGameMatchTeam().getGameTeam().getDisplay())
+                            .replaceAll("%destroyer-player-name%", player.getName())
+                    ));
+                }
+            });
+        });
     }
 
     @EventHandler
@@ -275,7 +322,7 @@ public class MatchListeners implements Listener {
     @EventHandler
     public void on(@NotNull MatchVillagerInteractEvent e) {
         if (e.getMatchVillager().getVillagerType() == VillagerType.ITEM_SHOP) {
-            ShopMenu shopMenu = new ShopMenu(e.getPlayer(), e.getGameMatch());
+            ShopMenu shopMenu = new ShopMenu(e.getPlayer(), e.getGameMatch(), e.getGameMatchPlayer());
             e.getPlayer().openInventory(shopMenu.getInventory());
         }
     }

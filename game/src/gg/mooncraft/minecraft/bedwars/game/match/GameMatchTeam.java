@@ -8,6 +8,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
 
 import gg.mooncraft.minecraft.bedwars.data.GameTeam;
+import gg.mooncraft.minecraft.bedwars.data.map.BedWarsMap;
+import gg.mooncraft.minecraft.bedwars.data.map.MapPointsContainer;
+import gg.mooncraft.minecraft.bedwars.data.map.point.TeamMapPoint;
 import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
 
 import java.util.Collections;
@@ -24,6 +27,7 @@ public final class GameMatchTeam {
     /*
     Fields
      */
+    private final @NotNull GameMatch parent;
     private final int id;
     private final @NotNull GameTeam gameTeam;
     private final @NotNull List<GameMatchPlayer> matchPlayerList;
@@ -33,7 +37,8 @@ public final class GameMatchTeam {
     /*
     Constructor
      */
-    public GameMatchTeam(int id, @NotNull GameTeam gameTeam) {
+    public GameMatchTeam(@NotNull GameMatch parent, int id, @NotNull GameTeam gameTeam) {
+        this.parent = parent;
         this.id = id;
         this.gameTeam = gameTeam;
         this.matchPlayerList = new LinkedList<>();
@@ -74,7 +79,12 @@ public final class GameMatchTeam {
 
     @UnmodifiableView
     public @NotNull List<GameMatchPlayer> getMatchPlayerList() {
-        return Collections.unmodifiableList(matchPlayerList);
+        return Collections.unmodifiableList(this.matchPlayerList);
+    }
+
+    @UnmodifiableView
+    public @NotNull List<TeamMapPoint> getMapPointList() {
+        return this.parent.getBedWarsMap().map(BedWarsMap::getPointsContainer).map(MapPointsContainer::getTeamPointList).stream().flatMap(List::stream).filter(teamMapPoint -> teamMapPoint.getGameMode() == this.parent.getGameMode() && teamMapPoint.getGameTeam() == this.gameTeam).toList();
     }
 
     /*
