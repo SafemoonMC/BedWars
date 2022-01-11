@@ -155,7 +155,6 @@ public class PlayerListeners implements Listener {
                 e.setCancelled(true);
                 e.setKeepLevel(false);
                 e.setKeepInventory(false);
-                Bukkit.broadcastMessage("PlayerDeath");
             });
         });
         e.deathMessage(Component.empty());
