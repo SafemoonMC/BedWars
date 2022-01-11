@@ -30,6 +30,7 @@ import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
 import gg.mooncraft.minecraft.bedwars.game.events.EventsAPI;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchBlockBreakEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchBlockPlaceEvent;
+import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerDamageEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerDeathEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerJoinEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerQuitEvent;
@@ -123,12 +124,15 @@ public class PlayerListeners implements Listener {
         Player damager = lookupPlayer(e.getDamager());
         if (damager != null) {
             BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player).ifPresent(gameMatch -> {
-                if (gameMatch.getGameState() != GameState.PLAYING || gameMatch.getTeamOf(player).map(gameMatchTeam -> gameMatchTeam.hasPlayer(damager.getUniqueId())).orElse(false)) {
-                    e.setDamage(0);
-                    e.setCancelled(true);
-                    return;
-                }
-                gameMatch.getDamageSystem().trackPlayer(player, damager, e.getFinalDamage());
+                gameMatch.getDataOf(player).ifPresent(gameMatchPlayer -> {
+                    if (gameMatch.getGameState() != GameState.PLAYING || gameMatchPlayer.getParent().hasPlayer(damager.getUniqueId())) {
+                        e.setDamage(0);
+                        e.setCancelled(true);
+                        return;
+                    }
+                    gameMatch.getDamageSystem().trackPlayer(player, damager, e.getFinalDamage());
+                    EventsAPI.callEventSync(new MatchPlayerDamageEvent(player, gameMatch, gameMatchPlayer.getParent(), gameMatchPlayer, e.getFinalDamage()));
+                });
             });
         }
     }

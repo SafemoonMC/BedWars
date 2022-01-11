@@ -71,7 +71,11 @@ public final class GameConstants {
             ""
     );
 
+    public static final @NotNull String MESSAGE_BLOCK_UNBREAKABLE = DisplayUtilities.getColored("&cYou can only break blocks placed by other players!");
     public static final @NotNull String MESSAGE_BLOCK_HEIGHT_LIMIT = DisplayUtilities.getColored("&cBuild height limit reached!");
+    public static final @NotNull String MESSAGE_PLAYER_INVISIBILITY = DisplayUtilities.getColored("&aYou are completely invisible including your armor for the next 30 seconds or until you get hit!");
+    public static final @NotNull String MESSAGE_PLAYER_INVISIBILITY_END = DisplayUtilities.getColored("&cYou are no longer invisible!");
+    public static final @NotNull String MESSAGE_PLAYER_INVISIBILITY_ARMOR = DisplayUtilities.getColored("&cYour armor is no longer invisible since you got hit!");
     public static final @NotNull String MESSAGE_PLAYER_DIES = DisplayUtilities.getColored("&7&o%player% died!");
     public static final @NotNull String MESSAGE_PLAYER_KILL = DisplayUtilities.getColored("&7&o%killer% killed %killed% with %weapon%!");
     public static final @NotNull String MESSAGE_PLAYER_JOIN = "%vault_rankprefix%%vault_suffix%%player_name% &ehas joined (&b%game-players-count%&e/&b%game-players-capacity%&e)!";
