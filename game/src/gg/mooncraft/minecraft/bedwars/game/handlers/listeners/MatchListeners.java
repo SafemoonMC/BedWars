@@ -32,6 +32,7 @@ import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerDeathEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerJoinEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerQuitEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchUpdateGameEvent;
+import gg.mooncraft.minecraft.bedwars.game.events.MatchUpdatePlayerEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchUpdateStateEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchVillagerInteractEvent;
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatch;
@@ -41,6 +42,7 @@ import gg.mooncraft.minecraft.bedwars.game.match.PlayerStatus;
 import gg.mooncraft.minecraft.bedwars.game.match.VillagerType;
 import gg.mooncraft.minecraft.bedwars.game.match.tasks.GameMatchEvent;
 import gg.mooncraft.minecraft.bedwars.game.match.tasks.GeneratorTask;
+import gg.mooncraft.minecraft.bedwars.game.match.tasks.SpectatorTask;
 import gg.mooncraft.minecraft.bedwars.game.menu.ShopMenu;
 import gg.mooncraft.minecraft.bedwars.game.utilities.DisplayUtilities;
 import gg.mooncraft.minecraft.bedwars.game.utilities.InvisibilityUtilities;
@@ -127,6 +129,31 @@ public class MatchListeners implements Listener {
         Bukkit.broadcastMessage(gameMatch.getDimension().getName() + " match event: " + gameMatchEvent.getGameEvent().name());
     }
 
+
+    @EventHandler
+    public void on(@NotNull MatchUpdatePlayerEvent e) {
+        GameMatch gameMatch = e.getGameMatch();
+        GameMatchPlayer gameMatchPlayer = e.getGameMatchPlayer();
+
+        switch (gameMatchPlayer.getPlayerStatus()) {
+            case ALIVE -> {
+                e.getGameMatchPlayer().getPlayer().ifPresent(player -> {
+                    e.getGameMatchPlayer().getParent().getMapPointList().stream().filter(teamMapPoint -> teamMapPoint.getType() == PointTypes.TEAM.TEAM_SPAWNPOINT).findFirst().ifPresent(teamMapPoint -> {
+                        Location location = PointAdapter.adapt(gameMatch, teamMapPoint);
+                        player.teleportAsync(location);
+                        player.setGameMode(GameMode.SURVIVAL);
+
+                        player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 2, 2);
+                    });
+                });
+            }
+            case RESPAWNING -> {
+                e.getGameMatchPlayer().getPlayer().ifPresent(player -> player.setGameMode(GameMode.SPECTATOR));
+                new SpectatorTask(gameMatch, gameMatchPlayer).play();
+            }
+        }
+    }
+
     @EventHandler
     public void on(@NotNull MatchPlayerJoinEvent e) {
         Player player = e.getPlayer();
@@ -197,7 +224,7 @@ public class MatchListeners implements Listener {
         // Else the player must be set as a spectator
         if (gameMatch.getGameState() != GameState.WAITING) {
             GameMatchPlayer gameMatchPlayer = e.getGameMatchPlayer();
-            gameMatchPlayer.setStatus(PlayerStatus.SPECTATING);
+            gameMatchPlayer.updateStatus(PlayerStatus.SPECTATING);
         } else {
             e.getGameMatchTeam().delPlayer(player.getUniqueId());
         }
@@ -316,6 +343,9 @@ public class MatchListeners implements Listener {
     public void on(@NotNull MatchPlayerDeathEvent e) {
         Player player = e.getPlayer();
         GameMatch gameMatch = e.getGameMatch();
+        GameMatchPlayer gameMatchPlayer = e.getPlayerMatchPlayer();
+        gameMatchPlayer.updateStatus(PlayerStatus.RESPAWNING);
+
         gameMatch.getPlayerList().forEach(streamPlayer -> {
             if (e.getReason() == MatchPlayerDeathEvent.Reason.PLAYER) {
                 streamPlayer.sendMessage(GameConstants.MESSAGE_PLAYER_KILL

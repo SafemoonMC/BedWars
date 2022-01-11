@@ -10,6 +10,9 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import gg.mooncraft.minecraft.bedwars.game.events.EventsAPI;
+import gg.mooncraft.minecraft.bedwars.game.events.MatchUpdatePlayerEvent;
+
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -40,8 +43,9 @@ public final class GameMatchPlayer {
     /*
     Methods
      */
-    public void setStatus(@NotNull PlayerStatus playerStatus) {
+    public void updateStatus(@NotNull PlayerStatus playerStatus) {
         this.playerStatus = playerStatus;
+        EventsAPI.callEventSync(new MatchUpdatePlayerEvent(getParent().getParent(), this));
     }
 
     public @NotNull Optional<Player> getPlayer() {
