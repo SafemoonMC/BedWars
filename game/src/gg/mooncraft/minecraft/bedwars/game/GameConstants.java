@@ -18,6 +18,12 @@ public final class GameConstants {
      */
     public static final @NotNull String DEFAULT_WORLD_NAME = "VoidworldStart";
 
+    public static final int ANNOUNCER_TIP_INTERVAL = 190;
+    public static final @NotNull List<String> ANNOUNCER_MESSAGES = Arrays.asList(
+            DisplayUtilities.getColored("&cCross-teaming is not allowed! Report rule breakers with /report <player>."),
+            DisplayUtilities.getColored("&cReport rule breakers with /report <player>.")
+    );
+
     public static final @NotNull String BOSSBAR_TITLE = DisplayUtilities.getColored("&f&lPlaying &3&lBED WARS &f&lon &3&lPLAY.MOONCRAFT.GG");
     public static final @NotNull String NAMETAG_FORMAT = "%color%%team% &7| %color%";
     public static final @NotNull String SCOREBOARD_TITLE = "&b⁂ &6&lBED WARS &b⁂";

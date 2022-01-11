@@ -16,6 +16,7 @@ import gg.mooncraft.minecraft.bedwars.data.map.point.TeamMapPoint;
 import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
 import gg.mooncraft.minecraft.bedwars.game.events.EventsAPI;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchUpdateStateEvent;
+import gg.mooncraft.minecraft.bedwars.game.match.systems.AnnouncerSystem;
 import gg.mooncraft.minecraft.bedwars.game.match.systems.BlocksSystem;
 import gg.mooncraft.minecraft.bedwars.game.match.systems.DamageSystem;
 import gg.mooncraft.minecraft.bedwars.game.match.systems.EventSystem;
@@ -53,6 +54,7 @@ public final class GameMatch {
     private FurnaceSystem furnaceSystem;
     private GeneratorSystem generatorSystem;
     private VillagersSystem villagersSystem;
+    private AnnouncerSystem announcerSystem;
 
     /*
     Constructor
@@ -82,6 +84,7 @@ public final class GameMatch {
         this.furnaceSystem = new FurnaceSystem(this);
         this.generatorSystem = new GeneratorSystem(this);
         this.villagersSystem = new VillagersSystem(this);
+        this.announcerSystem = new AnnouncerSystem(this);
     }
 
     /*
