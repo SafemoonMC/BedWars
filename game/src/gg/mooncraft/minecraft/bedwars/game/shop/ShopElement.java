@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import gg.mooncraft.minecraft.bedwars.game.items.ItemStackCreator;
+import gg.mooncraft.minecraft.bedwars.game.match.GameMatchPlayer;
 import gg.mooncraft.minecraft.bedwars.game.match.options.OptionEntry;
 import gg.mooncraft.minecraft.bedwars.game.utilities.ItemsUtilities;
 import gg.mooncraft.minecraft.bedwars.game.utilities.StringUtilities;
@@ -31,7 +32,7 @@ public class ShopElement {
     /*
     Methods
      */
-    public @NotNull ItemStack getIconItem(@NotNull Player player) {
+    public @NotNull ItemStack getIconItem(@NotNull Player player, @NotNull GameMatchPlayer gameMatchPlayer) {
         String color = ItemsUtilities.hasEnoughItems(player, this.costEntry.getKey(), this.costEntry.getValue()) ? "&a" : "&c";
         String lastLine = ItemsUtilities.hasEnoughItems(player, this.costEntry.getKey(), this.costEntry.getValue()) ? "&eClick to purchase!" : "&cYou can't afford this.";
         ItemStack itemStack = ItemStackCreator.using(getDisplayIcon())

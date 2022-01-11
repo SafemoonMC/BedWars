@@ -30,14 +30,14 @@ public final class Shops {
         // Blocks SOLO
         SOLO_SHOP.addItem("blocks", new ShopElementItemDynamic(
                         "Wool",
-                        "&7Great for bridging across\n&7islands. Turns into your team's color.",
+                        "&7Great for bridging across\n&7islands. Turns into your team's\n&7color.",
                         new OptionEntry<>(Material.IRON_INGOT, 4),
                         Material.WHITE_WOOL,
                         gameMatchPlayer -> ItemStackCreator.using(ItemsUtilities.createWoolitem(gameMatchPlayer.getParent().getGameTeam())).amount(16).create()
                 )
         );
         SOLO_SHOP.addItem("blocks", new ShopElementItem(
-                        "Hard Clay",
+                        "Hardened Clay",
                         "&7Basic block to defend your bed.",
                         new OptionEntry<>(Material.IRON_INGOT, 12),
                         Material.TERRACOTTA,
@@ -61,15 +61,15 @@ public final class Shops {
                 )
         );
         SOLO_SHOP.addItem("blocks", new ShopElementItem(
-                        "Ladders",
+                        "Ladder",
                         "&7Useful to save cats stuck in\n&7trees.",
                         new OptionEntry<>(Material.IRON_INGOT, 4),
                         Material.LADDER,
-                        ItemStackCreator.using(Material.LADDER).amount(16).create()
+                        ItemStackCreator.using(Material.LADDER).amount(8).create()
                 )
         );
         SOLO_SHOP.addItem("blocks", new ShopElementItem(
-                        "Wood",
+                        "Oak Wood Planks",
                         "&7Good block to defend your bed.\n&7Strong agains pickaxes.",
                         new OptionEntry<>(Material.GOLD_INGOT, 4),
                         Material.OAK_PLANKS,
@@ -87,14 +87,14 @@ public final class Shops {
         // Blocks DUOS
         DUOS_SHOP.addItem("blocks", new ShopElementItemDynamic(
                         "Wool",
-                        "&7Great for bridging across\n&7islands. Turns into your team's color.",
+                        "&7Great for bridging across\n&7islands. Turns into your team's\n&7color.",
                         new OptionEntry<>(Material.IRON_INGOT, 4),
                         Material.WHITE_WOOL,
                         gameMatchPlayer -> ItemStackCreator.using(ItemsUtilities.createWoolitem(gameMatchPlayer.getParent().getGameTeam())).amount(16).create()
                 )
         );
         DUOS_SHOP.addItem("blocks", new ShopElementItem(
-                        "Hard Clay",
+                        "Hardened Clay",
                         "&7Basic block to defend your bed.",
                         new OptionEntry<>(Material.IRON_INGOT, 12),
                         Material.TERRACOTTA,
@@ -118,15 +118,15 @@ public final class Shops {
                 )
         );
         DUOS_SHOP.addItem("blocks", new ShopElementItem(
-                        "Ladders",
+                        "Ladder",
                         "&7Useful to save cats stuck in\n&7trees.",
                         new OptionEntry<>(Material.IRON_INGOT, 4),
                         Material.LADDER,
-                        ItemStackCreator.using(Material.LADDER).amount(16).create()
+                        ItemStackCreator.using(Material.LADDER).amount(8).create()
                 )
         );
         DUOS_SHOP.addItem("blocks", new ShopElementItem(
-                        "Wood",
+                        "Oak Wood Planks",
                         "&7Good block to defend your bed.\n&7Strong agains pickaxes.",
                         new OptionEntry<>(Material.GOLD_INGOT, 4),
                         Material.OAK_PLANKS,
@@ -144,14 +144,14 @@ public final class Shops {
         // Blocks TRIOS
         TRIOS_SHOP.addItem("blocks", new ShopElementItemDynamic(
                         "Wool",
-                        "&7Great for bridging across\n&7islands. Turns into your team's color.",
+                        "&7Great for bridging across\n&7islands. Turns into your team's\n&7color.",
                         new OptionEntry<>(Material.IRON_INGOT, 4),
                         Material.WHITE_WOOL,
                         gameMatchPlayer -> ItemStackCreator.using(ItemsUtilities.createWoolitem(gameMatchPlayer.getParent().getGameTeam())).amount(16).create()
                 )
         );
         TRIOS_SHOP.addItem("blocks", new ShopElementItem(
-                        "Hard Clay",
+                        "Hardened Clay",
                         "&7Basic block to defend your bed.",
                         new OptionEntry<>(Material.IRON_INGOT, 12),
                         Material.TERRACOTTA,
@@ -175,15 +175,15 @@ public final class Shops {
                 )
         );
         TRIOS_SHOP.addItem("blocks", new ShopElementItem(
-                        "Ladders",
+                        "Ladder",
                         "&7Useful to save cats stuck in\n&7trees.",
                         new OptionEntry<>(Material.IRON_INGOT, 4),
                         Material.LADDER,
-                        ItemStackCreator.using(Material.LADDER).amount(16).create()
+                        ItemStackCreator.using(Material.LADDER).amount(8).create()
                 )
         );
         TRIOS_SHOP.addItem("blocks", new ShopElementItem(
-                        "Wood",
+                        "Oak Wood Planks",
                         "&7Good block to defend your bed.\n&7Strong agains pickaxes.",
                         new OptionEntry<>(Material.GOLD_INGOT, 4),
                         Material.OAK_PLANKS,
@@ -201,14 +201,14 @@ public final class Shops {
         // Blocks QUADS
         QUADS_SHOP.addItem("blocks", new ShopElementItemDynamic(
                         "Wool",
-                        "&7Great for bridging across\n&7islands. Turns into your team's color.",
+                        "&7Great for bridging across\n&7islands. Turns into your team's\n&7color.",
                         new OptionEntry<>(Material.IRON_INGOT, 4),
                         Material.WHITE_WOOL,
                         gameMatchPlayer -> ItemStackCreator.using(ItemsUtilities.createWoolitem(gameMatchPlayer.getParent().getGameTeam())).amount(16).create()
                 )
         );
         QUADS_SHOP.addItem("blocks", new ShopElementItem(
-                        "Hard Clay",
+                        "Hardened Clay",
                         "&7Basic block to defend your bed.",
                         new OptionEntry<>(Material.IRON_INGOT, 12),
                         Material.TERRACOTTA,
@@ -232,7 +232,7 @@ public final class Shops {
                 )
         );
         QUADS_SHOP.addItem("blocks", new ShopElementItem(
-                        "Ladders",
+                        "Ladder",
                         "&7Useful to save cats stuck in\n&7trees.",
                         new OptionEntry<>(Material.IRON_INGOT, 4),
                         Material.LADDER,
@@ -240,7 +240,7 @@ public final class Shops {
                 )
         );
         QUADS_SHOP.addItem("blocks", new ShopElementItem(
-                        "Wood",
+                        "Oak Wood Planks",
                         "&7Good block to defend your bed.\n&7Strong agains pickaxes.",
                         new OptionEntry<>(Material.GOLD_INGOT, 4),
                         Material.OAK_PLANKS,
@@ -257,132 +257,132 @@ public final class Shops {
         );
         // Melee SOLO
         SOLO_SHOP.addItem("melee", new ShopElementItem(
-                        "&6Stone Sword",
-                        "Description",
-                        new OptionEntry<>(Material.IRON_INGOT, 2),
+                        "Stone Sword",
+                        "",
+                        new OptionEntry<>(Material.IRON_INGOT, 10),
                         Material.STONE_SWORD,
                         ItemStackCreator.using(Material.STONE_SWORD).amount(1).create()
                 )
         );
         SOLO_SHOP.addItem("melee", new ShopElementItem(
-                        "&6Iron Sword",
-                        "Description",
-                        new OptionEntry<>(Material.IRON_INGOT, 2),
+                        "Iron Sword",
+                        "",
+                        new OptionEntry<>(Material.GOLD_INGOT, 7),
                         Material.IRON_SWORD,
                         ItemStackCreator.using(Material.IRON_SWORD).amount(1).create()
                 )
         );
         SOLO_SHOP.addItem("melee", new ShopElementItem(
-                        "&6Diamond Sword",
-                        "Description",
-                        new OptionEntry<>(Material.IRON_INGOT, 2),
+                        "Diamond Sword",
+                        "",
+                        new OptionEntry<>(Material.EMERALD, 4),
                         Material.DIAMOND_SWORD,
                         ItemStackCreator.using(Material.DIAMOND_SWORD).amount(1).create()
                 )
         );
         SOLO_SHOP.addItem("melee", new ShopElementItem(
-                        "&6Knockback Stick",
-                        "Description",
-                        new OptionEntry<>(Material.IRON_INGOT, 2),
+                        "Stick (Knockback I)",
+                        "",
+                        new OptionEntry<>(Material.GOLD_INGOT, 5),
                         Material.STICK,
                         ItemStackCreator.using(Material.STICK).amount(1).enchant(Enchantment.KNOCKBACK, 1).create()
                 )
         );
         // Melee DUOS
         DUOS_SHOP.addItem("melee", new ShopElementItem(
-                        "&6Stone Sword",
-                        "Description",
-                        new OptionEntry<>(Material.IRON_INGOT, 2),
+                        "Stone Sword",
+                        "",
+                        new OptionEntry<>(Material.IRON_INGOT, 10),
                         Material.STONE_SWORD,
                         ItemStackCreator.using(Material.STONE_SWORD).amount(1).create()
                 )
         );
         DUOS_SHOP.addItem("melee", new ShopElementItem(
-                        "&6Iron Sword",
-                        "Description",
-                        new OptionEntry<>(Material.IRON_INGOT, 2),
+                        "Iron Sword",
+                        "",
+                        new OptionEntry<>(Material.GOLD_INGOT, 7),
                         Material.IRON_SWORD,
                         ItemStackCreator.using(Material.IRON_SWORD).amount(1).create()
                 )
         );
         DUOS_SHOP.addItem("melee", new ShopElementItem(
-                        "&6Diamond Sword",
-                        "Description",
-                        new OptionEntry<>(Material.IRON_INGOT, 2),
+                        "Diamond Sword",
+                        "",
+                        new OptionEntry<>(Material.EMERALD, 4),
                         Material.DIAMOND_SWORD,
                         ItemStackCreator.using(Material.DIAMOND_SWORD).amount(1).create()
                 )
         );
         DUOS_SHOP.addItem("melee", new ShopElementItem(
-                        "&6Knockback Stick",
-                        "Description",
-                        new OptionEntry<>(Material.IRON_INGOT, 2),
+                        "Stick (Knockback I)",
+                        "",
+                        new OptionEntry<>(Material.GOLD_INGOT, 5),
                         Material.STICK,
                         ItemStackCreator.using(Material.STICK).amount(1).enchant(Enchantment.KNOCKBACK, 1).create()
                 )
         );
         // Melee TRIOS
         TRIOS_SHOP.addItem("melee", new ShopElementItem(
-                        "&6Stone Sword",
-                        "Description",
-                        new OptionEntry<>(Material.IRON_INGOT, 2),
+                        "Stone Sword",
+                        "",
+                        new OptionEntry<>(Material.IRON_INGOT, 10),
                         Material.STONE_SWORD,
                         ItemStackCreator.using(Material.STONE_SWORD).amount(1).create()
                 )
         );
         TRIOS_SHOP.addItem("melee", new ShopElementItem(
-                        "&6Iron Sword",
-                        "Description",
-                        new OptionEntry<>(Material.IRON_INGOT, 2),
+                        "Iron Sword",
+                        "",
+                        new OptionEntry<>(Material.GOLD_INGOT, 7),
                         Material.IRON_SWORD,
                         ItemStackCreator.using(Material.IRON_SWORD).amount(1).create()
                 )
         );
         TRIOS_SHOP.addItem("melee", new ShopElementItem(
-                        "&6Diamond Sword",
-                        "Description",
-                        new OptionEntry<>(Material.IRON_INGOT, 2),
+                        "Diamond Sword",
+                        "",
+                        new OptionEntry<>(Material.EMERALD, 3),
                         Material.DIAMOND_SWORD,
                         ItemStackCreator.using(Material.DIAMOND_SWORD).amount(1).create()
                 )
         );
         TRIOS_SHOP.addItem("melee", new ShopElementItem(
-                        "&6Knockback Stick",
-                        "Description",
-                        new OptionEntry<>(Material.IRON_INGOT, 2),
+                        "Stick (Knockback I)",
+                        "",
+                        new OptionEntry<>(Material.GOLD_INGOT, 5),
                         Material.STICK,
                         ItemStackCreator.using(Material.STICK).amount(1).enchant(Enchantment.KNOCKBACK, 1).create()
                 )
         );
         // Melee QUADS
         QUADS_SHOP.addItem("melee", new ShopElementItem(
-                        "&6Stone Sword",
-                        "Description",
-                        new OptionEntry<>(Material.IRON_INGOT, 2),
+                        "Stone Sword",
+                        "",
+                        new OptionEntry<>(Material.IRON_INGOT, 10),
                         Material.STONE_SWORD,
                         ItemStackCreator.using(Material.STONE_SWORD).amount(1).create()
                 )
         );
         QUADS_SHOP.addItem("melee", new ShopElementItem(
-                        "&6Iron Sword",
-                        "Description",
-                        new OptionEntry<>(Material.IRON_INGOT, 2),
+                        "Iron Sword",
+                        "",
+                        new OptionEntry<>(Material.GOLD_INGOT, 7),
                         Material.IRON_SWORD,
                         ItemStackCreator.using(Material.IRON_SWORD).amount(1).create()
                 )
         );
         QUADS_SHOP.addItem("melee", new ShopElementItem(
-                        "&6Diamond Sword",
-                        "Description",
-                        new OptionEntry<>(Material.IRON_INGOT, 2),
+                        "Diamond Sword",
+                        "",
+                        new OptionEntry<>(Material.EMERALD, 3),
                         Material.DIAMOND_SWORD,
                         ItemStackCreator.using(Material.DIAMOND_SWORD).amount(1).create()
                 )
         );
         QUADS_SHOP.addItem("melee", new ShopElementItem(
-                        "&6Knockback Stick",
-                        "Description",
-                        new OptionEntry<>(Material.IRON_INGOT, 2),
+                        "Stick (Knockback I)",
+                        "",
+                        new OptionEntry<>(Material.GOLD_INGOT, 5),
                         Material.STICK,
                         ItemStackCreator.using(Material.STICK).amount(1).enchant(Enchantment.KNOCKBACK, 1).create()
                 )

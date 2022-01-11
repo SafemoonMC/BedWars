@@ -60,6 +60,7 @@ public final class ShopMenu implements ShopInterface {
      */
     private final @NotNull Player player;
     private final @NotNull GameMatch gameMatch;
+    private final @NotNull GameMatchPlayer gameMatchPlayer;
     private final @NotNull Inventory inventory;
     private final @NotNull Map<Integer, ShopCategory> categoryMap;
 
@@ -68,9 +69,10 @@ public final class ShopMenu implements ShopInterface {
     /*
     Constructor
      */
-    public ShopMenu(@NotNull Player player, @NotNull GameMatch gameMatch) {
+    public ShopMenu(@NotNull Player player, @NotNull GameMatch gameMatch, @NotNull GameMatchPlayer gameMatchPlayer) {
         this.player = player;
         this.gameMatch = gameMatch;
+        this.gameMatchPlayer = gameMatchPlayer;
         this.inventory = Bukkit.createInventory(this, 54, Component.text(GameConstants.SHOP_ITEMS_TITLE));
         this.categoryMap = new HashMap<>();
         // Load and select default category
@@ -117,7 +119,7 @@ public final class ShopMenu implements ShopInterface {
         ShopCategory shopCategory = categoryMap.get(categorySlot);
         for (ShopElement shopElement : shopCategory.getElementList()) {
             int slot = ELEMENTS[index];
-            this.inventory.setItem(slot, shopElement.getIconItem(player));
+            this.inventory.setItem(slot, shopElement.getIconItem(player, gameMatchPlayer));
             index++;
         }
 
@@ -135,7 +137,7 @@ public final class ShopMenu implements ShopInterface {
         }
         int element = slot - 19;
         ShopCategory shopCategory = this.categoryMap.get(selectedCategorySlot);
-        if (element < shopCategory.getElementList().size()) {
+        if (element < shopCategory.getElementList().size() && element >= 0) {
             ShopElement shopElement = shopCategory.getElementList().get(element);
 
             if (!ItemsUtilities.hasEnoughItems(player, shopElement.getCostEntry().getKey(), shopElement.getCostEntry().getValue())) {
@@ -144,13 +146,15 @@ public final class ShopMenu implements ShopInterface {
                 return;
             }
 
+            ItemStack costItem = ItemsUtilities.createPureItem(shopElement.getCostEntry().getKey());
+            costItem.setAmount(shopElement.getCostEntry().getValue());
             if (shopElement instanceof ShopElementItem shopElementItem) {
-                player.getInventory().removeItem(new ItemStack(shopElement.getCostEntry().getKey(), shopElement.getCostEntry().getValue()));
+                player.getInventory().removeItemAnySlot(costItem);
                 player.getInventory().addItem(shopElementItem.getItemStack());
                 player.sendMessage(GameConstants.MESSAGE_SHOP_BUY.replaceAll("%shop-item%", DisplayUtilities.getDisplay(shopElementItem.getItemStack())));
             }
             if (shopElement instanceof ShopElementItemDynamic shopElementItemDynamic) {
-                player.getInventory().removeItem(new ItemStack(shopElement.getCostEntry().getKey(), shopElement.getCostEntry().getValue()));
+                player.getInventory().removeItemAnySlot(costItem);
                 player.getInventory().addItem(shopElementItemDynamic.getItemStackFunction().apply(gameMatchPlayer));
                 player.sendMessage(GameConstants.MESSAGE_SHOP_BUY.replaceAll("%shop-item%", DisplayUtilities.getDisplay(shopElementItemDynamic.getItemStackFunction().apply(gameMatchPlayer))));
             }
