@@ -58,12 +58,16 @@ public final class GameServerMessage extends AbstractMessage {
     @AllArgsConstructor
     public static class GameServer {
         private final @NotNull String serverName;
+        private final @NotNull ServerStatus serverStatus;
         private final @NotNull List<GameServerMatch> matchList;
 
         /*
         Methods
          */
         public boolean isAvailableFor(@NotNull GameMode gameMode, int players) {
+            if (serverStatus == ServerStatus.DISABLED) {
+                return false;
+            }
             return this.matchList.stream()
                     .filter(gameServerMatch -> gameServerMatch.getGameMode() == gameMode)
                     .anyMatch(gameServerMatch -> (gameServerMatch.getGameMode().getWeight() - gameServerMatch.getPlayers()) >= players);
@@ -109,5 +113,10 @@ public final class GameServerMessage extends AbstractMessage {
         public int hashCode() {
             return Objects.hash(getGameUniqueId());
         }
+    }
+
+    public enum ServerStatus {
+        ENABLED,
+        DISABLED
     }
 }

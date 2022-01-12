@@ -3,6 +3,7 @@ package gg.mooncraft.minecraft.bedwars.game.managers;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
 
+import gg.mooncraft.minecraft.bedwars.common.messages.GameServerMessage;
 import gg.mooncraft.minecraft.bedwars.data.GameMode;
 import gg.mooncraft.minecraft.bedwars.data.MapDAO;
 import gg.mooncraft.minecraft.bedwars.data.map.BedWarsMap;
@@ -54,7 +55,7 @@ public final class MapManager {
                         .toArray(CompletableFuture[]::new))
                 .thenAccept(completableFutures -> {
                     CompletableFuture.allOf(completableFutures)
-                            .thenAccept(v -> BedWarsPlugin.getInstance().getGameServerManager().sendGameServerMessage());
+                            .thenAccept(v -> BedWarsPlugin.getInstance().getGameServerManager().sendServerStatus(GameServerMessage.ServerStatus.ENABLED));
                 });
     }
 

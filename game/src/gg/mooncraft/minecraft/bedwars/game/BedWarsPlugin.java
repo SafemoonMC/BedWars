@@ -17,6 +17,7 @@ import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
 import gg.mooncraft.minecraft.bedwars.common.ComplexJavaPlugin;
+import gg.mooncraft.minecraft.bedwars.common.messages.GameServerMessage;
 import gg.mooncraft.minecraft.bedwars.common.messaging.RedisChannel;
 import gg.mooncraft.minecraft.bedwars.common.messaging.RedisMessenger;
 import gg.mooncraft.minecraft.bedwars.common.utilities.IOUtils;
@@ -125,6 +126,9 @@ public class BedWarsPlugin extends ComplexJavaPlugin {
 
     @Override
     public void onDisable() {
+        // Notify lobbies about the new status
+        getGameServerManager().sendServerStatus(GameServerMessage.ServerStatus.DISABLED);
+
         // Unlock loaded worlds
         if (mapManager != null) {
             getMapManager().getWorldsMap().values().stream().filter(slimeBukkitPair -> slimeBukkitPair.slimeWorld().isLocked()).forEach(slimeBukkitPair -> {

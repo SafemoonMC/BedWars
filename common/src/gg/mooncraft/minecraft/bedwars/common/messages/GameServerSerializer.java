@@ -26,6 +26,7 @@ public final class GameServerSerializer {
     public static @NotNull JsonObject serialize(@NotNull GameServerMessage.GameServer gameServer) {
         return new JsonObjectWrapper()
                 .add("server-name", new JsonPrimitive(gameServer.getServerName()))
+                .add("server-status", new JsonPrimitive(gameServer.getServerStatus().name()))
                 .add("match-list", new JsonArrayWrapper()
                         .consume(jsonArrayWrapper -> {
                             for (GameServerMessage.GameServerMatch gameServerMatch : gameServer.getMatchList()) {
@@ -46,6 +47,7 @@ public final class GameServerSerializer {
         JsonObject jsonObject = jsonElement.getAsJsonObject();
 
         String serverName = jsonObject.get("server-name").getAsString();
+        GameServerMessage.ServerStatus serverStatus = GameServerMessage.ServerStatus.valueOf(jsonObject.get("server-status").getAsString());
         List<GameServerMessage.GameServerMatch> matchList = new ArrayList<>();
 
         JsonArray jsonArray = jsonObject.getAsJsonArray("match-list");
@@ -59,6 +61,6 @@ public final class GameServerSerializer {
             }
         }
 
-        return new GameServerMessage.GameServer(serverName, matchList);
+        return new GameServerMessage.GameServer(serverName, serverStatus, matchList);
     }
 }
