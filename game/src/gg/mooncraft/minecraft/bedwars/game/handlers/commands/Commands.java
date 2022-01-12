@@ -25,6 +25,9 @@ import gg.mooncraft.minecraft.bedwars.data.map.point.GameMapPoint;
 import gg.mooncraft.minecraft.bedwars.data.map.point.PointTypes;
 import gg.mooncraft.minecraft.bedwars.data.map.point.TeamMapPoint;
 import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
+import gg.mooncraft.minecraft.bedwars.game.mapping.MappingProcess;
+
+import java.util.Arrays;
 
 /**
  * Commands:
@@ -55,6 +58,26 @@ public final class Commands {
                                 } else {
                                     player.sendMessage("This game has already been started!");
                                 }
+                            }, () -> player.sendMessage("You're not in a game match."));
+                        })
+                )
+                .then(LiteralCommandBuilder
+                        .<Player>name("mapping")
+                        .executes(player -> {
+                            BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player).ifPresentOrElse(gameMatch -> {
+                                player.sendMessage("The mapping process has been started.");
+                                MappingProcess mappingProcess = new MappingProcess(gameMatch.getDimension());
+                                mappingProcess.retrieve().thenAccept(mappingResult -> {
+                                    gameMatch.getBedWarsMap().ifPresent(bedWarsMap -> Arrays.stream(GameMode.values()).forEach(gameMode -> {
+                                        bedWarsMap.getSettingsContainer().set(gameMode, "min-x", String.valueOf(mappingResult.minX()));
+                                        bedWarsMap.getSettingsContainer().set(gameMode, "min-y", String.valueOf(mappingResult.minY()));
+                                        bedWarsMap.getSettingsContainer().set(gameMode, "min-z", String.valueOf(mappingResult.minZ()));
+                                        bedWarsMap.getSettingsContainer().set(gameMode, "max-x", String.valueOf(mappingResult.maxX()));
+                                        bedWarsMap.getSettingsContainer().set(gameMode, "max-y", String.valueOf(mappingResult.maxY()));
+                                        bedWarsMap.getSettingsContainer().set(gameMode, "max-z", String.valueOf(mappingResult.maxZ()));
+                                    }));
+                                    player.sendMessage("The mapping process completed! Check console for further information!");
+                                });
                             }, () -> player.sendMessage("You're not in a game match."));
                         })
                 )
