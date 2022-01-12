@@ -11,7 +11,6 @@ import net.kyori.adventure.title.Title;
 import org.bukkit.Sound;
 import org.jetbrains.annotations.NotNull;
 
-import gg.mooncraft.minecraft.bedwars.data.GameState;
 import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
 import gg.mooncraft.minecraft.bedwars.game.GameConstants;
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatch;
@@ -51,7 +50,6 @@ public class SpectatorTask implements Runnable {
      */
     public void play() {
         if (this.schedulerTask != null) return;
-        this.gameMatch.updateState(GameState.STARTING);
         this.count = new AtomicInteger(SPECTATOR_COUNTDOWN_END);
         this.schedulerTask = BedWarsPlugin.getInstance().getScheduler().asyncRepeating(this, 1, TimeUnit.SECONDS);
     }
@@ -72,16 +70,23 @@ public class SpectatorTask implements Runnable {
         if (getTimeLeft() == 0) {
             gameMatchPlayer.updateStatus(PlayerStatus.ALIVE);
 
+            gameMatchPlayer.getPlayer().ifPresent(player -> {
+                player.sendMessage(GameConstants.MESSAGE_SPECTATOR_RESPAWN_CHAT);
+                player.showTitle(Title.title(Component.text(GameConstants.MESSAGE_SPECTATOR_RESPAWN_TITLE), Component.empty(), Title.Times.of(Duration.ofMillis(250), Duration.ofMillis(500), Duration.ofMillis(250))));
+            });
+
             this.schedulerTask.cancel();
             this.schedulerTask = null;
             return;
         }
         gameMatchPlayer.getPlayer().ifPresent(player -> {
             player.playSound(player.getLocation(), Sound.BLOCK_LEVER_CLICK, 2, 2);
-            player.showTitle(Title.title(Component.text(GameConstants.MESSAGE_SPECTATOR_TITLE), Component.text(GameConstants.MESSAGE_SPECTATOR_SUBTITLE
+
+            String message = GameConstants.MESSAGE_SPECTATOR_SUBTITLE
                     .replaceAll("%time%", String.valueOf(getTimeLeft()))
-                    .replaceAll("%time-unit%", getTimeUnit())
-            ), Title.Times.of(Duration.ofMillis(0), Duration.ofMillis(getTimeLeft() == 1 ? 1000 : 2000), Duration.ofMillis(0))));
+                    .replaceAll("%time-unit%", getTimeUnit());
+            player.sendMessage(message);
+            player.showTitle(Title.title(Component.text(GameConstants.MESSAGE_SPECTATOR_TITLE), Component.text(message), Title.Times.of(Duration.ofMillis(0), Duration.ofMillis(2000), Duration.ofMillis(0))));
         });
 
         this.count.getAndDecrement();

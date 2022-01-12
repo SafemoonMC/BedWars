@@ -63,9 +63,10 @@ public final class GameConstants {
     public static final @NotNull String MESSAGE_SHOP_CANNOT_AFFORD = DisplayUtilities.getColored("&cYou don't have enough materials!");
     public static final @NotNull String MESSAGE_SHOP_BUY = DisplayUtilities.getColored("&bYou purchased &3%shop-item%");
 
-    public static final @NotNull String MESSAGE_SPECTATOR_TITLE = DisplayUtilities.getColored("&5SPECTATOR");
-    public static final @NotNull String MESSAGE_SPECTATOR_SUBTITLE = DisplayUtilities.getColored("&fYou will respawn in %time% %time-unit%!");
-
+    public static final @NotNull String MESSAGE_SPECTATOR_TITLE = DisplayUtilities.getColored("&cYOU DIED!");
+    public static final @NotNull String MESSAGE_SPECTATOR_SUBTITLE = DisplayUtilities.getColored("&eYou will respawn in %time% %time-unit%!");
+    public static final @NotNull String MESSAGE_SPECTATOR_RESPAWN_CHAT = DisplayUtilities.getColored("&eYou have respawned!");
+    public static final @NotNull String MESSAGE_SPECTATOR_RESPAWN_TITLE = DisplayUtilities.getColored("&aRESPAWNED!");
     public static final @NotNull String MESSAGE_BED_YOUR = DisplayUtilities.getColored("&cYou cannot break your bed!");
     public static final @NotNull String MESSAGE_BED_DESTRUCTION_TITLE = DisplayUtilities.getColored("&cBED DESTROYED!");
     public static final @NotNull String MESSAGE_BED_DESTRUCTION_SUBTITLE = DisplayUtilities.getColored("&fYou will no longer respawn!");
