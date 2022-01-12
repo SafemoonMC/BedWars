@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class WorldUtilities {
 
-    public static @NotNull Location[] getBedParts(@NotNull Block block) {
+    public static Location[] getBedParts(@NotNull Block block) {
         Location[] locations = new Location[2];
         locations[0] = block.getLocation();
 
@@ -23,6 +23,21 @@ public final class WorldUtilities {
         }
 
         return locations;
+    }
+
+    public static boolean isSameArea(Location location, Location center, int x, int y, int z) {
+        return isSameArea(location, center, x, y, z, false);
+    }
+
+    public static boolean isSameArea(@NotNull Location location, @NotNull Location center, int x, int y, int z, boolean upDown) {
+        Location minimumLocation = center.clone().subtract(x, upDown ? y : 1, z);
+        Location maximumLocation = center.clone().add(x, y, z);
+
+        int xx = location.getBlockX();
+        int yy = location.getBlockY();
+        int zz = location.getBlockZ();
+
+        return xx > minimumLocation.getBlockX() && xx < maximumLocation.getBlockX() && yy > minimumLocation.getBlockY() && yy < maximumLocation.getBlockY() && zz > minimumLocation.getBlockZ() && zz < maximumLocation.getBlockZ();
     }
 
     public static boolean isSameXYZ(Location firstLocation, Location secondLocation) {
