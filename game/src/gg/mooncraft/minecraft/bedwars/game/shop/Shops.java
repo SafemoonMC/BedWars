@@ -723,7 +723,6 @@ public final class Shops {
                         ItemStackCreator.using(Material.BOW).amount(1).enchant(Enchantment.ARROW_DAMAGE, 1).enchant(Enchantment.ARROW_KNOCKBACK, 1).create()
                 )
         );
-
         // Potions SOLO
         SOLO_SHOP.addItem("potions", new ShopElementItem(
                         "Speed II Potion (45 seconds)",
@@ -822,6 +821,363 @@ public final class Shops {
                         new OptionEntry<>(Material.EMERALD, 2),
                         Material.POTION,
                         ItemStackCreator.using(Material.POTION).amount(1).meta(PotionMetaCreator.class).color(Color.SILVER).type(PotionType.INVISIBILITY).effect(PotionEffectType.INVISIBILITY, 600, 0, false, false, true).stack().create()
+                )
+        );
+
+        // Utility SOLO
+        SOLO_SHOP.addItem("utility", new ShopElementItem(
+                        "Golden Apple",
+                        "&7Well-rounded healing.",
+                        new OptionEntry<>(Material.GOLD_INGOT, 3),
+                        Material.GOLDEN_APPLE,
+                        ItemStackCreator.using(Material.GOLDEN_APPLE).amount(1).create()
+                )
+        );
+        SOLO_SHOP.addItem("utility", new ShopElementItem(
+                        "Bedbug",
+                        "&7Spawns silverfish where the\n&7snowball lands to distract your\n&7enemies. Lasts 15 seconds.",
+                        new OptionEntry<>(Material.IRON_INGOT, 30),
+                        Material.SNOWBALL,
+                        ItemStackCreator.using(Material.SNOWBALL).amount(1).create()
+                )
+        );
+        SOLO_SHOP.addItem("utility", new ShopElementItem(
+                        "Dream Defender",
+                        "&7Iron Golem to help defend your\n&7base. Lasts 4 minutes.",
+                        new OptionEntry<>(Material.IRON_INGOT, 120),
+                        Material.POLAR_BEAR_SPAWN_EGG,
+                        ItemStackCreator.using(Material.POLAR_BEAR_SPAWN_EGG).amount(1).create()
+                )
+        );
+        SOLO_SHOP.addItem("utility", new ShopElementItem(
+                        "Fireball",
+                        "&7Right-click to launch! Great to\n&7knock back enemies walking on\n&7the bridges.",
+                        new OptionEntry<>(Material.IRON_INGOT, 40),
+                        Material.FIRE_CHARGE,
+                        ItemStackCreator.using(Material.FIRE_CHARGE).amount(1).create()
+                )
+        );
+        SOLO_SHOP.addItem("utility", new ShopElementItem(
+                        "TNT",
+                        "&7Instantly ignites, appropriate\n&7to explode things!",
+                        new OptionEntry<>(Material.GOLD_INGOT, 4),
+                        Material.TNT,
+                        ItemStackCreator.using(Material.TNT).amount(1).create()
+                )
+        );
+        SOLO_SHOP.addItem("utility", new ShopElementItem(
+                        "Ender Pearl",
+                        "&7The quickest way to invade enemy\n&7bases.",
+                        new OptionEntry<>(Material.EMERALD, 4),
+                        Material.ENDER_PEARL,
+                        ItemStackCreator.using(Material.ENDER_PEARL).amount(1).create()
+                )
+        );
+        SOLO_SHOP.addItem("utility", new ShopElementItem(
+                        "Water Bucket",
+                        "&7Great to slow down approaching\n&7enemies. Can also protect\n&7against TNT.",
+                        new OptionEntry<>(Material.GOLD_INGOT, 3),
+                        Material.WATER_BUCKET,
+                        ItemStackCreator.using(Material.WATER_BUCKET).amount(1).create()
+                )
+        );
+        SOLO_SHOP.addItem("utility", new ShopElementItem(
+                        "Bridge Egg",
+                        "&7This egg creates a bridge in its\n&7trail after being thrown.",
+                        new OptionEntry<>(Material.EMERALD, 1),
+                        Material.EGG,
+                        ItemStackCreator.using(Material.EGG).amount(1).create()
+                )
+        );
+        SOLO_SHOP.addItem("utility", new ShopElementItem(
+                        "Magic Milk",
+                        "&7Avoid triggering traps for 30\n&7seconds after consuming.",
+                        new OptionEntry<>(Material.GOLD_INGOT, 4),
+                        Material.MILK_BUCKET,
+                        ItemStackCreator.using(Material.MILK_BUCKET).amount(1).create()
+                )
+        );
+        SOLO_SHOP.addItem("utility", new ShopElementItem(
+                        "Sponge",
+                        "&7Great for soaking up water.",
+                        new OptionEntry<>(Material.GOLD_INGOT, 3),
+                        Material.SPONGE,
+                        ItemStackCreator.using(Material.SPONGE).amount(4).create()
+                )
+        );
+        SOLO_SHOP.addItem("utility", new ShopElementItem(
+                        "Compact Pop-up Tower",
+                        "&7Place a pop-up defense!",
+                        new OptionEntry<>(Material.IRON_INGOT, 24),
+                        Material.CHEST,
+                        ItemStackCreator.using(Material.CHEST).amount(1).create()
+                )
+        );
+        // Utility DUOS
+        DUOS_SHOP.addItem("utility", new ShopElementItem(
+                        "Golden Apple",
+                        "&7Well-rounded healing.",
+                        new OptionEntry<>(Material.GOLD_INGOT, 3),
+                        Material.GOLDEN_APPLE,
+                        ItemStackCreator.using(Material.GOLDEN_APPLE).amount(1).create()
+                )
+        );
+        DUOS_SHOP.addItem("utility", new ShopElementItem(
+                        "Bedbug",
+                        "&7Spawns silverfish where the\n&7snowball lands to distract your\n&7enemies. Lasts 15 seconds.",
+                        new OptionEntry<>(Material.IRON_INGOT, 30),
+                        Material.SNOWBALL,
+                        ItemStackCreator.using(Material.SNOWBALL).amount(1).create()
+                )
+        );
+        DUOS_SHOP.addItem("utility", new ShopElementItem(
+                        "Dream Defender",
+                        "&7Iron Golem to help defend your\n&7base. Lasts 4 minutes.",
+                        new OptionEntry<>(Material.IRON_INGOT, 120),
+                        Material.POLAR_BEAR_SPAWN_EGG,
+                        ItemStackCreator.using(Material.POLAR_BEAR_SPAWN_EGG).amount(1).create()
+                )
+        );
+        DUOS_SHOP.addItem("utility", new ShopElementItem(
+                        "Fireball",
+                        "&7Right-click to launch! Great to\n&7knock back enemies walking on\n&7the bridges.",
+                        new OptionEntry<>(Material.IRON_INGOT, 40),
+                        Material.FIRE_CHARGE,
+                        ItemStackCreator.using(Material.FIRE_CHARGE).amount(1).create()
+                )
+        );
+        DUOS_SHOP.addItem("utility", new ShopElementItem(
+                        "TNT",
+                        "&7Instantly ignites, appropriate\n&7to explode things!",
+                        new OptionEntry<>(Material.GOLD_INGOT, 4),
+                        Material.TNT,
+                        ItemStackCreator.using(Material.TNT).amount(1).create()
+                )
+        );
+        DUOS_SHOP.addItem("utility", new ShopElementItem(
+                        "Ender Pearl",
+                        "&7The quickest way to invade enemy\n&7bases.",
+                        new OptionEntry<>(Material.EMERALD, 4),
+                        Material.ENDER_PEARL,
+                        ItemStackCreator.using(Material.ENDER_PEARL).amount(1).create()
+                )
+        );
+        DUOS_SHOP.addItem("utility", new ShopElementItem(
+                        "Water Bucket",
+                        "&7Great to slow down approaching\n&7enemies. Can also protect\n&7against TNT.",
+                        new OptionEntry<>(Material.GOLD_INGOT, 3),
+                        Material.WATER_BUCKET,
+                        ItemStackCreator.using(Material.WATER_BUCKET).amount(1).create()
+                )
+        );
+        DUOS_SHOP.addItem("utility", new ShopElementItem(
+                        "Bridge Egg",
+                        "&7This egg creates a bridge in its\n&7trail after being thrown.",
+                        new OptionEntry<>(Material.EMERALD, 1),
+                        Material.EGG,
+                        ItemStackCreator.using(Material.EGG).amount(1).create()
+                )
+        );
+        DUOS_SHOP.addItem("utility", new ShopElementItem(
+                        "Magic Milk",
+                        "&7Avoid triggering traps for 30\n&7seconds after consuming.",
+                        new OptionEntry<>(Material.GOLD_INGOT, 4),
+                        Material.MILK_BUCKET,
+                        ItemStackCreator.using(Material.MILK_BUCKET).amount(1).create()
+                )
+        );
+        DUOS_SHOP.addItem("utility", new ShopElementItem(
+                        "Sponge",
+                        "&7Great for soaking up water.",
+                        new OptionEntry<>(Material.GOLD_INGOT, 3),
+                        Material.SPONGE,
+                        ItemStackCreator.using(Material.SPONGE).amount(4).create()
+                )
+        );
+        DUOS_SHOP.addItem("utility", new ShopElementItem(
+                        "Compact Pop-up Tower",
+                        "&7Place a pop-up defense!",
+                        new OptionEntry<>(Material.IRON_INGOT, 24),
+                        Material.CHEST,
+                        ItemStackCreator.using(Material.CHEST).amount(1).create()
+                )
+        );
+        // Utility TRIOS
+        TRIOS_SHOP.addItem("utility", new ShopElementItem(
+                        "Golden Apple",
+                        "&7Well-rounded healing.",
+                        new OptionEntry<>(Material.GOLD_INGOT, 3),
+                        Material.GOLDEN_APPLE,
+                        ItemStackCreator.using(Material.GOLDEN_APPLE).amount(1).create()
+                )
+        );
+        TRIOS_SHOP.addItem("utility", new ShopElementItem(
+                        "Bedbug",
+                        "&7Spawns silverfish where the\n&7snowball lands to distract your\n&7enemies. Lasts 15 seconds.",
+                        new OptionEntry<>(Material.IRON_INGOT, 30),
+                        Material.SNOWBALL,
+                        ItemStackCreator.using(Material.SNOWBALL).amount(1).create()
+                )
+        );
+        TRIOS_SHOP.addItem("utility", new ShopElementItem(
+                        "Dream Defender",
+                        "&7Iron Golem to help defend your\n&7base. Lasts 4 minutes.",
+                        new OptionEntry<>(Material.IRON_INGOT, 120),
+                        Material.POLAR_BEAR_SPAWN_EGG,
+                        ItemStackCreator.using(Material.POLAR_BEAR_SPAWN_EGG).amount(1).create()
+                )
+        );
+        TRIOS_SHOP.addItem("utility", new ShopElementItem(
+                        "Fireball",
+                        "&7Right-click to launch! Great to\n&7knock back enemies walking on\n&7the bridges.",
+                        new OptionEntry<>(Material.IRON_INGOT, 40),
+                        Material.FIRE_CHARGE,
+                        ItemStackCreator.using(Material.FIRE_CHARGE).amount(1).create()
+                )
+        );
+        TRIOS_SHOP.addItem("utility", new ShopElementItem(
+                        "TNT",
+                        "&7Instantly ignites, appropriate\n&7to explode things!",
+                        new OptionEntry<>(Material.GOLD_INGOT, 4),
+                        Material.TNT,
+                        ItemStackCreator.using(Material.TNT).amount(1).create()
+                )
+        );
+        TRIOS_SHOP.addItem("utility", new ShopElementItem(
+                        "Ender Pearl",
+                        "&7The quickest way to invade enemy\n&7bases.",
+                        new OptionEntry<>(Material.EMERALD, 4),
+                        Material.ENDER_PEARL,
+                        ItemStackCreator.using(Material.ENDER_PEARL).amount(1).create()
+                )
+        );
+        TRIOS_SHOP.addItem("utility", new ShopElementItem(
+                        "Water Bucket",
+                        "&7Great to slow down approaching\n&7enemies. Can also protect\n&7against TNT.",
+                        new OptionEntry<>(Material.GOLD_INGOT, 3),
+                        Material.WATER_BUCKET,
+                        ItemStackCreator.using(Material.WATER_BUCKET).amount(1).create()
+                )
+        );
+        TRIOS_SHOP.addItem("utility", new ShopElementItem(
+                        "Bridge Egg",
+                        "&7This egg creates a bridge in its\n&7trail after being thrown.",
+                        new OptionEntry<>(Material.EMERALD, 1),
+                        Material.EGG,
+                        ItemStackCreator.using(Material.EGG).amount(1).create()
+                )
+        );
+        TRIOS_SHOP.addItem("utility", new ShopElementItem(
+                        "Magic Milk",
+                        "&7Avoid triggering traps for 30\n&7seconds after consuming.",
+                        new OptionEntry<>(Material.GOLD_INGOT, 4),
+                        Material.MILK_BUCKET,
+                        ItemStackCreator.using(Material.MILK_BUCKET).amount(1).create()
+                )
+        );
+        TRIOS_SHOP.addItem("utility", new ShopElementItem(
+                        "Sponge",
+                        "&7Great for soaking up water.",
+                        new OptionEntry<>(Material.GOLD_INGOT, 3),
+                        Material.SPONGE,
+                        ItemStackCreator.using(Material.SPONGE).amount(4).create()
+                )
+        );
+        TRIOS_SHOP.addItem("utility", new ShopElementItem(
+                        "Compact Pop-up Tower",
+                        "&7Place a pop-up defense!",
+                        new OptionEntry<>(Material.IRON_INGOT, 24),
+                        Material.CHEST,
+                        ItemStackCreator.using(Material.CHEST).amount(1).create()
+                )
+        );
+        // Utility QUADS
+        QUADS_SHOP.addItem("utility", new ShopElementItem(
+                        "Golden Apple",
+                        "&7Well-rounded healing.",
+                        new OptionEntry<>(Material.GOLD_INGOT, 3),
+                        Material.GOLDEN_APPLE,
+                        ItemStackCreator.using(Material.GOLDEN_APPLE).amount(1).create()
+                )
+        );
+        QUADS_SHOP.addItem("utility", new ShopElementItem(
+                        "Bedbug",
+                        "&7Spawns silverfish where the\n&7snowball lands to distract your\n&7enemies. Lasts 15 seconds.",
+                        new OptionEntry<>(Material.IRON_INGOT, 30),
+                        Material.SNOWBALL,
+                        ItemStackCreator.using(Material.SNOWBALL).amount(1).create()
+                )
+        );
+        QUADS_SHOP.addItem("utility", new ShopElementItem(
+                        "Dream Defender",
+                        "&7Iron Golem to help defend your\n&7base. Lasts 4 minutes.",
+                        new OptionEntry<>(Material.IRON_INGOT, 120),
+                        Material.POLAR_BEAR_SPAWN_EGG,
+                        ItemStackCreator.using(Material.POLAR_BEAR_SPAWN_EGG).amount(1).create()
+                )
+        );
+        QUADS_SHOP.addItem("utility", new ShopElementItem(
+                        "Fireball",
+                        "&7Right-click to launch! Great to\n&7knock back enemies walking on\n&7the bridges.",
+                        new OptionEntry<>(Material.IRON_INGOT, 40),
+                        Material.FIRE_CHARGE,
+                        ItemStackCreator.using(Material.FIRE_CHARGE).amount(1).create()
+                )
+        );
+        QUADS_SHOP.addItem("utility", new ShopElementItem(
+                        "TNT",
+                        "&7Instantly ignites, appropriate\n&7to explode things!",
+                        new OptionEntry<>(Material.GOLD_INGOT, 4),
+                        Material.TNT,
+                        ItemStackCreator.using(Material.TNT).amount(1).create()
+                )
+        );
+        QUADS_SHOP.addItem("utility", new ShopElementItem(
+                        "Ender Pearl",
+                        "&7The quickest way to invade enemy\n&7bases.",
+                        new OptionEntry<>(Material.EMERALD, 4),
+                        Material.ENDER_PEARL,
+                        ItemStackCreator.using(Material.ENDER_PEARL).amount(1).create()
+                )
+        );
+        QUADS_SHOP.addItem("utility", new ShopElementItem(
+                        "Water Bucket",
+                        "&7Great to slow down approaching\n&7enemies. Can also protect\n&7against TNT.",
+                        new OptionEntry<>(Material.GOLD_INGOT, 3),
+                        Material.WATER_BUCKET,
+                        ItemStackCreator.using(Material.WATER_BUCKET).amount(1).create()
+                )
+        );
+        QUADS_SHOP.addItem("utility", new ShopElementItem(
+                        "Bridge Egg",
+                        "&7This egg creates a bridge in its\n&7trail after being thrown.",
+                        new OptionEntry<>(Material.EMERALD, 1),
+                        Material.EGG,
+                        ItemStackCreator.using(Material.EGG).amount(1).create()
+                )
+        );
+        QUADS_SHOP.addItem("utility", new ShopElementItem(
+                        "Magic Milk",
+                        "&7Avoid triggering traps for 30\n&7seconds after consuming.",
+                        new OptionEntry<>(Material.GOLD_INGOT, 4),
+                        Material.MILK_BUCKET,
+                        ItemStackCreator.using(Material.MILK_BUCKET).amount(1).create()
+                )
+        );
+        QUADS_SHOP.addItem("utility", new ShopElementItem(
+                        "Sponge",
+                        "&7Great for soaking up water.",
+                        new OptionEntry<>(Material.GOLD_INGOT, 3),
+                        Material.SPONGE,
+                        ItemStackCreator.using(Material.SPONGE).amount(4).create()
+                )
+        );
+        QUADS_SHOP.addItem("utility", new ShopElementItem(
+                        "Compact Pop-up Tower",
+                        "&7Place a pop-up defense!",
+                        new OptionEntry<>(Material.IRON_INGOT, 24),
+                        Material.CHEST,
+                        ItemStackCreator.using(Material.CHEST).amount(1).create()
                 )
         );
     }
