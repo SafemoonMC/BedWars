@@ -353,7 +353,7 @@ public class MatchListeners implements Listener {
     @EventHandler
     public void on(@NotNull MatchPlayerMoveEvent e) {
         Player player = e.getPlayer();
-        if (e.getTo().getBlockX() < 5) {
+        if (e.getTo().getBlockY() < -5) {
             player.setHealth(0D);
         }
     }
