@@ -15,6 +15,7 @@ import gg.mooncraft.minecraft.bedwars.data.map.setting.MapSetting;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
@@ -40,6 +41,9 @@ public final class MapSettingsContainer implements EntityParent<MapSettingsConta
      */
     public void set(@NotNull GameMode gameMode, @NotNull String path, @Nullable String value) {
         getSetting(gameMode, path).ifPresentOrElse(streamMapSetting -> {
+            if (Objects.equals(streamMapSetting.getValue(), value)) {
+                return;
+            }
             this.settingList.remove(streamMapSetting);
             if (value != null) {
                 MapSetting mapSetting = new MapSetting(this, gameMode, path, value);
