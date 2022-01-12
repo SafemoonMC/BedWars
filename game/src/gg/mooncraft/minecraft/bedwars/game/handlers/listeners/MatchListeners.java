@@ -14,7 +14,6 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 
 import gg.mooncraft.minecraft.bedwars.data.GameState;
@@ -27,9 +26,9 @@ import gg.mooncraft.minecraft.bedwars.game.GameConstants;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchBedBreakEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchBlockBreakEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchBlockPlaceEvent;
-import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerDamageEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerDeathEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerJoinEvent;
+import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerMoveEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerQuitEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchUpdateGameEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchUpdatePlayerEvent;
@@ -45,7 +44,6 @@ import gg.mooncraft.minecraft.bedwars.game.match.tasks.GeneratorTask;
 import gg.mooncraft.minecraft.bedwars.game.match.tasks.SpectatorTask;
 import gg.mooncraft.minecraft.bedwars.game.menu.ShopMenu;
 import gg.mooncraft.minecraft.bedwars.game.utilities.DisplayUtilities;
-import gg.mooncraft.minecraft.bedwars.game.utilities.InvisibilityUtilities;
 import gg.mooncraft.minecraft.bedwars.game.utilities.PointAdapter;
 import gg.mooncraft.minecraft.bedwars.game.utilities.WorldUtilities;
 
@@ -350,6 +348,14 @@ public class MatchListeners implements Listener {
         });
 
         player.playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_HURT, 2, 2);
+    }
+
+    @EventHandler
+    public void on(@NotNull MatchPlayerMoveEvent e) {
+        Player player = e.getPlayer();
+        if (e.getTo().getBlockX() < 5) {
+            player.setHealth(0D);
+        }
     }
 
     @EventHandler

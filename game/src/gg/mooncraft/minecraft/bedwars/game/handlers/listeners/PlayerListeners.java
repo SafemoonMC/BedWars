@@ -33,10 +33,12 @@ import gg.mooncraft.minecraft.bedwars.game.events.MatchBlockPlaceEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerDamageEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerDeathEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerJoinEvent;
+import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerMoveEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerQuitEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchVillagerInteractEvent;
 import gg.mooncraft.minecraft.bedwars.game.match.damage.PlayerDamage;
 import gg.mooncraft.minecraft.bedwars.game.utilities.PointAdapter;
+import gg.mooncraft.minecraft.bedwars.game.utilities.WorldUtilities;
 
 import java.util.Optional;
 
@@ -163,8 +165,12 @@ public class PlayerListeners implements Listener {
     @EventHandler
     public void on(@NotNull PlayerMoveEvent e) {
         Player player = e.getPlayer();
-        if (e.getTo().getBlockY() <= 0) {
-            player.setHealth(0D);
+        if (!WorldUtilities.isSameXYZ(e.getFrom(), e.getTo())) {
+            BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player).ifPresent(gameMatch -> {
+                gameMatch.getDataOf(player).ifPresent(gameMatchPlayer -> {
+                    new MatchPlayerMoveEvent(player, gameMatch, gameMatchPlayer.getParent(), gameMatchPlayer, e.getTo(), e.getFrom()).callEvent();
+                });
+            });
         }
     }
 
