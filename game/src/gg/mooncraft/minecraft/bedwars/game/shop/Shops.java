@@ -833,12 +833,12 @@ public final class Shops {
                         ItemStackCreator.using(Material.GOLDEN_APPLE).amount(1).create()
                 )
         );
-        SOLO_SHOP.addItem("utility", new ShopElementItem(
+        SOLO_SHOP.addItem("utility", new ShopElementItemUtility(
                         "Bedbug",
                         "&7Spawns silverfish where the\n&7snowball lands to distract your\n&7enemies. Lasts 15 seconds.",
                         new OptionEntry<>(Material.IRON_INGOT, 30),
                         Material.SNOWBALL,
-                        ItemStackCreator.using(Material.SNOWBALL).amount(1).create()
+                        gameMatchPlayer -> ItemStackCreator.using(ItemsUtilities.createPureItem(Material.SNOWBALL)).amount(1).create()
                 )
         );
         SOLO_SHOP.addItem("utility", new ShopElementItem(
@@ -922,12 +922,12 @@ public final class Shops {
                         ItemStackCreator.using(Material.GOLDEN_APPLE).amount(1).create()
                 )
         );
-        DUOS_SHOP.addItem("utility", new ShopElementItem(
+        DUOS_SHOP.addItem("utility", new ShopElementItemUtility(
                         "Bedbug",
                         "&7Spawns silverfish where the\n&7snowball lands to distract your\n&7enemies. Lasts 15 seconds.",
                         new OptionEntry<>(Material.IRON_INGOT, 30),
                         Material.SNOWBALL,
-                        ItemStackCreator.using(Material.SNOWBALL).amount(1).create()
+                        gameMatchPlayer -> ItemStackCreator.using(ItemsUtilities.createPureItem(Material.SNOWBALL)).amount(1).create()
                 )
         );
         DUOS_SHOP.addItem("utility", new ShopElementItem(
@@ -1011,12 +1011,12 @@ public final class Shops {
                         ItemStackCreator.using(Material.GOLDEN_APPLE).amount(1).create()
                 )
         );
-        TRIOS_SHOP.addItem("utility", new ShopElementItem(
+        TRIOS_SHOP.addItem("utility", new ShopElementItemUtility(
                         "Bedbug",
                         "&7Spawns silverfish where the\n&7snowball lands to distract your\n&7enemies. Lasts 15 seconds.",
                         new OptionEntry<>(Material.IRON_INGOT, 30),
                         Material.SNOWBALL,
-                        ItemStackCreator.using(Material.SNOWBALL).amount(1).create()
+                        gameMatchPlayer -> ItemStackCreator.using(ItemsUtilities.createPureItem(Material.SNOWBALL)).amount(1).create()
                 )
         );
         TRIOS_SHOP.addItem("utility", new ShopElementItem(
@@ -1100,12 +1100,12 @@ public final class Shops {
                         ItemStackCreator.using(Material.GOLDEN_APPLE).amount(1).create()
                 )
         );
-        QUADS_SHOP.addItem("utility", new ShopElementItem(
+        QUADS_SHOP.addItem("utility", new ShopElementItemUtility(
                         "Bedbug",
                         "&7Spawns silverfish where the\n&7snowball lands to distract your\n&7enemies. Lasts 15 seconds.",
                         new OptionEntry<>(Material.IRON_INGOT, 30),
                         Material.SNOWBALL,
-                        ItemStackCreator.using(Material.SNOWBALL).amount(1).create()
+                        gameMatchPlayer -> ItemStackCreator.using(ItemsUtilities.createPureItem(Material.SNOWBALL)).amount(1).create()
                 )
         );
         QUADS_SHOP.addItem("utility", new ShopElementItem(

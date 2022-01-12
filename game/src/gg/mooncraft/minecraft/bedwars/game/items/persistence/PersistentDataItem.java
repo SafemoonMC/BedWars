@@ -10,7 +10,7 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class PersistentDataItem<T> {
-    
+
     /*
     Fields
      */
@@ -19,34 +19,34 @@ public abstract class PersistentDataItem<T> {
     private final NamespacedKey namespacedKey;
     @Getter
     private final PersistentDataType<PersistentDataContainer, T> persistentDataType;
-    
+
     /*
     Constructor
      */
     public PersistentDataItem(Plugin plugin, NamespacedKey namespacedKey) {
         this.plugin = plugin;
         this.namespacedKey = namespacedKey;
-        this.persistentDataType = new PersistentDataType<PersistentDataContainer, T>() {
+        this.persistentDataType = new PersistentDataType<>() {
             @NotNull
             @Override
             public Class<PersistentDataContainer> getPrimitiveType() {
                 return PersistentDataContainer.class;
             }
-            
+
             @NotNull
             @Override
             @SuppressWarnings("unchecked")
             public Class<T> getComplexType() {
                 return (Class<T>) this.getClass();
             }
-            
+
             @NotNull
             @Override
             public PersistentDataContainer toPrimitive(@NotNull T t, @NotNull PersistentDataAdapterContext persistentDataAdapterContext) {
                 PersistentDataContainer persistentDataContainer = persistentDataAdapterContext.newPersistentDataContainer();
                 return toContainer(t, persistentDataContainer);
             }
-            
+
             @NotNull
             @Override
             public T fromPrimitive(@NotNull PersistentDataContainer persistentDataContainer, @NotNull PersistentDataAdapterContext persistentDataAdapterContext) {
@@ -54,13 +54,14 @@ public abstract class PersistentDataItem<T> {
             }
         };
     }
-    
+
     /*
     Abstract Methods
      */
     public abstract PersistentDataContainer toContainer(T value, PersistentDataContainer persistentDataContainer);
+
     public abstract T fromContainer(PersistentDataContainer persistentDataContainer);
-    
+
     /*
     Methods
      */

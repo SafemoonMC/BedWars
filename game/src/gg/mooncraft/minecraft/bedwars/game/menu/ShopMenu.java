@@ -24,6 +24,7 @@ import gg.mooncraft.minecraft.bedwars.game.shop.ShopCategory;
 import gg.mooncraft.minecraft.bedwars.game.shop.ShopElement;
 import gg.mooncraft.minecraft.bedwars.game.shop.ShopElementItem;
 import gg.mooncraft.minecraft.bedwars.game.shop.ShopElementItemDynamic;
+import gg.mooncraft.minecraft.bedwars.game.shop.ShopElementItemUtility;
 import gg.mooncraft.minecraft.bedwars.game.shop.Shops;
 import gg.mooncraft.minecraft.bedwars.game.utilities.DisplayUtilities;
 import gg.mooncraft.minecraft.bedwars.game.utilities.ItemsUtilities;
@@ -157,6 +158,11 @@ public final class ShopMenu implements ShopInterface {
                 player.getInventory().removeItemAnySlot(costItem);
                 player.getInventory().addItem(shopElementItemDynamic.getItemStackFunction().apply(gameMatchPlayer));
                 player.sendMessage(GameConstants.MESSAGE_SHOP_BUY.replaceAll("%shop-item%", DisplayUtilities.getDisplay(shopElementItemDynamic.getItemStackFunction().apply(gameMatchPlayer))));
+            }
+            if (shopElement instanceof ShopElementItemUtility shopElementItemUtility) {
+                player.getInventory().removeItemAnySlot(costItem);
+                player.getInventory().addItem(shopElementItemUtility.getItemStack(gameMatchPlayer));
+                player.sendMessage(GameConstants.MESSAGE_SHOP_BUY.replaceAll("%shop-item%", DisplayUtilities.getDisplay(shopElementItemUtility.getItemStackFunction().apply(gameMatchPlayer))));
             }
 
             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_TRADE, 1, 1);
