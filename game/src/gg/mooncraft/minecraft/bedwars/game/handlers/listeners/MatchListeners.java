@@ -142,8 +142,6 @@ public class MatchListeners implements Listener {
                         Location location = PointAdapter.adapt(gameMatch, teamMapPoint);
                         player.teleportAsync(location);
                         player.setGameMode(GameMode.SURVIVAL);
-
-                        player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 2, 2);
                     });
                 });
             }
@@ -328,15 +326,6 @@ public class MatchListeners implements Listener {
                 }
             });
         });
-    }
-
-    @EventHandler
-    public void on(@NotNull MatchPlayerDamageEvent e) {
-        Player player = e.getPlayer();
-        if (player.hasPotionEffect(PotionEffectType.INVISIBILITY)) {
-            InvisibilityUtilities.showArmor(player);
-            player.sendMessage(GameConstants.MESSAGE_PLAYER_INVISIBILITY_ARMOR);
-        }
     }
 
     @EventHandler
