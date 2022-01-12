@@ -11,20 +11,12 @@ import org.jetbrains.annotations.NotNull;
 @AllArgsConstructor
 public enum GameTeam {
 
-    //    BLACK(ChatColor.BLACK),
-    //    DARK_BLUE(ChatColor.DARK_BLUE),
-    DARK_GREEN('G', "Green", ChatColor.DARK_GREEN),
-    DARK_AQUA('A', "Aqua", ChatColor.DARK_AQUA),
-    DARK_RED('R', "Red", ChatColor.DARK_RED),
-    //    DARK_PURPLE(ChatColor.DARK_PURPLE),
-    //    GOLD(ChatColor.GOLD),
-    //    GRAY(ChatColor.GRAY),
-    DARK_GRAY('S', "Gray", ChatColor.DARK_GRAY),
+    GREEN('G', "Green", ChatColor.GREEN),
+    AQUA('A', "Aqua", ChatColor.AQUA),
+    RED('R', "Red", ChatColor.RED),
+    GRAY('S', "Gray", ChatColor.DARK_GRAY),
     BLUE('B', "Blue", ChatColor.BLUE),
-    //    GREEN(ChatColor.GREEN),
-    //    AQUA(ChatColor.AQUA),
-    //    RED(ChatColor.RED),
-    LIGHT_PURPLE('P', "Pink", ChatColor.LIGHT_PURPLE),
+    PINK('P', "Pink", ChatColor.LIGHT_PURPLE),
     YELLOW('Y', "Yellow", ChatColor.YELLOW),
     WHITE('W', "White", ChatColor.WHITE);
 

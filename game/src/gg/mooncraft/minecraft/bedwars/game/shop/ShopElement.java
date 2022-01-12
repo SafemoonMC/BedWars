@@ -32,8 +32,8 @@ public class ShopElement {
     Methods
      */
     public @NotNull ItemStack getIconItem(@NotNull Player player, @NotNull GameMatchPlayer gameMatchPlayer) {
-        String color = ItemsUtilities.hasEnoughItems(player, this.costEntry.getKey(), this.costEntry.getValue()) ? "&a" : "&c";
-        String lastLine = ItemsUtilities.hasEnoughItems(player, this.costEntry.getKey(), this.costEntry.getValue()) ? "&eClick to purchase!" : "&cYou can't afford this.";
+        String color = player.getInventory().contains(this.costEntry.getKey(), this.costEntry.getValue()) ? "&a" : "&c";
+        String lastLine = player.getInventory().contains(this.costEntry.getKey(), this.costEntry.getValue()) ? "&eClick to purchase!" : "&cYou can't afford this.";
         return ItemStackCreator.using(ItemsUtilities.createPureItem(getDisplayIcon()))
                 .meta()
                 .display(color + getDisplay())

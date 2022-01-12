@@ -4,7 +4,6 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -28,28 +27,24 @@ public final class ItemsUtilities {
             case YELLOW -> {
                 return createPureItem(Material.YELLOW_WOOL);
             }
-            case DARK_RED -> {
+            case RED -> {
                 return createPureItem(Material.RED_WOOL);
             }
-            case DARK_AQUA -> {
+            case AQUA -> {
                 return createPureItem(Material.CYAN_WOOL);
             }
-            case DARK_GRAY -> {
+            case GRAY -> {
                 return createPureItem(Material.GRAY_WOOL);
             }
-            case DARK_GREEN -> {
+            case GREEN -> {
                 return createPureItem(Material.GREEN_WOOL);
             }
-            case LIGHT_PURPLE -> {
+            case PINK -> {
                 return createPureItem(Material.PURPLE_WOOL);
             }
             default -> {
                 return createPureItem(Material.WHITE_WOOL);
             }
         }
-    }
-
-    public static boolean hasEnoughItems(@NotNull Player player, @NotNull Material material, int amount) {
-        return player.getInventory().contains(material, amount);
     }
 }

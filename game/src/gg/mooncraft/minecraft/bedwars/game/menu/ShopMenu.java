@@ -140,7 +140,7 @@ public final class ShopMenu implements ShopInterface {
         if (element < shopCategory.getElementList().size() && element >= 0) {
             ShopElement shopElement = shopCategory.getElementList().get(element);
 
-            if (!ItemsUtilities.hasEnoughItems(player, shopElement.getCostEntry().getKey(), shopElement.getCostEntry().getValue())) {
+            if (!player.getInventory().contains(shopElement.getCostEntry().getKey(), shopElement.getCostEntry().getValue())) {
                 player.sendMessage(GameConstants.MESSAGE_SHOP_CANNOT_AFFORD);
                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
                 return;
