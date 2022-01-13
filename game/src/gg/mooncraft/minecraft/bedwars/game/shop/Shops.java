@@ -14,6 +14,7 @@ import gg.mooncraft.minecraft.bedwars.data.GameMode;
 import gg.mooncraft.minecraft.bedwars.game.items.ItemStackCreator;
 import gg.mooncraft.minecraft.bedwars.game.items.PotionMetaCreator;
 import gg.mooncraft.minecraft.bedwars.game.match.options.OptionEntry;
+import gg.mooncraft.minecraft.bedwars.game.shop.itemdata.BedbugItem;
 import gg.mooncraft.minecraft.bedwars.game.utilities.ItemsUtilities;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -838,7 +839,7 @@ public final class Shops {
                         "&7Spawns silverfish where the\n&7snowball lands to distract your\n&7enemies. Lasts 15 seconds.",
                         new OptionEntry<>(Material.IRON_INGOT, 30),
                         Material.SNOWBALL,
-                        gameMatchPlayer -> ItemStackCreator.using(ItemsUtilities.createPureItem(Material.SNOWBALL)).amount(1).create()
+                        gameMatchPlayer -> new BedbugItem(gameMatchPlayer.getUniqueId(), gameMatchPlayer.getParent().getGameTeam()).update(ItemStackCreator.using(ItemsUtilities.createPureItem(Material.SNOWBALL)).amount(1).create())
                 )
         );
         SOLO_SHOP.addItem("utility", new ShopElementItem(
@@ -927,7 +928,7 @@ public final class Shops {
                         "&7Spawns silverfish where the\n&7snowball lands to distract your\n&7enemies. Lasts 15 seconds.",
                         new OptionEntry<>(Material.IRON_INGOT, 30),
                         Material.SNOWBALL,
-                        gameMatchPlayer -> ItemStackCreator.using(ItemsUtilities.createPureItem(Material.SNOWBALL)).amount(1).create()
+                        gameMatchPlayer -> new BedbugItem(gameMatchPlayer.getUniqueId(), gameMatchPlayer.getParent().getGameTeam()).update(ItemStackCreator.using(ItemsUtilities.createPureItem(Material.SNOWBALL)).amount(1).create())
                 )
         );
         DUOS_SHOP.addItem("utility", new ShopElementItem(
@@ -1016,7 +1017,7 @@ public final class Shops {
                         "&7Spawns silverfish where the\n&7snowball lands to distract your\n&7enemies. Lasts 15 seconds.",
                         new OptionEntry<>(Material.IRON_INGOT, 30),
                         Material.SNOWBALL,
-                        gameMatchPlayer -> ItemStackCreator.using(ItemsUtilities.createPureItem(Material.SNOWBALL)).amount(1).create()
+                        gameMatchPlayer -> new BedbugItem(gameMatchPlayer.getUniqueId(), gameMatchPlayer.getParent().getGameTeam()).update(ItemStackCreator.using(ItemsUtilities.createPureItem(Material.SNOWBALL)).amount(1).create())
                 )
         );
         TRIOS_SHOP.addItem("utility", new ShopElementItem(
@@ -1105,7 +1106,7 @@ public final class Shops {
                         "&7Spawns silverfish where the\n&7snowball lands to distract your\n&7enemies. Lasts 15 seconds.",
                         new OptionEntry<>(Material.IRON_INGOT, 30),
                         Material.SNOWBALL,
-                        gameMatchPlayer -> ItemStackCreator.using(ItemsUtilities.createPureItem(Material.SNOWBALL)).amount(1).create()
+                        gameMatchPlayer -> new BedbugItem(gameMatchPlayer.getUniqueId(), gameMatchPlayer.getParent().getGameTeam()).update(ItemStackCreator.using(ItemsUtilities.createPureItem(Material.SNOWBALL)).amount(1).create())
                 )
         );
         QUADS_SHOP.addItem("utility", new ShopElementItem(

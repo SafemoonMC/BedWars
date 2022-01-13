@@ -161,7 +161,7 @@ public final class ShopMenu implements ShopInterface {
             }
             if (shopElement instanceof ShopElementItemUtility shopElementItemUtility) {
                 player.getInventory().removeItemAnySlot(costItem);
-                player.getInventory().addItem(shopElementItemUtility.getItemStack(gameMatchPlayer));
+                player.getInventory().addItem(shopElementItemUtility.getItemStackFunction().apply(gameMatchPlayer));
                 player.sendMessage(GameConstants.MESSAGE_SHOP_BUY.replaceAll("%shop-item%", DisplayUtilities.getDisplay(shopElementItemUtility.getItemStackFunction().apply(gameMatchPlayer))));
             }
 
