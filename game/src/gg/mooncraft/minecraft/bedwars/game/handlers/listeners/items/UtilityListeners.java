@@ -1,6 +1,7 @@
 package gg.mooncraft.minecraft.bedwars.game.handlers.listeners.items;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Egg;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Silverfish;
 import org.bukkit.entity.Snowball;
@@ -14,7 +15,9 @@ import org.jetbrains.annotations.NotNull;
 import gg.mooncraft.minecraft.bedwars.data.GameTeam;
 import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
 import gg.mooncraft.minecraft.bedwars.game.match.tasks.BedbugTask;
+import gg.mooncraft.minecraft.bedwars.game.match.tasks.BridgeEggTask;
 import gg.mooncraft.minecraft.bedwars.game.shop.itemdata.BedbugItem;
+import gg.mooncraft.minecraft.bedwars.game.shop.itemdata.BridgeEggItem;
 
 public class UtilityListeners implements Listener {
 
@@ -33,13 +36,26 @@ public class UtilityListeners implements Listener {
         Player player = e.getPlayer();
         if (e.getAction().isRightClick() && e.hasItem()) {
             ItemStack itemStack = e.getItem();
-            BedbugItem.getFrom(itemStack).ifPresent(bedbugItem -> {
+            BedbugItem.getFrom(itemStack).ifPresent(data -> {
                 e.setCancelled(true);
                 Snowball snowball = player.launchProjectile(Snowball.class);
                 snowball.setGlowing(true);
-                BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player).flatMap(gameMatch -> gameMatch.getDataOf(player)).ifPresent(gameMatchPlayer -> {
-                    new BedbugTask(gameMatchPlayer, snowball);
-                });
+                BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player)
+                        .flatMap(gameMatch -> gameMatch.getDataOf(player))
+                        .ifPresent(gameMatchPlayer -> {
+                            new BedbugTask(gameMatchPlayer, snowball);
+                        });
+            });
+            BridgeEggItem.getFrom(itemStack).ifPresent(data -> {
+                e.setCancelled(true);
+                Egg egg = player.launchProjectile(Egg.class);
+                egg.setVelocity(egg.getVelocity().normalize().multiply(2));
+                egg.setGlowing(true);
+                BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player)
+                        .flatMap(gameMatch -> gameMatch.getDataOf(player))
+                        .ifPresent(gameMatchPlayer -> {
+                            Bukkit.getScheduler().runTaskLater(BedWarsPlugin.getInstance(), () -> new BridgeEggTask(gameMatchPlayer, egg), 3);
+                        });
             });
         }
     }

@@ -64,6 +64,7 @@ public final class ShopMenu implements ShopInterface {
     private final @NotNull GameMatchPlayer gameMatchPlayer;
     private final @NotNull Inventory inventory;
     private final @NotNull Map<Integer, ShopCategory> categoryMap;
+    private final @NotNull Map<Integer, ShopElement> elementMap;
 
     private int selectedCategorySlot = -1;
 
@@ -76,6 +77,7 @@ public final class ShopMenu implements ShopInterface {
         this.gameMatchPlayer = gameMatchPlayer;
         this.inventory = Bukkit.createInventory(this, 54, Component.text(GameConstants.SHOP_ITEMS_TITLE));
         this.categoryMap = new HashMap<>();
+        this.elementMap = new HashMap<>();
         // Load and select default category
         load();
         select(1);
@@ -89,6 +91,7 @@ public final class ShopMenu implements ShopInterface {
     private void load() {
         // Clear old references
         this.categoryMap.clear();
+        this.elementMap.clear();
         Arrays.stream(ELEMENTS).forEach(slot -> this.inventory.setItem(slot, null));
 
         // Place categories item
@@ -121,6 +124,7 @@ public final class ShopMenu implements ShopInterface {
         for (ShopElement shopElement : shopCategory.getElementList()) {
             int slot = ELEMENTS[index];
             this.inventory.setItem(slot, shopElement.getIconItem(player, gameMatchPlayer));
+            this.elementMap.put(slot, shopElement);
             index++;
         }
 
@@ -136,10 +140,10 @@ public final class ShopMenu implements ShopInterface {
             select(slot);
             return;
         }
-        int element = slot - 19;
+
         ShopCategory shopCategory = this.categoryMap.get(selectedCategorySlot);
-        if (element < shopCategory.getElementList().size() && element >= 0) {
-            ShopElement shopElement = shopCategory.getElementList().get(element);
+        if (this.elementMap.containsKey(slot)) {
+            ShopElement shopElement = this.elementMap.get(slot);
 
             if (!player.getInventory().contains(shopElement.getCostEntry().getKey(), shopElement.getCostEntry().getValue())) {
                 player.sendMessage(GameConstants.MESSAGE_SHOP_CANNOT_AFFORD);

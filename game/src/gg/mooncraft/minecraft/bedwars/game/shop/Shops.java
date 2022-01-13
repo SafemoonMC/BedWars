@@ -15,6 +15,7 @@ import gg.mooncraft.minecraft.bedwars.game.items.ItemStackCreator;
 import gg.mooncraft.minecraft.bedwars.game.items.PotionMetaCreator;
 import gg.mooncraft.minecraft.bedwars.game.match.options.OptionEntry;
 import gg.mooncraft.minecraft.bedwars.game.shop.itemdata.BedbugItem;
+import gg.mooncraft.minecraft.bedwars.game.shop.itemdata.BridgeEggItem;
 import gg.mooncraft.minecraft.bedwars.game.utilities.ItemsUtilities;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -882,12 +883,12 @@ public final class Shops {
                         ItemStackCreator.using(Material.WATER_BUCKET).amount(1).create()
                 )
         );
-        SOLO_SHOP.addItem("utility", new ShopElementItem(
+        SOLO_SHOP.addItem("utility", new ShopElementItemUtility(
                         "Bridge Egg",
                         "&7This egg creates a bridge in its\n&7trail after being thrown.",
                         new OptionEntry<>(Material.EMERALD, 1),
                         Material.EGG,
-                        ItemStackCreator.using(Material.EGG).amount(1).create()
+                        gameMatchPlayer -> new BridgeEggItem(gameMatchPlayer.getUniqueId(), gameMatchPlayer.getParent().getGameTeam()).update(ItemStackCreator.using(Material.EGG).amount(1).create())
                 )
         );
         SOLO_SHOP.addItem("utility", new ShopElementItem(
@@ -971,12 +972,12 @@ public final class Shops {
                         ItemStackCreator.using(Material.WATER_BUCKET).amount(1).create()
                 )
         );
-        DUOS_SHOP.addItem("utility", new ShopElementItem(
+        DUOS_SHOP.addItem("utility", new ShopElementItemUtility(
                         "Bridge Egg",
                         "&7This egg creates a bridge in its\n&7trail after being thrown.",
                         new OptionEntry<>(Material.EMERALD, 1),
                         Material.EGG,
-                        ItemStackCreator.using(Material.EGG).amount(1).create()
+                        gameMatchPlayer -> new BridgeEggItem(gameMatchPlayer.getUniqueId(), gameMatchPlayer.getParent().getGameTeam()).update(ItemStackCreator.using(Material.EGG).amount(1).create())
                 )
         );
         DUOS_SHOP.addItem("utility", new ShopElementItem(
@@ -1060,12 +1061,12 @@ public final class Shops {
                         ItemStackCreator.using(Material.WATER_BUCKET).amount(1).create()
                 )
         );
-        TRIOS_SHOP.addItem("utility", new ShopElementItem(
+        TRIOS_SHOP.addItem("utility", new ShopElementItemUtility(
                         "Bridge Egg",
                         "&7This egg creates a bridge in its\n&7trail after being thrown.",
                         new OptionEntry<>(Material.EMERALD, 1),
                         Material.EGG,
-                        ItemStackCreator.using(Material.EGG).amount(1).create()
+                        gameMatchPlayer -> new BridgeEggItem(gameMatchPlayer.getUniqueId(), gameMatchPlayer.getParent().getGameTeam()).update(ItemStackCreator.using(Material.EGG).amount(1).create())
                 )
         );
         TRIOS_SHOP.addItem("utility", new ShopElementItem(
@@ -1149,12 +1150,12 @@ public final class Shops {
                         ItemStackCreator.using(Material.WATER_BUCKET).amount(1).create()
                 )
         );
-        QUADS_SHOP.addItem("utility", new ShopElementItem(
+        QUADS_SHOP.addItem("utility", new ShopElementItemUtility(
                         "Bridge Egg",
                         "&7This egg creates a bridge in its\n&7trail after being thrown.",
                         new OptionEntry<>(Material.EMERALD, 1),
                         Material.EGG,
-                        ItemStackCreator.using(Material.EGG).amount(1).create()
+                        gameMatchPlayer -> new BridgeEggItem(gameMatchPlayer.getUniqueId(), gameMatchPlayer.getParent().getGameTeam()).update(ItemStackCreator.using(Material.EGG).amount(1).create())
                 )
         );
         QUADS_SHOP.addItem("utility", new ShopElementItem(
