@@ -1,5 +1,6 @@
 package gg.mooncraft.minecraft.bedwars.game.managers;
 
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
@@ -58,6 +59,13 @@ public final class MatchManager {
         UUID uniqueId = UUID.randomUUID();
         return BedWarsPlugin.getInstance().getSlimeManager().createTemporaryPairAsync(bedWarsMap.getIdentifier(), String.format("%s-%s", bedWarsMap.getIdentifier(), uniqueId))
                 .thenApply(newSlimePair -> new GameMatch(uniqueId, bedWarsMap.getIdentifier(), gameMode, newSlimePair));
+    }
+
+    public @NotNull Optional<GameMatch> getGameMatch(@NotNull World world) {
+        return this.matchList
+                .stream()
+                .filter(gameMatch -> gameMatch.getDimension().getName().equals(world.getName()))
+                .findFirst();
     }
 
     public @NotNull Optional<GameMatch> getGameMatch(@NotNull Player player) {
