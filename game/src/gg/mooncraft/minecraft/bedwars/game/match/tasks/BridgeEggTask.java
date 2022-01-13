@@ -17,6 +17,7 @@ import gg.mooncraft.minecraft.bedwars.game.utilities.ItemsUtilities;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -61,8 +62,10 @@ public class BridgeEggTask implements Runnable {
         Bukkit.getScheduler().runTaskLater(BedWarsPlugin.getInstance(), () -> {
             blockList.forEach(block -> {
                 block.setType(ItemsUtilities.createWoolitem(this.gameMatchPlayer.getParent().getGameTeam()).getType());
-                block.getWorld().playSound(block.getLocation(), Sound.BLOCK_WOOD_PLACE, 1, 1);
-                block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, block.getType());
+                if (ThreadLocalRandom.current().nextBoolean()) {
+                    block.getWorld().playSound(block.getLocation(), Sound.BLOCK_WOOD_PLACE, 1, 1);
+                    block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, block.getType());
+                }
             });
         }, 3);
         this.gameMatchPlayer.getParent().getParent().getBlocksSystem().placeBlocks(blockList.stream().map(Block::getLocation).collect(Collectors.toList()));
