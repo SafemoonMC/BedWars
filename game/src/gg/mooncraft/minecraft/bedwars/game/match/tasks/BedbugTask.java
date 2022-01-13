@@ -2,6 +2,7 @@ package gg.mooncraft.minecraft.bedwars.game.match.tasks;
 
 import me.eduardwayland.mooncraft.waylander.scheduler.SchedulerTask;
 
+import org.bukkit.Effect;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Silverfish;
@@ -44,7 +45,7 @@ public final class BedbugTask implements Runnable {
         this.snowball = snowball;
         this.schedulerTask = BedWarsPlugin.getInstance().getScheduler().asyncRepeating(this, 50, TimeUnit.MILLISECONDS);
         this.state = State.SNOWBALL;
-        this.lifetime = new AtomicInteger(20 * 5);
+        this.lifetime = new AtomicInteger(20 * 15);
     }
 
 
@@ -60,7 +61,7 @@ public final class BedbugTask implements Runnable {
         if (this.state == State.SNOWBALL) {
             this.state = State.SILVERFISH;
             BedWarsPlugin.getInstance().getScheduler().executeSync(() -> {
-                this.silverfish = (Silverfish) this.snowball.getWorld().spawnEntity(this.snowball.getLocation(), EntityType.SILVERFISH);
+                this.silverfish = (Silverfish) this.snowball.getWorld().spawnEntity(this.snowball.getLocation().add(0, 1, 0), EntityType.SILVERFISH);
                 this.silverfish.setCustomName(DisplayUtilities.getColored("&cBedbug"));
                 this.silverfish.setCustomNameVisible(true);
                 this.silverfish.setMetadata("owner", new FixedMetadataValue(BedWarsPlugin.getInstance(), this.gameMatchPlayer.getUniqueId().toString()));
@@ -81,7 +82,10 @@ public final class BedbugTask implements Runnable {
         }
         // If silverfish is still alive, but lifetime is ended, despawn and cancel task
         if (this.lifetime.getAndDecrement() <= 0) {
-            BedWarsPlugin.getInstance().getScheduler().executeSync(this.silverfish::remove);
+            BedWarsPlugin.getInstance().getScheduler().executeSync(() -> {
+                this.silverfish.getWorld().playEffect(this.silverfish.getLocation(), Effect.SMOKE, 5);
+                this.silverfish.remove();
+            });
             this.schedulerTask.cancel();
         }
     }
