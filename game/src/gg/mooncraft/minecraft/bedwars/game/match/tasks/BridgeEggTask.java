@@ -41,7 +41,7 @@ public class BridgeEggTask implements Runnable {
         this.gameMatchPlayer = gameMatchPlayer;
         this.egg = egg;
         this.schedulerTask = BedWarsPlugin.getInstance().getScheduler().asyncRepeating(this, 50, TimeUnit.MILLISECONDS);
-        this.lifetime = new AtomicInteger(15);
+        this.lifetime = new AtomicInteger(20);
     }
 
 
@@ -61,7 +61,7 @@ public class BridgeEggTask implements Runnable {
         }, 3);
         this.gameMatchPlayer.getParent().getParent().getBlocksSystem().placeBlocks(blockList.stream().map(Block::getLocation).collect(Collectors.toList()));
 
-        if (this.egg.isOnGround() || this.egg.isDead() || this.lifetime.getAndDecrement() == 0) {
+        if (this.egg.isDead() || this.lifetime.getAndDecrement() == 0) {
             BedWarsPlugin.getInstance().getScheduler().executeSync(this.egg::remove);
             this.schedulerTask.cancel();
         }

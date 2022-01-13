@@ -14,8 +14,16 @@ import gg.mooncraft.minecraft.bedwars.game.match.GameMatchPlayer;
 import gg.mooncraft.minecraft.bedwars.game.utilities.DisplayUtilities;
 
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public final class BedbugTask implements Runnable {
+
+    /*
+    Inner
+     */
+    public enum State {
+        SNOWBALL, SILVERFISH
+    }
 
     /*
     Fields
@@ -23,6 +31,10 @@ public final class BedbugTask implements Runnable {
     private final @NotNull GameMatchPlayer gameMatchPlayer;
     private final @NotNull Snowball snowball;
     private final @NotNull SchedulerTask schedulerTask;
+    private @NotNull State state;
+    private final @NotNull AtomicInteger lifetime;
+
+    private Silverfish silverfish;
 
     /*
     Constructor
@@ -31,6 +43,8 @@ public final class BedbugTask implements Runnable {
         this.gameMatchPlayer = gameMatchPlayer;
         this.snowball = snowball;
         this.schedulerTask = BedWarsPlugin.getInstance().getScheduler().asyncRepeating(this, 50, TimeUnit.MILLISECONDS);
+        this.state = State.SNOWBALL;
+        this.lifetime = new AtomicInteger(20 * 5);
     }
 
 
@@ -39,21 +53,36 @@ public final class BedbugTask implements Runnable {
      */
     @Override
     public void run() {
-        if (!this.snowball.isOnGround() && !this.snowball.isDead()) return;
+        if (!this.snowball.isDead()) return;
 
-        BedWarsPlugin.getInstance().getScheduler().executeSync(() -> {
-            Silverfish silverfish = (Silverfish) this.snowball.getWorld().spawnEntity(this.snowball.getLocation(), EntityType.SILVERFISH);
-            silverfish.setCustomName(DisplayUtilities.getColored("&cBedbug"));
-            silverfish.setCustomNameVisible(true);
-            silverfish.setMetadata("owner", new FixedMetadataValue(BedWarsPlugin.getInstance(), this.gameMatchPlayer.getUniqueId().toString()));
-            silverfish.setMetadata("owner-team", new FixedMetadataValue(BedWarsPlugin.getInstance(), this.gameMatchPlayer.getParent().getGameTeam().name()));
-            silverfish.getWorld().getNearbyEntitiesByType(Player.class, silverfish.getLocation(), 3, 3, 3)
-                    .stream()
-                    .filter(player -> !gameMatchPlayer.getParent().hasPlayer(player.getUniqueId()))
-                    .findAny()
-                    .ifPresent(silverfish::setTarget);
-        });
+        // If the snowball is dead and state is not updated
+        // Update state and spawn silverfish
+        if (this.state == State.SNOWBALL) {
+            this.state = State.SILVERFISH;
+            BedWarsPlugin.getInstance().getScheduler().executeSync(() -> {
+                this.silverfish = (Silverfish) this.snowball.getWorld().spawnEntity(this.snowball.getLocation(), EntityType.SILVERFISH);
+                this.silverfish.setCustomName(DisplayUtilities.getColored("&cBedbug"));
+                this.silverfish.setCustomNameVisible(true);
+                this.silverfish.setMetadata("owner", new FixedMetadataValue(BedWarsPlugin.getInstance(), this.gameMatchPlayer.getUniqueId().toString()));
+                this.silverfish.setMetadata("owner-team", new FixedMetadataValue(BedWarsPlugin.getInstance(), this.gameMatchPlayer.getParent().getGameTeam().name()));
+                this.silverfish.getWorld().getNearbyEntitiesByType(Player.class, this.silverfish.getLocation(), 3, 3, 3)
+                        .stream()
+                        .filter(player -> !this.gameMatchPlayer.getParent().hasPlayer(player.getUniqueId()))
+                        .findAny()
+                        .ifPresent(this.silverfish::setTarget);
+            });
+            return;
+        }
 
-        this.schedulerTask.cancel();
+        // If silverfish is already dead, cancel task
+        if (this.silverfish.isDead()) {
+            this.schedulerTask.cancel();
+            return;
+        }
+        // If silverfish is still alive, but lifetime is ended, despawn and cancel task
+        if (this.lifetime.getAndDecrement() <= 0) {
+            BedWarsPlugin.getInstance().getScheduler().executeSync(this.silverfish::remove);
+            this.schedulerTask.cancel();
+        }
     }
 }
