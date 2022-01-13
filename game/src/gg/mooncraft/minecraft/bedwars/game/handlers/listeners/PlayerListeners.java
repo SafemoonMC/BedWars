@@ -14,6 +14,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -34,6 +35,7 @@ import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerDamageEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerDeathEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerJoinEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerMoveEvent;
+import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerPickupItemEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerQuitEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchVillagerInteractEvent;
 import gg.mooncraft.minecraft.bedwars.game.match.damage.PlayerDamage;
@@ -101,6 +103,14 @@ public class PlayerListeners implements Listener {
                     e.setCancelled(true);
                 }
             });
+        });
+    }
+
+    @EventHandler
+    public void on(@NotNull EntityPickupItemEvent e) {
+        if (!(e.getEntity() instanceof Player player)) return;
+        BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player).ifPresent(gameMatch -> {
+            gameMatch.getDataOf(player).ifPresent(gameMatchPlayer -> new MatchPlayerPickupItemEvent(player, gameMatch, gameMatchPlayer, e.getItem()).callEvent());
         });
     }
 
