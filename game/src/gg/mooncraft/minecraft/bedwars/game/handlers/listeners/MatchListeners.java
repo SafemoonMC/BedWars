@@ -43,6 +43,7 @@ import gg.mooncraft.minecraft.bedwars.game.match.tasks.GameMatchEvent;
 import gg.mooncraft.minecraft.bedwars.game.match.tasks.GeneratorTask;
 import gg.mooncraft.minecraft.bedwars.game.match.tasks.SpectatorTask;
 import gg.mooncraft.minecraft.bedwars.game.menu.ShopMenu;
+import gg.mooncraft.minecraft.bedwars.game.menu.ShopUpgradesMenu;
 import gg.mooncraft.minecraft.bedwars.game.utilities.DisplayUtilities;
 import gg.mooncraft.minecraft.bedwars.game.utilities.PointAdapter;
 import gg.mooncraft.minecraft.bedwars.game.utilities.WorldUtilities;
@@ -363,6 +364,9 @@ public class MatchListeners implements Listener {
         if (e.getMatchVillager().getVillagerType() == VillagerType.ITEM_SHOP) {
             ShopMenu shopMenu = new ShopMenu(e.getPlayer(), e.getGameMatch(), e.getGameMatchPlayer());
             e.getPlayer().openInventory(shopMenu.getInventory());
+        } else if (e.getMatchVillager().getVillagerType() == VillagerType.UPGRADE_SHOP) {
+            ShopUpgradesMenu shopUpgradesMenu = new ShopUpgradesMenu(e.getPlayer(), e.getGameMatch(), e.getGameMatchPlayer());
+            e.getPlayer().openInventory(shopUpgradesMenu.getInventory());
         }
     }
 }

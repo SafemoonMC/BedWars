@@ -14,8 +14,10 @@ import gg.mooncraft.minecraft.bedwars.data.map.point.TeamMapPoint;
 import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -31,6 +33,7 @@ public final class GameMatchTeam {
     private final int id;
     private final @NotNull GameTeam gameTeam;
     private final @NotNull List<GameMatchPlayer> matchPlayerList;
+    private final @NotNull Map<String, Integer> upgradesMap;
     private Scoreboard scoreboard;
     private TeamStatus teamStatus;
 
@@ -42,7 +45,7 @@ public final class GameMatchTeam {
         this.id = id;
         this.gameTeam = gameTeam;
         this.matchPlayerList = new LinkedList<>();
-
+        this.upgradesMap = new HashMap<>();
         this.teamStatus = TeamStatus.ALIVE;
     }
 
@@ -71,6 +74,14 @@ public final class GameMatchTeam {
 
     public @NotNull Optional<GameMatchPlayer> getPlayer(@NotNull UUID uniqueId) {
         return this.matchPlayerList.stream().filter(gameMatchPlayer -> gameMatchPlayer.getUniqueId().equals(uniqueId)).findFirst();
+    }
+
+    public void incrementUpgrade(@NotNull String identifier) {
+        this.upgradesMap.put(identifier, this.upgradesMap.getOrDefault(identifier, 0) + 1);
+    }
+
+    public int getUpgradeTier(@NotNull String identifier) {
+        return this.upgradesMap.getOrDefault(identifier, 0);
     }
 
     public void setStatus(@NotNull TeamStatus teamStatus) {
