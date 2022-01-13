@@ -107,7 +107,7 @@ public class UtilityListeners implements Listener {
     public void on(@NotNull EntityExplodeEvent e) {
         BedWarsPlugin.getInstance().getMatchManager().getGameMatch(e.getLocation().getWorld()).ifPresent(gameMatch -> {
             if (e.getEntity() instanceof TNTPrimed) {
-                e.blockList().removeIf(block -> !gameMatch.getBlocksSystem().canBreak(block.getLocation()));
+                e.blockList().removeIf(block -> !gameMatch.getBlocksSystem().canBreak(block.getLocation()) || block.getType().name().contains("STAINED_GLASS"));
 
                 e.blockList().forEach(block -> {
                     float x = -1.0F + (float) (Math.random() * 2.0D + 0.0D);

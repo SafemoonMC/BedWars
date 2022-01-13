@@ -47,4 +47,33 @@ public final class ItemsUtilities {
             }
         }
     }
+
+    public static @NotNull ItemStack createGlassItem(@NotNull GameTeam gameTeam) {
+        switch (gameTeam) {
+            case BLUE -> {
+                return createPureItem(Material.BLUE_STAINED_GLASS);
+            }
+            case YELLOW -> {
+                return createPureItem(Material.YELLOW_STAINED_GLASS);
+            }
+            case RED -> {
+                return createPureItem(Material.RED_STAINED_GLASS);
+            }
+            case AQUA -> {
+                return createPureItem(Material.CYAN_STAINED_GLASS);
+            }
+            case GRAY -> {
+                return createPureItem(Material.GRAY_STAINED_GLASS);
+            }
+            case GREEN -> {
+                return createPureItem(Material.GREEN_STAINED_GLASS);
+            }
+            case PINK -> {
+                return createPureItem(Material.PURPLE_STAINED_GLASS);
+            }
+            default -> {
+                return createPureItem(Material.WHITE_STAINED_GLASS);
+            }
+        }
+    }
 }

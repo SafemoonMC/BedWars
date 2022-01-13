@@ -50,12 +50,12 @@ public final class Shops {
                         ItemStackCreator.using(Material.TERRACOTTA).amount(16).create()
                 )
         );
-        SOLO_SHOP.addItem("blocks", new ShopElementItem(
+        SOLO_SHOP.addItem("blocks", new ShopElementItemDynamic(
                         "Blast-Proof Glass",
                         "&7Immune to explosions.",
                         new OptionEntry<>(Material.IRON_INGOT, 12),
                         Material.WHITE_STAINED_GLASS,
-                        ItemStackCreator.using(Material.WHITE_STAINED_GLASS).amount(4).create()
+                        gameMatchPlayer -> ItemStackCreator.using(ItemsUtilities.createGlassItem(gameMatchPlayer.getParent().getGameTeam())).amount(4).create()
                 )
         );
         SOLO_SHOP.addItem("blocks", new ShopElementItem(
@@ -107,12 +107,12 @@ public final class Shops {
                         ItemStackCreator.using(Material.TERRACOTTA).amount(16).create()
                 )
         );
-        DUOS_SHOP.addItem("blocks", new ShopElementItem(
+        DUOS_SHOP.addItem("blocks", new ShopElementItemDynamic(
                         "Blast-Proof Glass",
                         "&7Immune to explosions.",
                         new OptionEntry<>(Material.IRON_INGOT, 12),
                         Material.WHITE_STAINED_GLASS,
-                        ItemStackCreator.using(Material.WHITE_STAINED_GLASS).amount(4).create()
+                        gameMatchPlayer -> ItemStackCreator.using(ItemsUtilities.createGlassItem(gameMatchPlayer.getParent().getGameTeam())).amount(4).create()
                 )
         );
         DUOS_SHOP.addItem("blocks", new ShopElementItem(
@@ -164,12 +164,12 @@ public final class Shops {
                         ItemStackCreator.using(Material.TERRACOTTA).amount(16).create()
                 )
         );
-        TRIOS_SHOP.addItem("blocks", new ShopElementItem(
+        TRIOS_SHOP.addItem("blocks", new ShopElementItemDynamic(
                         "Blast-Proof Glass",
                         "&7Immune to explosions.",
                         new OptionEntry<>(Material.IRON_INGOT, 12),
                         Material.WHITE_STAINED_GLASS,
-                        ItemStackCreator.using(Material.WHITE_STAINED_GLASS).amount(4).create()
+                        gameMatchPlayer -> ItemStackCreator.using(ItemsUtilities.createGlassItem(gameMatchPlayer.getParent().getGameTeam())).amount(4).create()
                 )
         );
         TRIOS_SHOP.addItem("blocks", new ShopElementItem(
@@ -221,12 +221,12 @@ public final class Shops {
                         ItemStackCreator.using(Material.TERRACOTTA).amount(16).create()
                 )
         );
-        QUADS_SHOP.addItem("blocks", new ShopElementItem(
+        QUADS_SHOP.addItem("blocks", new ShopElementItemDynamic(
                         "Blast-Proof Glass",
                         "&7Immune to explosions.",
                         new OptionEntry<>(Material.IRON_INGOT, 12),
                         Material.WHITE_STAINED_GLASS,
-                        ItemStackCreator.using(Material.WHITE_STAINED_GLASS).amount(4).create()
+                        gameMatchPlayer -> ItemStackCreator.using(ItemsUtilities.createGlassItem(gameMatchPlayer.getParent().getGameTeam())).amount(4).create()
                 )
         );
         QUADS_SHOP.addItem("blocks", new ShopElementItem(
@@ -851,20 +851,20 @@ public final class Shops {
                         ItemStackCreator.using(Material.POLAR_BEAR_SPAWN_EGG).amount(1).create()
                 )
         );
-        SOLO_SHOP.addItem("utility", new ShopElementItem(
+        SOLO_SHOP.addItem("utility", new ShopElementItemUtility(
                         "Fireball",
                         "&7Right-click to launch! Great to\n&7knock back enemies walking on\n&7the bridges.",
                         new OptionEntry<>(Material.IRON_INGOT, 40),
                         Material.FIRE_CHARGE,
-                        ItemStackCreator.using(Material.FIRE_CHARGE).amount(1).create()
+                        gameMatchPlayer -> ItemStackCreator.using(Material.FIRE_CHARGE).amount(1).create()
                 )
         );
-        SOLO_SHOP.addItem("utility", new ShopElementItem(
+        SOLO_SHOP.addItem("utility", new ShopElementItemUtility(
                         "TNT",
                         "&7Instantly ignites, appropriate\n&7to explode things!",
                         new OptionEntry<>(Material.GOLD_INGOT, 4),
                         Material.TNT,
-                        ItemStackCreator.using(Material.TNT).amount(1).create()
+                        gameMatchPlayer -> ItemStackCreator.using(Material.TNT).amount(1).create()
                 )
         );
         SOLO_SHOP.addItem("utility", new ShopElementItem(
@@ -940,20 +940,20 @@ public final class Shops {
                         ItemStackCreator.using(Material.POLAR_BEAR_SPAWN_EGG).amount(1).create()
                 )
         );
-        DUOS_SHOP.addItem("utility", new ShopElementItem(
+        DUOS_SHOP.addItem("utility", new ShopElementItemUtility(
                         "Fireball",
                         "&7Right-click to launch! Great to\n&7knock back enemies walking on\n&7the bridges.",
                         new OptionEntry<>(Material.IRON_INGOT, 40),
                         Material.FIRE_CHARGE,
-                        ItemStackCreator.using(Material.FIRE_CHARGE).amount(1).create()
+                        gameMatchPlayer -> ItemStackCreator.using(Material.FIRE_CHARGE).amount(1).create()
                 )
         );
-        DUOS_SHOP.addItem("utility", new ShopElementItem(
+        DUOS_SHOP.addItem("utility", new ShopElementItemUtility(
                         "TNT",
                         "&7Instantly ignites, appropriate\n&7to explode things!",
                         new OptionEntry<>(Material.GOLD_INGOT, 4),
                         Material.TNT,
-                        ItemStackCreator.using(Material.TNT).amount(1).create()
+                        gameMatchPlayer -> ItemStackCreator.using(Material.TNT).amount(1).create()
                 )
         );
         DUOS_SHOP.addItem("utility", new ShopElementItem(
@@ -1029,20 +1029,20 @@ public final class Shops {
                         ItemStackCreator.using(Material.POLAR_BEAR_SPAWN_EGG).amount(1).create()
                 )
         );
-        TRIOS_SHOP.addItem("utility", new ShopElementItem(
+        TRIOS_SHOP.addItem("utility", new ShopElementItemUtility(
                         "Fireball",
                         "&7Right-click to launch! Great to\n&7knock back enemies walking on\n&7the bridges.",
                         new OptionEntry<>(Material.IRON_INGOT, 40),
                         Material.FIRE_CHARGE,
-                        ItemStackCreator.using(Material.FIRE_CHARGE).amount(1).create()
+                        gameMatchPlayer -> ItemStackCreator.using(Material.FIRE_CHARGE).amount(1).create()
                 )
         );
-        TRIOS_SHOP.addItem("utility", new ShopElementItem(
+        TRIOS_SHOP.addItem("utility", new ShopElementItemUtility(
                         "TNT",
                         "&7Instantly ignites, appropriate\n&7to explode things!",
                         new OptionEntry<>(Material.GOLD_INGOT, 4),
                         Material.TNT,
-                        ItemStackCreator.using(Material.TNT).amount(1).create()
+                        gameMatchPlayer -> ItemStackCreator.using(Material.TNT).amount(1).create()
                 )
         );
         TRIOS_SHOP.addItem("utility", new ShopElementItem(
@@ -1118,20 +1118,20 @@ public final class Shops {
                         ItemStackCreator.using(Material.POLAR_BEAR_SPAWN_EGG).amount(1).create()
                 )
         );
-        QUADS_SHOP.addItem("utility", new ShopElementItem(
+        QUADS_SHOP.addItem("utility", new ShopElementItemUtility(
                         "Fireball",
                         "&7Right-click to launch! Great to\n&7knock back enemies walking on\n&7the bridges.",
                         new OptionEntry<>(Material.IRON_INGOT, 40),
                         Material.FIRE_CHARGE,
-                        ItemStackCreator.using(Material.FIRE_CHARGE).amount(1).create()
+                        gameMatchPlayer -> ItemStackCreator.using(Material.FIRE_CHARGE).amount(1).create()
                 )
         );
-        QUADS_SHOP.addItem("utility", new ShopElementItem(
+        QUADS_SHOP.addItem("utility", new ShopElementItemUtility(
                         "TNT",
                         "&7Instantly ignites, appropriate\n&7to explode things!",
                         new OptionEntry<>(Material.GOLD_INGOT, 4),
                         Material.TNT,
-                        ItemStackCreator.using(Material.TNT).amount(1).create()
+                        gameMatchPlayer -> ItemStackCreator.using(Material.TNT).amount(1).create()
                 )
         );
         QUADS_SHOP.addItem("utility", new ShopElementItem(
