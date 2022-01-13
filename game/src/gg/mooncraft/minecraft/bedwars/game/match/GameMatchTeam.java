@@ -78,6 +78,13 @@ public final class GameMatchTeam {
 
     public void incrementUpgrade(@NotNull String identifier) {
         this.upgradesMap.put(identifier, this.upgradesMap.getOrDefault(identifier, 0) + 1);
+
+        if (identifier.equalsIgnoreCase("armor") || identifier.equalsIgnoreCase("weapon")) {
+            this.matchPlayerList.forEach(gameMatchPlayer -> {
+                gameMatchPlayer.updateWeapon();
+                gameMatchPlayer.updateArmor();
+            });
+        }
     }
 
     public int getUpgradeTier(@NotNull String identifier) {

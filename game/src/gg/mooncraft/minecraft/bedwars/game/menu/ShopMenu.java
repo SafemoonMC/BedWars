@@ -160,7 +160,17 @@ public final class ShopMenu implements ShopInterface {
             }
             if (shopElement instanceof ShopElementItemDynamic shopElementItemDynamic) {
                 player.getInventory().removeItemAnySlot(costItem);
-                player.getInventory().addItem(shopElementItemDynamic.getItemStackFunction().apply(gameMatchPlayer));
+
+                ItemStack itemStack = shopElementItemDynamic.getItemStackFunction().apply(gameMatchPlayer);
+                if (itemStack.getType().name().contains("BOOTS")) {
+                    gameMatchPlayer.getArmor()[0] = itemStack;
+                    ItemStack leggings = itemStack.clone();
+                    leggings.setType(Material.valueOf(itemStack.getType().name().replaceAll("BOOTS", "LEGGINGS")));
+                    gameMatchPlayer.getArmor()[1] = leggings;
+                    player.getInventory().setArmorContents(gameMatchPlayer.getArmor());
+                } else {
+                    player.getInventory().addItem(itemStack);
+                }
                 player.sendMessage(GameConstants.MESSAGE_SHOP_BUY.replaceAll("%shop-item%", DisplayUtilities.getDisplay(shopElementItemDynamic.getItemStackFunction().apply(gameMatchPlayer))));
             }
             if (shopElement instanceof ShopElementItemUtility shopElementItemUtility) {

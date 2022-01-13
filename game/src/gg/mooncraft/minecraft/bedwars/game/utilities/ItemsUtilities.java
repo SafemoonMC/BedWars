@@ -3,9 +3,11 @@ package gg.mooncraft.minecraft.bedwars.game.utilities;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.jetbrains.annotations.NotNull;
 
 import gg.mooncraft.minecraft.bedwars.data.GameTeam;
@@ -73,6 +75,58 @@ public final class ItemsUtilities {
             }
             default -> {
                 return createPureItem(Material.WHITE_STAINED_GLASS);
+            }
+        }
+    }
+
+    public static @NotNull ItemStack createArmorItem(@NotNull GameTeam gameTeam, @NotNull Material material) {
+        ItemStack itemStack = createPureItem(material);
+        itemStack.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
+        switch (gameTeam) {
+            case BLUE -> {
+                LeatherArmorMeta leatherArmorMeta = (LeatherArmorMeta) itemStack.getItemMeta();
+                leatherArmorMeta.setColor(Color.BLUE);
+                itemStack.setItemMeta(leatherArmorMeta);
+                return itemStack;
+            }
+            case YELLOW -> {
+                LeatherArmorMeta leatherArmorMeta = (LeatherArmorMeta) itemStack.getItemMeta();
+                leatherArmorMeta.setColor(Color.YELLOW);
+                itemStack.setItemMeta(leatherArmorMeta);
+                return itemStack;
+            }
+            case RED -> {
+                LeatherArmorMeta leatherArmorMeta = (LeatherArmorMeta) itemStack.getItemMeta();
+                leatherArmorMeta.setColor(Color.RED);
+                itemStack.setItemMeta(leatherArmorMeta);
+                return itemStack;
+            }
+            case AQUA -> {
+                LeatherArmorMeta leatherArmorMeta = (LeatherArmorMeta) itemStack.getItemMeta();
+                leatherArmorMeta.setColor(Color.AQUA);
+                itemStack.setItemMeta(leatherArmorMeta);
+                return itemStack;
+            }
+            case GRAY -> {
+                LeatherArmorMeta leatherArmorMeta = (LeatherArmorMeta) itemStack.getItemMeta();
+                leatherArmorMeta.setColor(Color.GRAY);
+                itemStack.setItemMeta(leatherArmorMeta);
+                return itemStack;
+            }
+            case GREEN -> {
+                LeatherArmorMeta leatherArmorMeta = (LeatherArmorMeta) itemStack.getItemMeta();
+                leatherArmorMeta.setColor(Color.GREEN);
+                itemStack.setItemMeta(leatherArmorMeta);
+                return itemStack;
+            }
+            case PINK -> {
+                LeatherArmorMeta leatherArmorMeta = (LeatherArmorMeta) itemStack.getItemMeta();
+                leatherArmorMeta.setColor(Color.FUCHSIA);
+                itemStack.setItemMeta(leatherArmorMeta);
+                return itemStack;
+            }
+            default -> {
+                return itemStack;
             }
         }
     }

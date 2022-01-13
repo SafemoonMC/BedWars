@@ -6,12 +6,18 @@ import me.neznamy.tab.api.TabAPI;
 import me.neznamy.tab.api.TabPlayer;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import gg.mooncraft.minecraft.bedwars.game.events.EventsAPI;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchUpdatePlayerEvent;
+import gg.mooncraft.minecraft.bedwars.game.items.ItemStackCreator;
+import gg.mooncraft.minecraft.bedwars.game.utilities.ItemsUtilities;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -31,6 +37,9 @@ public final class GameMatchPlayer {
 
     private @NotNull PlayerStatus playerStatus;
 
+    private final @NotNull ItemStack weapon;
+    private final @NotNull ItemStack[] armor;
+
     /*
     Constructor
      */
@@ -38,11 +47,50 @@ public final class GameMatchPlayer {
         this.parent = gameMatchTeam;
         this.uniqueId = uniqueId;
         this.playerStatus = PlayerStatus.ALIVE;
+        this.weapon = ItemsUtilities.createPureItem(Material.WOODEN_SWORD);
+        this.weapon.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
+
+        this.armor = new ItemStack[4];
+        this.armor[0] = new ItemStack(Material.AIR);
+        this.armor[1] = new ItemStack(Material.AIR);
+        this.armor[2] = ItemsUtilities.createArmorItem(gameMatchTeam.getGameTeam(), Material.LEATHER_CHESTPLATE);
+        this.armor[3] = ItemStackCreator.using(ItemsUtilities.createArmorItem(gameMatchTeam.getGameTeam(), Material.LEATHER_HELMET)).enchant(Enchantment.WATER_WORKER, 1).create();
     }
 
     /*
     Methods
      */
+    public void updateWeapon() {
+        if (getParent().getUpgradeTier("weapon") == 1) {
+            this.weapon.addEnchantment(Enchantment.DAMAGE_ALL, 1);
+            if (player != null) {
+                for (int i = 0; i < player.getInventory().getSize(); i++) {
+                    ItemStack itemStack = player.getInventory().getItem(i);
+                    if (itemStack != null && (itemStack.getType().name().contains("SWORD") || itemStack.getType().name().contains("AXE"))) {
+                        itemStack.addEnchantment(Enchantment.DAMAGE_ALL, 1);
+                    }
+                }
+            }
+        }
+    }
+
+    public void updateArmor() {
+        int level = getParent().getUpgradeTier("armor");
+        if (level != 0) {
+            if (!this.armor[0].getType().isAir()) {
+                this.armor[0].addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, level);
+            }
+            if (!this.armor[1].getType().isAir()) {
+                this.armor[1].addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, level);
+            }
+            this.armor[2].addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, level);
+            this.armor[3].addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, level);
+            if (player != null) {
+                player.getInventory().setArmorContents(getArmor());
+            }
+        }
+    }
+
     public void updateStatus(@NotNull PlayerStatus playerStatus) {
         this.playerStatus = playerStatus;
         EventsAPI.callEventSync(new MatchUpdatePlayerEvent(getParent().getParent(), this));

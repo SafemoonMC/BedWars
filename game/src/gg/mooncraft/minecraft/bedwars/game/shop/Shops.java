@@ -262,28 +262,28 @@ public final class Shops {
                 )
         );
         // Melee SOLO
-        SOLO_SHOP.addItem("melee", new ShopElementItem(
+        SOLO_SHOP.addItem("melee", new ShopElementItemDynamic(
                         "Stone Sword",
                         "",
                         new OptionEntry<>(Material.IRON_INGOT, 10),
                         Material.STONE_SWORD,
-                        ItemStackCreator.using(Material.STONE_SWORD).amount(1).create()
+                        gameMatchPlayer -> ItemStackCreator.using(Material.STONE_SWORD).enchant(Enchantment.DAMAGE_ALL, gameMatchPlayer.getParent().getUpgradeTier("weapon")).amount(1).create()
                 )
         );
-        SOLO_SHOP.addItem("melee", new ShopElementItem(
+        SOLO_SHOP.addItem("melee", new ShopElementItemDynamic(
                         "Iron Sword",
                         "",
                         new OptionEntry<>(Material.GOLD_INGOT, 7),
                         Material.IRON_SWORD,
-                        ItemStackCreator.using(Material.IRON_SWORD).amount(1).create()
+                        gameMatchPlayer -> ItemStackCreator.using(Material.IRON_SWORD).enchant(Enchantment.DAMAGE_ALL, gameMatchPlayer.getParent().getUpgradeTier("weapon")).amount(1).create()
                 )
         );
-        SOLO_SHOP.addItem("melee", new ShopElementItem(
+        SOLO_SHOP.addItem("melee", new ShopElementItemDynamic(
                         "Diamond Sword",
                         "",
                         new OptionEntry<>(Material.EMERALD, 4),
                         Material.DIAMOND_SWORD,
-                        ItemStackCreator.using(Material.DIAMOND_SWORD).amount(1).create()
+                        gameMatchPlayer -> ItemStackCreator.using(Material.DIAMOND_SWORD).enchant(Enchantment.DAMAGE_ALL, gameMatchPlayer.getParent().getUpgradeTier("weapon")).amount(1).create()
                 )
         );
         SOLO_SHOP.addItem("melee", new ShopElementItem(
@@ -295,28 +295,28 @@ public final class Shops {
                 )
         );
         // Melee DUOS
-        DUOS_SHOP.addItem("melee", new ShopElementItem(
+        DUOS_SHOP.addItem("melee", new ShopElementItemDynamic(
                         "Stone Sword",
                         "",
                         new OptionEntry<>(Material.IRON_INGOT, 10),
                         Material.STONE_SWORD,
-                        ItemStackCreator.using(Material.STONE_SWORD).amount(1).create()
+                        gameMatchPlayer -> ItemStackCreator.using(Material.STONE_SWORD).enchant(Enchantment.DAMAGE_ALL, gameMatchPlayer.getParent().getUpgradeTier("weapon")).amount(1).create()
                 )
         );
-        DUOS_SHOP.addItem("melee", new ShopElementItem(
+        DUOS_SHOP.addItem("melee", new ShopElementItemDynamic(
                         "Iron Sword",
                         "",
                         new OptionEntry<>(Material.GOLD_INGOT, 7),
                         Material.IRON_SWORD,
-                        ItemStackCreator.using(Material.IRON_SWORD).amount(1).create()
+                        gameMatchPlayer -> ItemStackCreator.using(Material.IRON_SWORD).enchant(Enchantment.DAMAGE_ALL, gameMatchPlayer.getParent().getUpgradeTier("weapon")).amount(1).create()
                 )
         );
-        DUOS_SHOP.addItem("melee", new ShopElementItem(
+        DUOS_SHOP.addItem("melee", new ShopElementItemDynamic(
                         "Diamond Sword",
                         "",
                         new OptionEntry<>(Material.EMERALD, 4),
                         Material.DIAMOND_SWORD,
-                        ItemStackCreator.using(Material.DIAMOND_SWORD).amount(1).create()
+                        gameMatchPlayer -> ItemStackCreator.using(Material.DIAMOND_SWORD).enchant(Enchantment.DAMAGE_ALL, gameMatchPlayer.getParent().getUpgradeTier("weapon")).amount(1).create()
                 )
         );
         DUOS_SHOP.addItem("melee", new ShopElementItem(
@@ -328,28 +328,28 @@ public final class Shops {
                 )
         );
         // Melee TRIOS
-        TRIOS_SHOP.addItem("melee", new ShopElementItem(
+        TRIOS_SHOP.addItem("melee", new ShopElementItemDynamic(
                         "Stone Sword",
                         "",
                         new OptionEntry<>(Material.IRON_INGOT, 10),
                         Material.STONE_SWORD,
-                        ItemStackCreator.using(Material.STONE_SWORD).amount(1).create()
+                        gameMatchPlayer -> ItemStackCreator.using(Material.STONE_SWORD).enchant(Enchantment.DAMAGE_ALL, gameMatchPlayer.getParent().getUpgradeTier("weapon")).amount(1).create()
                 )
         );
-        TRIOS_SHOP.addItem("melee", new ShopElementItem(
+        TRIOS_SHOP.addItem("melee", new ShopElementItemDynamic(
                         "Iron Sword",
                         "",
                         new OptionEntry<>(Material.GOLD_INGOT, 7),
                         Material.IRON_SWORD,
-                        ItemStackCreator.using(Material.IRON_SWORD).amount(1).create()
+                        gameMatchPlayer -> ItemStackCreator.using(Material.IRON_SWORD).enchant(Enchantment.DAMAGE_ALL, gameMatchPlayer.getParent().getUpgradeTier("weapon")).amount(1).create()
                 )
         );
-        TRIOS_SHOP.addItem("melee", new ShopElementItem(
+        TRIOS_SHOP.addItem("melee", new ShopElementItemDynamic(
                         "Diamond Sword",
                         "",
                         new OptionEntry<>(Material.EMERALD, 3),
                         Material.DIAMOND_SWORD,
-                        ItemStackCreator.using(Material.DIAMOND_SWORD).amount(1).create()
+                        gameMatchPlayer -> ItemStackCreator.using(Material.DIAMOND_SWORD).enchant(Enchantment.DAMAGE_ALL, gameMatchPlayer.getParent().getUpgradeTier("weapon")).amount(1).create()
                 )
         );
         TRIOS_SHOP.addItem("melee", new ShopElementItem(
@@ -361,28 +361,28 @@ public final class Shops {
                 )
         );
         // Melee QUADS
-        QUADS_SHOP.addItem("melee", new ShopElementItem(
+        QUADS_SHOP.addItem("melee", new ShopElementItemDynamic(
                         "Stone Sword",
                         "",
                         new OptionEntry<>(Material.IRON_INGOT, 10),
                         Material.STONE_SWORD,
-                        ItemStackCreator.using(Material.STONE_SWORD).amount(1).create()
+                        gameMatchPlayer -> ItemStackCreator.using(Material.STONE_SWORD).enchant(Enchantment.DAMAGE_ALL, gameMatchPlayer.getParent().getUpgradeTier("weapon")).amount(1).create()
                 )
         );
-        QUADS_SHOP.addItem("melee", new ShopElementItem(
+        QUADS_SHOP.addItem("melee", new ShopElementItemDynamic(
                         "Iron Sword",
                         "",
                         new OptionEntry<>(Material.GOLD_INGOT, 7),
                         Material.IRON_SWORD,
-                        ItemStackCreator.using(Material.IRON_SWORD).amount(1).create()
+                        gameMatchPlayer -> ItemStackCreator.using(Material.IRON_SWORD).enchant(Enchantment.DAMAGE_ALL, gameMatchPlayer.getParent().getUpgradeTier("weapon")).amount(1).create()
                 )
         );
-        QUADS_SHOP.addItem("melee", new ShopElementItem(
+        QUADS_SHOP.addItem("melee", new ShopElementItemDynamic(
                         "Diamond Sword",
                         "",
                         new OptionEntry<>(Material.EMERALD, 3),
                         Material.DIAMOND_SWORD,
-                        ItemStackCreator.using(Material.DIAMOND_SWORD).amount(1).create()
+                        gameMatchPlayer -> ItemStackCreator.using(Material.DIAMOND_SWORD).enchant(Enchantment.DAMAGE_ALL, gameMatchPlayer.getParent().getUpgradeTier("weapon")).amount(1).create()
                 )
         );
         QUADS_SHOP.addItem("melee", new ShopElementItem(
@@ -394,103 +394,103 @@ public final class Shops {
                 )
         );
         // Armor SOLO
-        SOLO_SHOP.addItem("armor", new ShopElementItem(
+        SOLO_SHOP.addItem("armor", new ShopElementItemDynamic(
                         "Permanent Chainmail Armor",
                         "&7Chainmail leggings and boots\n&7which you will always spawn\n&7with.",
                         new OptionEntry<>(Material.IRON_INGOT, 30),
                         Material.CHAINMAIL_BOOTS,
-                        ItemStackCreator.using(Material.CHAINMAIL_BOOTS).amount(1).create()
+                        gameMatchPlayer -> ItemStackCreator.using(Material.CHAINMAIL_BOOTS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, gameMatchPlayer.getParent().getUpgradeTier("armor")).amount(1).create()
                 )
         );
-        SOLO_SHOP.addItem("armor", new ShopElementItem(
+        SOLO_SHOP.addItem("armor", new ShopElementItemDynamic(
                         "Permanent Iron Armor",
                         "&7Iron leggings and boots which\n&7you will always spawn with.",
                         new OptionEntry<>(Material.GOLD_INGOT, 12),
                         Material.IRON_BOOTS,
-                        ItemStackCreator.using(Material.IRON_BOOTS).amount(1).create()
+                        gameMatchPlayer -> ItemStackCreator.using(Material.IRON_BOOTS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, gameMatchPlayer.getParent().getUpgradeTier("armor")).amount(1).create()
                 )
         );
-        SOLO_SHOP.addItem("armor", new ShopElementItem(
+        SOLO_SHOP.addItem("armor", new ShopElementItemDynamic(
                         "Permanent Diamond Armor",
                         "&7Diamond leggings and boots which\n&7you will always crush with.",
                         new OptionEntry<>(Material.EMERALD, 6),
                         Material.DIAMOND_BOOTS,
-                        ItemStackCreator.using(Material.DIAMOND_BOOTS).amount(1).create()
+                        gameMatchPlayer -> ItemStackCreator.using(Material.DIAMOND_BOOTS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, gameMatchPlayer.getParent().getUpgradeTier("armor")).amount(1).create()
                 )
         );
         // Armor DUOS
-        DUOS_SHOP.addItem("armor", new ShopElementItem(
+        DUOS_SHOP.addItem("armor", new ShopElementItemDynamic(
                         "Permanent Chainmail Armor",
                         "&7Chainmail leggings and boots\n&7which you will always spawn\n&7with.",
                         new OptionEntry<>(Material.IRON_INGOT, 30),
                         Material.CHAINMAIL_BOOTS,
-                        ItemStackCreator.using(Material.CHAINMAIL_BOOTS).amount(1).create()
+                        gameMatchPlayer -> ItemStackCreator.using(Material.CHAINMAIL_BOOTS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, gameMatchPlayer.getParent().getUpgradeTier("armor")).amount(1).create()
                 )
         );
-        DUOS_SHOP.addItem("armor", new ShopElementItem(
+        DUOS_SHOP.addItem("armor", new ShopElementItemDynamic(
                         "Permanent Iron Armor",
                         "&7Iron leggings and boots which\n&7you will always spawn with.",
                         new OptionEntry<>(Material.GOLD_INGOT, 12),
                         Material.IRON_BOOTS,
-                        ItemStackCreator.using(Material.IRON_BOOTS).amount(1).create()
+                        gameMatchPlayer -> ItemStackCreator.using(Material.IRON_BOOTS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, gameMatchPlayer.getParent().getUpgradeTier("armor")).amount(1).create()
                 )
         );
-        DUOS_SHOP.addItem("armor", new ShopElementItem(
+        DUOS_SHOP.addItem("armor", new ShopElementItemDynamic(
                         "Permanent Diamond Armor",
                         "&7Diamond leggings and boots which\n&7you will always crush with.",
                         new OptionEntry<>(Material.EMERALD, 6),
                         Material.DIAMOND_BOOTS,
-                        ItemStackCreator.using(Material.DIAMOND_BOOTS).amount(1).create()
+                        gameMatchPlayer -> ItemStackCreator.using(Material.DIAMOND_BOOTS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, gameMatchPlayer.getParent().getUpgradeTier("armor")).amount(1).create()
                 )
         );
         // Armor TRIOS
-        TRIOS_SHOP.addItem("armor", new ShopElementItem(
+        TRIOS_SHOP.addItem("armor", new ShopElementItemDynamic(
                         "Permanent Chainmail Armor",
                         "&7Chainmail leggings and boots\n&7which you will always spawn\n&7with.",
                         new OptionEntry<>(Material.IRON_INGOT, 30),
                         Material.CHAINMAIL_BOOTS,
-                        ItemStackCreator.using(Material.CHAINMAIL_BOOTS).amount(1).create()
+                        gameMatchPlayer -> ItemStackCreator.using(Material.CHAINMAIL_BOOTS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, gameMatchPlayer.getParent().getUpgradeTier("armor")).amount(1).create()
                 )
         );
-        TRIOS_SHOP.addItem("armor", new ShopElementItem(
+        TRIOS_SHOP.addItem("armor", new ShopElementItemDynamic(
                         "Permanent Iron Armor",
                         "&7Iron leggings and boots which\n&7you will always spawn with.",
                         new OptionEntry<>(Material.GOLD_INGOT, 12),
                         Material.IRON_BOOTS,
-                        ItemStackCreator.using(Material.IRON_BOOTS).amount(1).create()
+                        gameMatchPlayer -> ItemStackCreator.using(Material.IRON_BOOTS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, gameMatchPlayer.getParent().getUpgradeTier("armor")).amount(1).create()
                 )
         );
-        TRIOS_SHOP.addItem("armor", new ShopElementItem(
+        TRIOS_SHOP.addItem("armor", new ShopElementItemDynamic(
                         "Permanent Diamond Armor",
                         "&7Diamond leggings and boots which\n&7you will always crush with.",
                         new OptionEntry<>(Material.EMERALD, 6),
                         Material.DIAMOND_BOOTS,
-                        ItemStackCreator.using(Material.DIAMOND_BOOTS).amount(1).create()
+                        gameMatchPlayer -> ItemStackCreator.using(Material.DIAMOND_BOOTS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, gameMatchPlayer.getParent().getUpgradeTier("armor")).amount(1).create()
                 )
         );
         // Armor QUADS
-        QUADS_SHOP.addItem("armor", new ShopElementItem(
+        QUADS_SHOP.addItem("armor", new ShopElementItemDynamic(
                         "Permanent Chainmail Armor",
                         "&7Chainmail leggings and boots\n&7which you will always spawn\n&7with.",
                         new OptionEntry<>(Material.IRON_INGOT, 30),
                         Material.CHAINMAIL_BOOTS,
-                        ItemStackCreator.using(Material.CHAINMAIL_BOOTS).amount(1).create()
+                        gameMatchPlayer -> ItemStackCreator.using(Material.CHAINMAIL_BOOTS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, gameMatchPlayer.getParent().getUpgradeTier("armor")).amount(1).create()
                 )
         );
-        QUADS_SHOP.addItem("armor", new ShopElementItem(
+        QUADS_SHOP.addItem("armor", new ShopElementItemDynamic(
                         "Permanent Iron Armor",
                         "&7Iron leggings and boots which\n&7you will always spawn with.",
                         new OptionEntry<>(Material.GOLD_INGOT, 12),
                         Material.IRON_BOOTS,
-                        ItemStackCreator.using(Material.IRON_BOOTS).amount(1).create()
+                        gameMatchPlayer -> ItemStackCreator.using(Material.IRON_BOOTS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, gameMatchPlayer.getParent().getUpgradeTier("armor")).amount(1).create()
                 )
         );
-        QUADS_SHOP.addItem("armor", new ShopElementItem(
+        QUADS_SHOP.addItem("armor", new ShopElementItemDynamic(
                         "Permanent Diamond Armor",
                         "&7Diamond leggings and boots which\n&7you will always crush with.",
                         new OptionEntry<>(Material.EMERALD, 6),
                         Material.DIAMOND_BOOTS,
-                        ItemStackCreator.using(Material.DIAMOND_BOOTS).amount(1).create()
+                        gameMatchPlayer -> ItemStackCreator.using(Material.DIAMOND_BOOTS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, gameMatchPlayer.getParent().getUpgradeTier("armor")).amount(1).create()
                 )
         );
         // Tools SOLO
@@ -504,18 +504,18 @@ public final class Shops {
         );
         SOLO_SHOP.addItem("tools", new ShopElementItem(
                         "&6Wooden Pickaxe",
-                        "Description",
+                        "",
                         new OptionEntry<>(Material.IRON_INGOT, 2),
                         Material.WOODEN_PICKAXE,
                         ItemStackCreator.using(Material.WOODEN_PICKAXE).amount(1).enchant(Enchantment.DIG_SPEED, 1).create()
                 )
         );
-        SOLO_SHOP.addItem("tools", new ShopElementItem(
+        SOLO_SHOP.addItem("tools", new ShopElementItemDynamic(
                         "&6Wooden Axe",
-                        "Description",
+                        "",
                         new OptionEntry<>(Material.IRON_INGOT, 2),
                         Material.WOODEN_AXE,
-                        ItemStackCreator.using(Material.WOODEN_AXE).enchant(Enchantment.DIG_SPEED, 1).amount(1).create()
+                        gameMatchPlayer -> ItemStackCreator.using(Material.WOODEN_AXE).enchant(Enchantment.DIG_SPEED, 1).enchant(Enchantment.DAMAGE_ALL, gameMatchPlayer.getParent().getUpgradeTier("weapon")).amount(1).create()
                 )
         );
         // Tools DUOS
@@ -529,18 +529,18 @@ public final class Shops {
         );
         DUOS_SHOP.addItem("tools", new ShopElementItem(
                         "&6Wooden Pickaxe",
-                        "Description",
+                        "",
                         new OptionEntry<>(Material.IRON_INGOT, 2),
                         Material.WOODEN_PICKAXE,
                         ItemStackCreator.using(Material.WOODEN_PICKAXE).enchant(Enchantment.DIG_SPEED, 1).amount(1).create()
                 )
         );
-        DUOS_SHOP.addItem("tools", new ShopElementItem(
+        DUOS_SHOP.addItem("tools", new ShopElementItemDynamic(
                         "&6Wooden Axe",
-                        "Description",
+                        "",
                         new OptionEntry<>(Material.IRON_INGOT, 2),
                         Material.WOODEN_AXE,
-                        ItemStackCreator.using(Material.WOODEN_AXE).enchant(Enchantment.DIG_SPEED, 1).amount(1).create()
+                        gameMatchPlayer -> ItemStackCreator.using(Material.WOODEN_AXE).enchant(Enchantment.DIG_SPEED, 1).enchant(Enchantment.DAMAGE_ALL, gameMatchPlayer.getParent().getUpgradeTier("weapon")).amount(1).create()
                 )
         );
         // Tools TRIOS
@@ -554,18 +554,18 @@ public final class Shops {
         );
         TRIOS_SHOP.addItem("tools", new ShopElementItem(
                         "&6Wooden Pickaxe",
-                        "Description",
+                        "",
                         new OptionEntry<>(Material.IRON_INGOT, 2),
                         Material.WOODEN_PICKAXE,
                         ItemStackCreator.using(Material.WOODEN_PICKAXE).enchant(Enchantment.DIG_SPEED, 1).amount(1).create()
                 )
         );
-        TRIOS_SHOP.addItem("tools", new ShopElementItem(
+        TRIOS_SHOP.addItem("tools", new ShopElementItemDynamic(
                         "&6Wooden Axe",
-                        "Description",
+                        "",
                         new OptionEntry<>(Material.IRON_INGOT, 2),
                         Material.WOODEN_AXE,
-                        ItemStackCreator.using(Material.WOODEN_AXE).enchant(Enchantment.DIG_SPEED, 1).amount(1).create()
+                        gameMatchPlayer -> ItemStackCreator.using(Material.WOODEN_AXE).enchant(Enchantment.DIG_SPEED, 1).enchant(Enchantment.DAMAGE_ALL, gameMatchPlayer.getParent().getUpgradeTier("weapon")).amount(1).create()
                 )
         );
         // Tools QUADS
@@ -579,18 +579,18 @@ public final class Shops {
         );
         QUADS_SHOP.addItem("tools", new ShopElementItem(
                         "&6Wooden Pickaxe",
-                        "Description",
+                        "",
                         new OptionEntry<>(Material.IRON_INGOT, 2),
                         Material.WOODEN_PICKAXE,
                         ItemStackCreator.using(Material.WOODEN_PICKAXE).enchant(Enchantment.DIG_SPEED, 1).amount(1).create()
                 )
         );
-        QUADS_SHOP.addItem("tools", new ShopElementItem(
+        QUADS_SHOP.addItem("tools", new ShopElementItemDynamic(
                         "&6Wooden Axe",
-                        "Description",
+                        "",
                         new OptionEntry<>(Material.IRON_INGOT, 2),
                         Material.WOODEN_AXE,
-                        ItemStackCreator.using(Material.WOODEN_AXE).enchant(Enchantment.DIG_SPEED, 1).amount(1).create()
+                        gameMatchPlayer -> ItemStackCreator.using(Material.WOODEN_AXE).enchant(Enchantment.DIG_SPEED, 1).enchant(Enchantment.DAMAGE_ALL, gameMatchPlayer.getParent().getUpgradeTier("weapon")).amount(1).create()
                 )
         );
         // Ranged SOLO

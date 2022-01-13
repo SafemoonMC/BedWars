@@ -98,6 +98,10 @@ public class MatchListeners implements Listener {
                             player.setGameMode(GameMode.SURVIVAL);
                             player.hideBossBar(BedWarsPlugin.getInstance().getBossBar());
                             GameConstants.MESSAGE_STARTING_TIP.forEach(player::sendMessage);
+
+                            player.getInventory().clear();
+                            player.getInventory().setItem(0, gameMatchPlayer.getWeapon());
+                            player.getInventory().setArmorContents(gameMatchPlayer.getArmor());
                         });
                         gameMatchPlayer.getTabPlayer().ifPresent(tabPlayer -> {
                             TabAPI.getInstance().getScoreboardManager().showScoreboard(tabPlayer, gameMatchTeam.getScoreboard());
@@ -140,8 +144,13 @@ public class MatchListeners implements Listener {
                     e.getGameMatchPlayer().getParent().getMapPointList().stream().filter(teamMapPoint -> teamMapPoint.getType() == PointTypes.TEAM.TEAM_SPAWNPOINT).findFirst().ifPresent(teamMapPoint -> {
                         Location location = PointAdapter.adapt(gameMatch, teamMapPoint);
                         player.teleportAsync(location);
-                        player.setGameMode(GameMode.SURVIVAL);
                     });
+
+                    player.getInventory().clear();
+                    player.getInventory().setItem(0, gameMatchPlayer.getWeapon());
+                    player.getInventory().setArmorContents(gameMatchPlayer.getArmor());
+
+                    player.setGameMode(GameMode.SURVIVAL);
                 });
             }
             case RESPAWNING -> {

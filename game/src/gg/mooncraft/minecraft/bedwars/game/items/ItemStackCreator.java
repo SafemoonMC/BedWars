@@ -51,6 +51,7 @@ public final class ItemStackCreator {
     }
 
     public ItemStackCreator enchant(Enchantment enchantment, int level) {
+        if (level <= 0) return this;
         itemStack.addUnsafeEnchantment(enchantment, level);
         return this;
     }
