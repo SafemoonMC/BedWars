@@ -3,7 +3,9 @@ package gg.mooncraft.minecraft.bedwars.game.match.tasks;
 import me.eduardwayland.mooncraft.waylander.scheduler.SchedulerTask;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Effect;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Egg;
@@ -57,7 +59,11 @@ public class BridgeEggTask implements Runnable {
                 .filter(block -> this.gameMatchPlayer.getParent().getParent().getBlocksSystem().canPlace(block.getLocation()))
                 .collect(Collectors.toList());
         Bukkit.getScheduler().runTaskLater(BedWarsPlugin.getInstance(), () -> {
-            blockList.forEach(block -> block.setType(ItemsUtilities.createWoolitem(this.gameMatchPlayer.getParent().getGameTeam()).getType()));
+            blockList.forEach(block -> {
+                block.setType(ItemsUtilities.createWoolitem(this.gameMatchPlayer.getParent().getGameTeam()).getType());
+                block.getWorld().playSound(block.getLocation(), Sound.BLOCK_WOOD_PLACE, 1, 1);
+                block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, block.getType());
+            });
         }, 3);
         this.gameMatchPlayer.getParent().getParent().getBlocksSystem().placeBlocks(blockList.stream().map(Block::getLocation).collect(Collectors.toList()));
 
