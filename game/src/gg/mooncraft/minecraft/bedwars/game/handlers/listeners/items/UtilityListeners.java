@@ -63,7 +63,8 @@ public class UtilityListeners implements Listener {
                 e.setCancelled(true);
                 if (player.getLocation().getPitch() < 35 && player.getLocation().getPitch() > -35) {
                     Egg egg = player.launchProjectile(Egg.class);
-                    egg.setVelocity(egg.getVelocity().normalize().multiply(2));
+                    egg.setBounce(false);
+                    egg.setVelocity(egg.getVelocity().normalize().multiply(1.5));
                     egg.setGlowing(true);
                     BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player)
                             .flatMap(gameMatch -> gameMatch.getDataOf(player))

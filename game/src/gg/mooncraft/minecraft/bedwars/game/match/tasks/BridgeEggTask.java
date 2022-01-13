@@ -15,7 +15,7 @@ import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatchPlayer;
 import gg.mooncraft.minecraft.bedwars.game.utilities.ItemsUtilities;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
@@ -27,7 +27,9 @@ public class BridgeEggTask implements Runnable {
     /*
     Constants
      */
-    private static final @NotNull BlockFace[] FACES = {BlockFace.SELF, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.WEST, BlockFace.NORTH_EAST, BlockFace.NORTH_WEST, BlockFace.SOUTH_EAST, BlockFace.SOUTH_WEST};
+    private static final @NotNull BlockFace[] FACES = {BlockFace.SELF, BlockFace.NORTH, BlockFace.NORTH_EAST, BlockFace.SOUTH, BlockFace.SOUTH_EAST};
+//    private static final @NotNull BlockFace[] FACES = {BlockFace.SELF, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.WEST, BlockFace.NORTH_EAST, BlockFace.NORTH_WEST, BlockFace.SOUTH_EAST, BlockFace.SOUTH_WEST};
+//    private static final @NotNull BlockFace[] FACES = {BlockFace.SELF, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.WEST, BlockFace.NORTH_EAST, BlockFace.NORTH_WEST, BlockFace.SOUTH_EAST, BlockFace.SOUTH_WEST};
 
     /*
     Fields
@@ -43,31 +45,31 @@ public class BridgeEggTask implements Runnable {
     public BridgeEggTask(@NotNull GameMatchPlayer gameMatchPlayer, @NotNull Egg egg) {
         this.gameMatchPlayer = gameMatchPlayer;
         this.egg = egg;
-        this.schedulerTask = BedWarsPlugin.getInstance().getScheduler().asyncRepeating(this, 50, TimeUnit.MILLISECONDS);
+        this.schedulerTask = BedWarsPlugin.getInstance().getScheduler().asyncRepeating(this, 25, TimeUnit.MILLISECONDS);
         this.lifetime = new AtomicInteger(20);
     }
-
 
     /*
     Override Methods
      */
     @Override
     public void run() {
-        Location location = egg.getLocation().subtract(0, 2, 0);
-        List<Block> blockList = Arrays.stream(FACES)
-                .map(blockFace -> location.getBlock().getRelative(blockFace))
-                .filter(block -> block.getType().isAir())
-                .filter(block -> this.gameMatchPlayer.getParent().getParent().getBlocksSystem().canPlace(block.getLocation()))
-                .collect(Collectors.toList());
-        Bukkit.getScheduler().runTaskLater(BedWarsPlugin.getInstance(), () -> {
-            blockList.forEach(block -> {
-                block.setType(ItemsUtilities.createWoolitem(this.gameMatchPlayer.getParent().getGameTeam()).getType());
-                if (ThreadLocalRandom.current().nextBoolean()) {
-                    block.getWorld().playSound(block.getLocation(), Sound.BLOCK_WOOD_PLACE, 1, 1);
-                    block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, block.getType());
-                }
-            });
-        }, 3);
+        Location location = this.egg.getLocation().clone().subtract(0, 1, 0);
+
+        List<Block> blockList = new ArrayList<>();
+        for (int x = (int) location.getX() - 1; x <= (int) location.getX(); x++) {
+            for (int z = (int) location.getZ() - 1; z <= (int) location.getZ(); z++) {
+                blockList.add(location.getWorld().getBlockAt(x, location.getBlockY(), z));
+            }
+        }
+
+        Bukkit.getScheduler().runTaskLater(BedWarsPlugin.getInstance(), () -> blockList.forEach(block -> {
+            block.setType(ItemsUtilities.createWoolitem(this.gameMatchPlayer.getParent().getGameTeam()).getType());
+            if (ThreadLocalRandom.current().nextBoolean()) {
+                block.getWorld().playSound(block.getLocation(), Sound.BLOCK_WOOD_PLACE, 1, 1);
+                block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, block.getType());
+            }
+        }), 3);
         this.gameMatchPlayer.getParent().getParent().getBlocksSystem().placeBlocks(blockList.stream().map(Block::getLocation).collect(Collectors.toList()));
 
         if (this.egg.isDead() || this.lifetime.getAndDecrement() == 0) {
