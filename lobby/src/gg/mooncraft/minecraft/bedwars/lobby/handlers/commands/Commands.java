@@ -11,6 +11,7 @@ import me.eduardwayland.mooncraft.waylander.command.builders.LiteralCommandBuild
 import me.eduardwayland.mooncraft.waylander.command.builders.RequiredCommandBuilder;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import gg.mooncraft.minecraft.bedwars.common.messages.GameRequestMessage;
@@ -55,6 +56,10 @@ public final class Commands {
                                                     return;
                                                 }
                                                 List<UUID> playerList = PartyUtilities.getPartyMembers(partyData, true).stream().map(Player::getUniqueId).collect(Collectors.toList());
+                                                if (gameMode.getPlayersPerTeam() < playerList.size()) {
+                                                    player.sendMessage(ChatColor.RED + "Your party is too large for this mode!");
+                                                    return;
+                                                }
                                                 BedWarsPlugin.getInstance().getGameServerManager().getGameServer(gameMode, playerList.size()).ifPresent(gameServer -> {
                                                     GameRequestMessage gameRequestMessage = new GameRequestMessage(new GameRequestMessage.GameRequest(gameServer.getServerName(), gameMode, playerList));
                                                     BedWarsPlugin.getInstance().getMessenger().sendMessage(RedisChannel.GAME, gameRequestMessage).thenAccept(update -> {
