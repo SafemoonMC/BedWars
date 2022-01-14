@@ -110,6 +110,7 @@ public class PlayerListeners implements Listener {
     @EventHandler
     public void on(@NotNull EntityPickupItemEvent e) {
         if (!(e.getEntity() instanceof Player player)) return;
+        if (e.getItem().getThrower() == null) return;
         BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player)
                 .flatMap(gameMatch -> gameMatch.getDataOf(player))
                 .ifPresent(gameMatchPlayer -> new MatchPlayerPickupItemEvent(player, gameMatchPlayer, e.getItem()).callEvent());
