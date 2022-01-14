@@ -2,6 +2,7 @@ package gg.mooncraft.minecraft.bedwars.game.match;
 
 import lombok.Getter;
 
+import me.eduardwayland.mooncraft.waylander.scheduler.SchedulerTask;
 import me.neznamy.tab.api.TabAPI;
 import me.neznamy.tab.api.TabPlayer;
 
@@ -23,8 +24,8 @@ public final class GameTicker extends GameRunnable {
     Fields
      */
     private final @NotNull GameMatch gameMatch;
-
     private final @NotNull GameStartTask gameStartTask;
+    private final @NotNull SchedulerTask schedulerTask;
 
     /*
     Constructor
@@ -33,8 +34,7 @@ public final class GameTicker extends GameRunnable {
         super();
         this.gameMatch = gameMatch;
         this.gameStartTask = new GameStartTask(gameMatch);
-
-        BedWarsPlugin.getInstance().getScheduler().asyncRepeating(this, 50, TimeUnit.MILLISECONDS);
+        this.schedulerTask = BedWarsPlugin.getInstance().getScheduler().asyncRepeating(this, 50, TimeUnit.MILLISECONDS);
     }
 
     /*

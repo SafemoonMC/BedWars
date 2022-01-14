@@ -61,6 +61,10 @@ public final class MatchManager {
                 .thenApply(newSlimePair -> new GameMatch(uniqueId, bedWarsMap.getIdentifier(), gameMode, newSlimePair));
     }
 
+    public void destroyMatch(@NotNull GameMatch gameMatch) {
+        this.matchList.remove(gameMatch);
+    }
+
     public @NotNull Optional<GameMatch> getGameMatch(@NotNull World world) {
         return this.matchList
                 .stream()

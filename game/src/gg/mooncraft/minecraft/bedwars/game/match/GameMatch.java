@@ -4,6 +4,8 @@ import lombok.Getter;
 
 import me.neznamy.tab.api.scoreboard.Scoreboard;
 
+import net.kyori.adventure.text.Component;
+
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
@@ -90,6 +92,13 @@ public final class GameMatch {
     /*
     Methods
      */
+    public void terminate() {
+        this.gameTicker.getSchedulerTask().cancel();
+        getPlayerList().forEach(player -> player.kick(Component.empty()));
+        BedWarsPlugin.getInstance().getSlimeManager().unloadPairAsync(this.dimension);
+        BedWarsPlugin.getInstance().getMatchManager().destroyMatch(this);
+    }
+
     public boolean findTeamFor(@NotNull List<UUID> playerList) {
         if (gameState != GameState.WAITING) return false;
 
