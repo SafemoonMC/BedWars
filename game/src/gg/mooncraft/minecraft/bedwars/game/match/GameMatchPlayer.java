@@ -11,6 +11,8 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -60,6 +62,17 @@ public final class GameMatchPlayer {
     /*
     Methods
      */
+    public void updateEffect() {
+        if (player != null) {
+            if (getParent().getUpgradeTier("miner") == 1) {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, Integer.MAX_VALUE, 0, true, true, true));
+            }
+            if (getParent().getUpgradeTier("healpool") == 1 && getParent().isBedArea(player.getLocation())) {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, Integer.MAX_VALUE, 0, true, true, true));
+            }
+        }
+    }
+
     public void updateWeapon() {
         if (getParent().getUpgradeTier("weapon") == 1) {
             this.weapon.addEnchantment(Enchantment.DAMAGE_ALL, 1);

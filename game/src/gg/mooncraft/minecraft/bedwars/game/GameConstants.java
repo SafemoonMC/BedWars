@@ -19,6 +19,8 @@ public final class GameConstants {
     public static final @NotNull String DEFAULT_WORLD_NAME = "VoidworldStart";
 
     public static final int ANNOUNCER_TIP_INTERVAL = 190;
+    public static final int ISLAND_AREA_RANGE = 13;
+
     public static final @NotNull List<String> ANNOUNCER_MESSAGES = Arrays.asList(
             DisplayUtilities.getColored("&cCross-teaming is not allowed! Report rule breakers with /report <player>."),
             DisplayUtilities.getColored("&cReport rule breakers with /report <player>.")

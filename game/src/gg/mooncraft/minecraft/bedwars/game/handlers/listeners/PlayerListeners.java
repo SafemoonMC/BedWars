@@ -25,12 +25,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import gg.mooncraft.minecraft.bedwars.data.GameState;
+import gg.mooncraft.minecraft.bedwars.data.GameTeam;
 import gg.mooncraft.minecraft.bedwars.data.map.BedWarsMap;
 import gg.mooncraft.minecraft.bedwars.data.map.point.PointTypes;
 import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
 import gg.mooncraft.minecraft.bedwars.game.events.EventsAPI;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchBlockBreakEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchBlockPlaceEvent;
+import gg.mooncraft.minecraft.bedwars.game.events.MatchIslandRegionEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerDamageEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerDeathEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerJoinEvent;
@@ -38,6 +40,8 @@ import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerMoveEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerPickupItemEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerQuitEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchVillagerInteractEvent;
+import gg.mooncraft.minecraft.bedwars.game.match.GameMatch;
+import gg.mooncraft.minecraft.bedwars.game.match.GameMatchTeam;
 import gg.mooncraft.minecraft.bedwars.game.match.damage.PlayerDamage;
 import gg.mooncraft.minecraft.bedwars.game.utilities.PointAdapter;
 import gg.mooncraft.minecraft.bedwars.game.utilities.WorldUtilities;
@@ -179,6 +183,15 @@ public class PlayerListeners implements Listener {
             BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player).ifPresent(gameMatch -> {
                 gameMatch.getDataOf(player).ifPresent(gameMatchPlayer -> {
                     new MatchPlayerMoveEvent(player, gameMatch, gameMatchPlayer.getParent(), gameMatchPlayer, e.getTo(), e.getFrom()).callEvent();
+
+                    Optional<GameTeam> toTeam = lookupTeamArea(gameMatch, e.getTo());
+                    Optional<GameTeam> fromTeam = lookupTeamArea(gameMatch, e.getFrom());
+
+                    if (toTeam.isEmpty() && fromTeam.isPresent()) {
+                        new MatchIslandRegionEvent(player, gameMatchPlayer, fromTeam.get(), MatchIslandRegionEvent.Action.LEAVE).callEvent();
+                    } else if (toTeam.isPresent() && fromTeam.isEmpty()) {
+                        new MatchIslandRegionEvent(player, gameMatchPlayer, toTeam.get(), MatchIslandRegionEvent.Action.ENTER).callEvent();
+                    }
                 });
             });
         }
@@ -201,6 +214,10 @@ public class PlayerListeners implements Listener {
     /*
     Methods
      */
+    private @NotNull Optional<GameTeam> lookupTeamArea(@NotNull GameMatch gameMatch, @NotNull Location location) {
+        return gameMatch.getTeamList().stream().filter(gameMatchTeam -> gameMatchTeam.isBedArea(location)).map(GameMatchTeam::getGameTeam).findFirst();
+    }
+
     private @Nullable Player lookupPlayer(@NotNull Entity entity) {
         if (!(entity instanceof Player)) {
             if (entity instanceof Projectile projectile && projectile.getShooter() instanceof Player projectileOwner) {

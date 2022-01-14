@@ -14,6 +14,8 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 
 import gg.mooncraft.minecraft.bedwars.data.GameState;
@@ -26,6 +28,7 @@ import gg.mooncraft.minecraft.bedwars.game.GameConstants;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchBedBreakEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchBlockBreakEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchBlockPlaceEvent;
+import gg.mooncraft.minecraft.bedwars.game.events.MatchIslandRegionEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerDeathEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerJoinEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerMoveEvent;
@@ -136,6 +139,7 @@ public class MatchListeners implements Listener {
     @EventHandler
     public void on(@NotNull MatchUpdatePlayerEvent e) {
         GameMatch gameMatch = e.getGameMatch();
+        GameMatchTeam gameMatchTeam = e.getGameMatchTeam();
         GameMatchPlayer gameMatchPlayer = e.getGameMatchPlayer();
 
         switch (gameMatchPlayer.getPlayerStatus()) {
@@ -146,7 +150,7 @@ public class MatchListeners implements Listener {
                         player.teleportAsync(location);
                     });
 
-                    player.getInventory().clear();
+                    gameMatchPlayer.updateEffect();
                     player.getInventory().setItem(0, gameMatchPlayer.getWeapon());
                     player.getInventory().setArmorContents(gameMatchPlayer.getArmor());
 
@@ -154,7 +158,11 @@ public class MatchListeners implements Listener {
                 });
             }
             case RESPAWNING -> {
-                e.getGameMatchPlayer().getPlayer().ifPresent(player -> player.setGameMode(GameMode.SPECTATOR));
+                e.getGameMatchPlayer().getPlayer().ifPresent(player -> {
+                    player.getInventory().clear();
+                    player.getActivePotionEffects().forEach(potionEffect -> player.removePotionEffect(potionEffect.getType()));
+                    player.setGameMode(GameMode.SPECTATOR);
+                });
                 new SpectatorTask(gameMatch, gameMatchPlayer).play();
             }
         }
@@ -366,6 +374,26 @@ public class MatchListeners implements Listener {
         if (e.getTo().getBlockY() < -5) {
             player.setHealth(0D);
         }
+    }
+
+    @EventHandler
+    public void on(@NotNull MatchIslandRegionEvent e) {
+        Player player = e.getPlayer();
+
+        // Check team upgrades
+        if (e.getGameMatchTeam().getGameTeam() == e.getTeam()) {
+            if (e.getGameMatchTeam().getUpgradeTier("healpool") == 1) {
+                switch (e.getAction()) {
+                    case ENTER -> {
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, Integer.MAX_VALUE, 0, true, true, true));
+                    }
+                    case LEAVE -> {
+                        player.removePotionEffect(PotionEffectType.REGENERATION);
+                    }
+                }
+            }
+        }
+
     }
 
     @EventHandler

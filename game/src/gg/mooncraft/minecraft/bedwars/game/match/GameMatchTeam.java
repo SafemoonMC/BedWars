@@ -4,14 +4,19 @@ import lombok.Getter;
 
 import me.neznamy.tab.api.scoreboard.Scoreboard;
 
+import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
 
 import gg.mooncraft.minecraft.bedwars.data.GameTeam;
 import gg.mooncraft.minecraft.bedwars.data.map.BedWarsMap;
 import gg.mooncraft.minecraft.bedwars.data.map.MapPointsContainer;
+import gg.mooncraft.minecraft.bedwars.data.map.point.PointTypes;
 import gg.mooncraft.minecraft.bedwars.data.map.point.TeamMapPoint;
 import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
+import gg.mooncraft.minecraft.bedwars.game.GameConstants;
+import gg.mooncraft.minecraft.bedwars.game.utilities.PointAdapter;
+import gg.mooncraft.minecraft.bedwars.game.utilities.WorldUtilities;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -80,10 +85,12 @@ public final class GameMatchTeam {
         this.upgradesMap.put(identifier, this.upgradesMap.getOrDefault(identifier, 0) + 1);
 
         if (identifier.equalsIgnoreCase("armor") || identifier.equalsIgnoreCase("weapon")) {
-            this.matchPlayerList.forEach(gameMatchPlayer -> {
+            this.matchPlayerList.stream().filter(gameMatchPlayer -> gameMatchPlayer.getPlayerStatus() == PlayerStatus.ALIVE).forEach(gameMatchPlayer -> {
                 gameMatchPlayer.updateWeapon();
                 gameMatchPlayer.updateArmor();
             });
+        } else if (identifier.equalsIgnoreCase("healpool") || identifier.equalsIgnoreCase("miner")) {
+            this.matchPlayerList.stream().filter(gameMatchPlayer -> gameMatchPlayer.getPlayerStatus() == PlayerStatus.ALIVE).forEach(GameMatchPlayer::updateEffect);
         }
     }
 
@@ -93,6 +100,14 @@ public final class GameMatchTeam {
 
     public void setStatus(@NotNull TeamStatus teamStatus) {
         this.teamStatus = teamStatus;
+    }
+
+    public boolean isBedArea(@NotNull Location location) {
+        Location streamLocation = getMapPointList().stream().filter(point -> point.getType() == PointTypes.TEAM.TEAM_BED).findFirst().map(point -> PointAdapter.adapt(getParent(), point)).orElse(null);
+        if (streamLocation == null || !location.getWorld().equals(streamLocation.getWorld())) {
+            return false;
+        }
+        return WorldUtilities.isSameArea(location, streamLocation, GameConstants.ISLAND_AREA_RANGE, GameConstants.ISLAND_AREA_RANGE, GameConstants.ISLAND_AREA_RANGE, false);
     }
 
     @UnmodifiableView
