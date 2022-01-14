@@ -15,6 +15,9 @@ import gg.mooncraft.minecraft.bedwars.data.map.point.PointTypes;
 import gg.mooncraft.minecraft.bedwars.data.map.point.TeamMapPoint;
 import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
 import gg.mooncraft.minecraft.bedwars.game.GameConstants;
+import gg.mooncraft.minecraft.bedwars.game.events.EventsAPI;
+import gg.mooncraft.minecraft.bedwars.game.events.MatchUpdateTeamEvent;
+import gg.mooncraft.minecraft.bedwars.game.traps.TeamTrap;
 import gg.mooncraft.minecraft.bedwars.game.utilities.PointAdapter;
 import gg.mooncraft.minecraft.bedwars.game.utilities.WorldUtilities;
 
@@ -38,6 +41,7 @@ public final class GameMatchTeam {
     private final int id;
     private final @NotNull GameTeam gameTeam;
     private final @NotNull List<GameMatchPlayer> matchPlayerList;
+    private final @NotNull List<TeamTrap> trapList;
     private final @NotNull Map<String, Integer> upgradesMap;
     private Scoreboard scoreboard;
     private TeamStatus teamStatus;
@@ -50,6 +54,7 @@ public final class GameMatchTeam {
         this.id = id;
         this.gameTeam = gameTeam;
         this.matchPlayerList = new LinkedList<>();
+        this.trapList = new LinkedList<>();
         this.upgradesMap = new HashMap<>();
         this.teamStatus = TeamStatus.ALIVE;
     }
@@ -94,12 +99,18 @@ public final class GameMatchTeam {
         }
     }
 
+    public void addTrap(@NotNull TeamTrap teamTrap) {
+        if (this.trapList.contains(teamTrap)) return;
+        this.trapList.add(teamTrap);
+    }
+
     public int getUpgradeTier(@NotNull String identifier) {
         return this.upgradesMap.getOrDefault(identifier, 0);
     }
 
-    public void setStatus(@NotNull TeamStatus teamStatus) {
+    public void updateStatus(@NotNull TeamStatus teamStatus) {
         this.teamStatus = teamStatus;
+        EventsAPI.callEventSync(new MatchUpdateTeamEvent(this));
     }
 
     public boolean isBedArea(@NotNull Location location) {
@@ -110,6 +121,10 @@ public final class GameMatchTeam {
         return WorldUtilities.isSameArea(location, streamLocation, GameConstants.ISLAND_AREA_RANGE, GameConstants.ISLAND_AREA_RANGE, GameConstants.ISLAND_AREA_RANGE, true);
     }
 
+    public boolean isAnyAlive() {
+        return this.matchPlayerList.stream().anyMatch(gameMatchPlayer -> gameMatchPlayer.getPlayerStatus() != PlayerStatus.SPECTATING);
+    }
+
     @UnmodifiableView
     public @NotNull List<GameMatchPlayer> getMatchPlayerList() {
         return Collections.unmodifiableList(this.matchPlayerList);
@@ -118,6 +133,11 @@ public final class GameMatchTeam {
     @UnmodifiableView
     public @NotNull List<TeamMapPoint> getMapPointList() {
         return this.parent.getBedWarsMap().map(BedWarsMap::getPointsContainer).map(MapPointsContainer::getTeamPointList).stream().flatMap(List::stream).filter(teamMapPoint -> teamMapPoint.getGameMode() == this.parent.getGameMode() && teamMapPoint.getGameTeam() == this.gameTeam).toList();
+    }
+
+    @UnmodifiableView
+    public @NotNull List<TeamTrap> getTrapList() {
+        return Collections.unmodifiableList(this.trapList);
     }
 
     /*

@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -93,7 +94,18 @@ public class MatchListeners implements Listener {
                             .map(point -> PointAdapter.adapt(gameMatch, point))
                             .orElse(null);
                     if (location == null) {
-                        return;
+                        continue;
+                    }
+                    if (!gameMatchTeam.isAnyAlive()) {
+                        gameMatchTeam.updateStatus(TeamStatus.NOT_ALIVE);
+                        gameMatchTeam.getMapPointList()
+                                .stream()
+                                .filter(point -> point.getType() == PointTypes.TEAM.TEAM_BED)
+                                .findFirst()
+                                .map(point -> PointAdapter.adapt(gameMatch, point)).ifPresent(bedLocation -> {
+                                    bedLocation.getBlock().setType(Material.AIR);
+                                });
+                        continue;
                     }
 
                     gameMatchTeam.broadcastAction(gameMatchPlayer -> {
@@ -118,9 +130,19 @@ public class MatchListeners implements Listener {
                 }
             }
             case ENDING -> {
+                Optional<GameMatchTeam> winnerTeamOptional = gameMatch.getTeamList().stream().filter(GameMatchTeam::isAnyAlive).findFirst();
+                winnerTeamOptional.ifPresent(winnerTeam -> {
+                    winnerTeam.broadcastAction(gameMatchPlayer -> {
+                        gameMatchPlayer.getPlayer().ifPresent(player -> {
+                            player.sendMessage(Component.text(DisplayUtilities.getColored("You won this match!")));
+                        });
+                    });
+                });
+
                 for (GameMatchTeam gameMatchTeam : gameMatch.getTeamList()) {
                     gameMatchTeam.getScoreboard().unregister();
                 }
+                gameMatch.terminate();
             }
         }
         BedWarsPlugin.getInstance().getGameServerManager().sendGameServerMessage();
@@ -171,6 +193,14 @@ public class MatchListeners implements Listener {
                     player.getActivePotionEffects().forEach(potionEffect -> player.removePotionEffect(potionEffect.getType()));
                     player.setGameMode(GameMode.SPECTATOR);
                 });
+
+                long teamsAlive = e.getMatch().getTeamList()
+                        .stream()
+                        .filter(GameMatchTeam::isAnyAlive)
+                        .count();
+                if (teamsAlive == 1) {
+                    gameMatch.updateState(GameState.ENDING);
+                }
             }
         }
     }
@@ -327,7 +357,7 @@ public class MatchListeners implements Listener {
         Optional<GameMatchTeam> optionalBedTeamOwner = e.getMatchTeamOwner();
         optionalBedTeamOwner.ifPresent(gameMatchTeam -> {
             // Update team status
-            gameMatchTeam.setStatus(TeamStatus.NOT_ALIVE);
+            gameMatchTeam.updateStatus(TeamStatus.NOT_ALIVE);
 
             // Create explosion effect and play sound
             Arrays.stream(e.getBedParts()).forEach(location -> location.getWorld().createExplosion(location, 1, false, false));

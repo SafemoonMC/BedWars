@@ -17,6 +17,7 @@ import gg.mooncraft.minecraft.bedwars.game.items.ItemStackCreator;
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatch;
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatchPlayer;
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatchTeam;
+import gg.mooncraft.minecraft.bedwars.game.traps.TeamTrap;
 import gg.mooncraft.minecraft.bedwars.game.upgrades.TeamUpgrades;
 import gg.mooncraft.minecraft.bedwars.game.upgrades.UpgradeCategory;
 import gg.mooncraft.minecraft.bedwars.game.upgrades.UpgradeElement;
@@ -52,6 +53,7 @@ public final class ShopUpgradesMenu implements ShopInterface {
     private final @NotNull GameMatch gameMatch;
     private final @NotNull GameMatchPlayer gameMatchPlayer;
     private final @NotNull Inventory inventory;
+    private final @NotNull Map<Integer, TeamTrap> trapMap;
     private final @NotNull Map<Integer, UpgradeElement> upgradeMap;
 
     /*
@@ -62,6 +64,7 @@ public final class ShopUpgradesMenu implements ShopInterface {
         this.gameMatch = gameMatch;
         this.gameMatchPlayer = gameMatchPlayer;
         this.inventory = Bukkit.createInventory(this, 54, Component.text(GameConstants.SHOP_UPGRADES_TITLE));
+        this.trapMap = new HashMap<>();
         this.upgradeMap = new HashMap<>();
 
         // Load and select default category
@@ -101,6 +104,17 @@ public final class ShopUpgradesMenu implements ShopInterface {
             });
             index++;
         }
+
+        // Place traps group
+        index = 0;
+        for (TeamTrap teamTrap : TeamTrap.values()) {
+            int slot = TRAPS[index];
+            ItemStack itemStack = teamTrap.getIconItem(player, gameMatchPlayer).clone();
+            this.inventory.setItem(slot, itemStack);
+            this.trapMap.put(slot, teamTrap);
+
+            index++;
+        }
     }
 
     /*
@@ -122,6 +136,24 @@ public final class ShopUpgradesMenu implements ShopInterface {
             player.getInventory().removeItemAnySlot(costItem);
             gameMatchPlayer.getParent().incrementUpgrade(upgradeElement.getGroup().getIdentifier());
             player.sendMessage(GameConstants.MESSAGE_SHOP_BUY.replaceAll("%shop-item%", upgradeElement.getGroup().getDisplay()));
+
+            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_TRADE, 1, 1);
+            load();
+        }
+        if (this.trapMap.containsKey(slot)) {
+            TeamTrap teamTrap = this.trapMap.get(slot);
+            if (!player.getInventory().contains(teamTrap.getCostEntry().getKey(), teamTrap.getCostEntry().getValue())) {
+                player.sendMessage(GameConstants.MESSAGE_SHOP_CANNOT_AFFORD);
+                player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
+                return;
+            }
+
+            ItemStack costItem = ItemsUtilities.createPureItem(teamTrap.getCostEntry().getKey());
+            costItem.setAmount(teamTrap.getCostEntry().getValue());
+
+            player.getInventory().removeItemAnySlot(costItem);
+
+            player.sendMessage(GameConstants.MESSAGE_SHOP_BUY.replaceAll("%shop-item%", teamTrap.getDisplay()));
 
             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_TRADE, 1, 1);
             load();
