@@ -66,6 +66,8 @@ public class PlayerListeners implements Listener {
                 .flatMap(gameMatch -> gameMatch.getDataOf(player))
                 .ifPresent(gameMatchPlayer -> EventsAPI.callEventSync(new MatchPlayerJoinEvent(player, gameMatchPlayer)));
         e.joinMessage(null);
+
+        BedWarsPlugin.getInstance().getUserFactory().loadUser(player);
     }
 
     @EventHandler
@@ -75,6 +77,7 @@ public class PlayerListeners implements Listener {
                 .flatMap(gameMatch -> gameMatch.getDataOf(player))
                 .ifPresent(gameMatchPlayer -> EventsAPI.callEventSync(new MatchPlayerQuitEvent(player, gameMatchPlayer)));
         e.quitMessage(null);
+        BedWarsPlugin.getInstance().getUserFactory().unloadUser(player);
     }
 
     @EventHandler
