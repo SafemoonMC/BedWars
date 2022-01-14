@@ -141,7 +141,6 @@ public final class ShopMenu implements ShopInterface {
             return;
         }
 
-        ShopCategory shopCategory = this.categoryMap.get(selectedCategorySlot);
         if (this.elementMap.containsKey(slot)) {
             ShopElement shopElement = this.elementMap.get(slot);
 
