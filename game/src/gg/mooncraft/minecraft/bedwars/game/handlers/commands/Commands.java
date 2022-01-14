@@ -62,6 +62,19 @@ public final class Commands {
                         })
                 )
                 .then(LiteralCommandBuilder
+                        .<Player>name("stop")
+                        .executes(player -> {
+                            BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player).ifPresentOrElse(gameMatch -> {
+                                if (gameMatch.getGameState() == GameState.PLAYING) {
+                                    gameMatch.terminate();
+                                    player.sendMessage("This game is going to be stopped.");
+                                } else {
+                                    player.sendMessage("This game has not been started yet!");
+                                }
+                            }, () -> player.sendMessage("You're not in a game match."));
+                        })
+                )
+                .then(LiteralCommandBuilder
                         .<Player>name("mapping")
                         .executes(player -> {
                             BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player).ifPresentOrElse(gameMatch -> {
