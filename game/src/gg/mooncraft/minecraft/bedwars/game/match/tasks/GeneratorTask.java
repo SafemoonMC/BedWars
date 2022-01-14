@@ -12,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import gg.mooncraft.minecraft.bedwars.data.map.point.AbstractMapPoint;
+import gg.mooncraft.minecraft.bedwars.data.map.point.PointTypes;
 import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
 import gg.mooncraft.minecraft.bedwars.game.GameConstants;
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatch;
@@ -21,6 +22,7 @@ import gg.mooncraft.minecraft.bedwars.game.match.options.OptionEntry;
 import gg.mooncraft.minecraft.bedwars.game.utilities.DisplayUtilities;
 import gg.mooncraft.minecraft.bedwars.game.utilities.EntityUtilities;
 import gg.mooncraft.minecraft.bedwars.game.utilities.ItemsUtilities;
+import gg.mooncraft.minecraft.bedwars.game.utilities.PointAdapter;
 
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
@@ -93,6 +95,19 @@ public class GeneratorTask extends GameRunnable {
 
                 ItemStack itemStack = ItemsUtilities.createPureItem(type.getDropMaterial());
                 EntityUtilities.spawnItemStack(this.location, itemStack);
+
+                if (this.type == GeneratorType.EMERALD) {
+                    this.gameMatch.getTeamList()
+                            .stream()
+                            .filter(gameMatchTeam -> gameMatchTeam.getUpgradeTier("furnace") >= 3)
+                            .findFirst()
+                            .flatMap(gameMatchTeam -> gameMatchTeam.getMapPointList()
+                                    .stream()
+                                    .filter(point -> point.getType() == PointTypes.TEAM.TEAM_GENERATOR)
+                                    .findFirst()
+                                    .map(point -> PointAdapter.adapt(this.gameMatch, point)))
+                            .ifPresent(furnaceLocation -> EntityUtilities.spawnItemStack(furnaceLocation, itemStack));
+                }
             }
             forceUpdateHologram();
         }

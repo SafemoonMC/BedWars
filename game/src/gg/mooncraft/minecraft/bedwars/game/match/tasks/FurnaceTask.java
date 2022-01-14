@@ -14,6 +14,8 @@ import gg.mooncraft.minecraft.bedwars.game.match.options.MatchOptions;
 import gg.mooncraft.minecraft.bedwars.game.utilities.EntityUtilities;
 import gg.mooncraft.minecraft.bedwars.game.utilities.ItemsUtilities;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 @Getter
 public class FurnaceTask extends GameRunnable {
 
@@ -47,15 +49,32 @@ public class FurnaceTask extends GameRunnable {
         goldTicking += 1;
         if (ironTicking == MatchOptions.getMatchOption(gameMatch.getGameMode()).getResourceIronDropRate()) {
             ItemStack itemStack = ItemsUtilities.createPureItem(Material.IRON_INGOT);
+            itemStack.setAmount(getAmount());
             EntityUtilities.spawnItemStack(this.location, itemStack);
 
             this.ironTicking = 0;
         }
         if (goldTicking == MatchOptions.getMatchOption(gameMatch.getGameMode()).getResourceGoldDropRate()) {
             ItemStack itemStack = ItemsUtilities.createPureItem(Material.GOLD_INGOT);
+            itemStack.setAmount(getAmount());
+
             EntityUtilities.spawnItemStack(this.location, itemStack);
 
             this.goldTicking = 0;
+        }
+    }
+
+    /*
+    Methods
+     */
+    private int getAmount() {
+        int level = this.gameMatch.getTeam(this.gameTeam).map(gameMatchTeam -> gameMatchTeam.getUpgradeTier("furnace")).orElse(0);
+        if (level == 4) {
+            return 2;
+        } else if (level >= 1 && level < 4) {
+            return ThreadLocalRandom.current().nextInt(1, 3);
+        } else {
+            return 1;
         }
     }
 }

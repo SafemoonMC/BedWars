@@ -107,7 +107,7 @@ public final class GameMatchTeam {
         if (streamLocation == null || !location.getWorld().equals(streamLocation.getWorld())) {
             return false;
         }
-        return WorldUtilities.isSameArea(location, streamLocation, GameConstants.ISLAND_AREA_RANGE, GameConstants.ISLAND_AREA_RANGE, GameConstants.ISLAND_AREA_RANGE, false);
+        return WorldUtilities.isSameArea(location, streamLocation, GameConstants.ISLAND_AREA_RANGE, GameConstants.ISLAND_AREA_RANGE, GameConstants.ISLAND_AREA_RANGE, true);
     }
 
     @UnmodifiableView
