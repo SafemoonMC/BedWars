@@ -82,7 +82,7 @@ public final class UserStatisticDAO {
             resultSetIterator.forEachRemaining(resultSet -> {
                 ResultSetWrapper resultSetWrapper = new ResultSetWrapper(resultSet);
                 GameMode mode = GameMode.valueOf(resultSetWrapper.get("mode", String.class));
-                StatisticTypes.GAME type = StatisticTypes.GAME.valueOf(resultSetWrapper.get("type", String.class));
+                StatisticTypes.GAME type = StatisticTypes.GAME.valueOf(resultSetWrapper.get("name", String.class));
                 AtomicInteger amount = new AtomicInteger(resultSetWrapper.get("amount", Integer.class));
                 list.add(new GameStatistic(userStatisticContainer, mode, type, amount));
             });
@@ -101,8 +101,8 @@ public final class UserStatisticDAO {
             }
             List<OverallStatistic> list = new ArrayList<>();
             resultSetIterator.forEachRemaining(resultSet -> {
-                ResultSetWrapper resultSetWrapper = new ResultSetWrapper(resultSetIterator.next());
-                StatisticTypes.OVERALL type = StatisticTypes.OVERALL.valueOf(resultSetWrapper.get("type", String.class));
+                ResultSetWrapper resultSetWrapper = new ResultSetWrapper(resultSet);
+                StatisticTypes.OVERALL type = StatisticTypes.OVERALL.valueOf(resultSetWrapper.get("name", String.class));
                 AtomicInteger amount = new AtomicInteger(resultSetWrapper.get("amount", Integer.class));
                 list.add(new OverallStatistic(userStatisticContainer, type, amount));
             });
