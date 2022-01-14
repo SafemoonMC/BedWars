@@ -17,6 +17,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Getter
 public final class UserStatisticContainer implements EntityChild<BedWarsUser>, EntityParent<UserStatisticContainer> {
@@ -40,6 +41,32 @@ public final class UserStatisticContainer implements EntityChild<BedWarsUser>, E
     /*
     Methods
      */
+    public void updateGameStatistic(@NotNull GameMode gameMode, @NotNull StatisticTypes.GAME type, int amount) {
+        this.gameStatisticList
+                .stream()
+                .filter(gameStatistic -> gameStatistic.getGameMode() == gameMode && gameStatistic.getType() == type)
+                .findFirst().ifPresentOrElse(gameStatistic -> {
+                    gameStatistic.getAmount().addAndGet(amount);
+                    UserStatisticDAO.update(gameStatistic);
+                }, () -> {
+                    GameStatistic gameStatistic = new GameStatistic(this, gameMode, type, new AtomicInteger(amount));
+                    UserStatisticDAO.create(gameStatistic);
+                });
+    }
+
+    public void updateOverallStatistic(@NotNull StatisticTypes.OVERALL type, int amount) {
+        this.overallStatisticList
+                .stream()
+                .filter(overallStatistic -> overallStatistic.getType() == type)
+                .findFirst().ifPresentOrElse(overallStatistic -> {
+                    overallStatistic.getAmount().addAndGet(amount);
+                    UserStatisticDAO.update(overallStatistic);
+                }, () -> {
+                    OverallStatistic overallStatistic = new OverallStatistic(this, type, new AtomicInteger(amount));
+                    UserStatisticDAO.create(overallStatistic);
+                });
+    }
+
     public @NotNull BigInteger getGameStatistic(@NotNull GameMode gameMode, @NotNull StatisticTypes.GAME type) {
         return this.gameStatisticList
                 .stream()
