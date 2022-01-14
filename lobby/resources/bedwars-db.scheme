@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS bw_users_stats_games
 (
     unique_id CHAR(36)        NOT NULL PRIMARY KEY,
     mode      VARCHAR(32)     NOT NULL,
-    name      VARCHAR(6)      NOT NULL,
+    name      VARCHAR(32)     NOT NULL,
     amount    BIGINT UNSIGNED NOT NULL,
     FOREIGN KEY (unique_id) REFERENCES bw_users (unique_id) ON DELETE CASCADE
 );
