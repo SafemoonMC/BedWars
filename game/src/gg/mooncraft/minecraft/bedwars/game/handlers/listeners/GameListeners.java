@@ -2,9 +2,11 @@ package gg.mooncraft.minecraft.bedwars.game.handlers.listeners;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
@@ -25,9 +27,17 @@ public class GameListeners implements Listener {
     /*
     Handlers
      */
+    @EventHandler
     public void on(@NotNull PlayerArmorStandManipulateEvent e) {
         Player player = e.getPlayer();
         BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player).ifPresent(gameMatch -> e.setCancelled(true));
+    }
+
+    @EventHandler
+    public void on(@NotNull EntityDamageByEntityEvent e) {
+        if (e.getEntity() instanceof Villager) {
+            e.setCancelled(true);
+        }
     }
 
     @EventHandler
