@@ -29,6 +29,7 @@ import gg.mooncraft.minecraft.bedwars.game.handlers.listeners.MatchListeners;
 import gg.mooncraft.minecraft.bedwars.game.handlers.listeners.MenuListeners;
 import gg.mooncraft.minecraft.bedwars.game.handlers.listeners.PlayerListeners;
 import gg.mooncraft.minecraft.bedwars.game.handlers.listeners.SetupListeners;
+import gg.mooncraft.minecraft.bedwars.game.handlers.listeners.StatsListeners;
 import gg.mooncraft.minecraft.bedwars.game.handlers.listeners.items.PotionListeners;
 import gg.mooncraft.minecraft.bedwars.game.handlers.listeners.items.UtilityListeners;
 import gg.mooncraft.minecraft.bedwars.game.managers.BoardManager;
@@ -111,6 +112,7 @@ public class BedWarsPlugin extends ComplexJavaPlugin {
         // Load commands
         Commands.loadAll();
         // Load listeners
+        new StatsListeners();
         new SetupListeners();
         new MatchListeners();
         new PlayerListeners();

@@ -26,6 +26,7 @@ import gg.mooncraft.minecraft.bedwars.data.map.point.PointTypes;
 import gg.mooncraft.minecraft.bedwars.data.map.point.TeamMapPoint;
 import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
 import gg.mooncraft.minecraft.bedwars.game.GameConstants;
+import gg.mooncraft.minecraft.bedwars.game.events.EventsAPI;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchBedBreakEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchBlockBreakEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchBlockPlaceEvent;
@@ -34,6 +35,7 @@ import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerDeathEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerJoinEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerMoveEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerQuitEvent;
+import gg.mooncraft.minecraft.bedwars.game.events.MatchTeamWinEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchUpdateGameEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchUpdatePlayerEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchUpdateStateEvent;
@@ -132,6 +134,7 @@ public class MatchListeners implements Listener {
             case ENDING -> {
                 Optional<GameMatchTeam> winnerTeamOptional = gameMatch.getTeamList().stream().filter(GameMatchTeam::isAnyAlive).findFirst();
                 winnerTeamOptional.ifPresent(winnerTeam -> {
+                    EventsAPI.callEventSync(new MatchTeamWinEvent(winnerTeam));
                     winnerTeam.broadcastAction(gameMatchPlayer -> {
                         gameMatchPlayer.getPlayer().ifPresent(player -> {
                             player.sendMessage(Component.text(DisplayUtilities.getColored("You won this match!")));
