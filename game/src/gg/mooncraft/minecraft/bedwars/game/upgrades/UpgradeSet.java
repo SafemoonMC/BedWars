@@ -46,7 +46,7 @@ public final class UpgradeSet {
         this.upgradeCategoryList.add(new UpgradeCategory(
                 "healpool",
                 "Heal Pool",
-                "&7Creates a Regeneration field\n&7around your base!"
+                "&7Creates a Regeneration field\n&7around your bed in a\n&713 blocks radius."
         ));
         this.upgradeCategoryList.add(new UpgradeCategory(
                 "dragon",
