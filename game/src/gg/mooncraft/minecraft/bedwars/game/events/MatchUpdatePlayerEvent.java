@@ -9,11 +9,11 @@ import org.jetbrains.annotations.NotNull;
 
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatch;
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatchPlayer;
+import gg.mooncraft.minecraft.bedwars.game.match.GameMatchTeam;
 
 @Getter
 @AllArgsConstructor
 public class MatchUpdatePlayerEvent extends Event {
-
     /*
     Constants
      */
@@ -22,8 +22,18 @@ public class MatchUpdatePlayerEvent extends Event {
     /*
     Fields
      */
-    private final @NotNull GameMatch gameMatch;
-    private final @NotNull GameMatchPlayer gameMatchPlayer;
+    private final @NotNull GameMatchPlayer matchPlayer;
+
+    /*
+    Methods
+     */
+    public @NotNull GameMatch getMatch() {
+        return this.matchPlayer.getParent().getParent();
+    }
+
+    public @NotNull GameMatchTeam getMatchTeam() {
+        return this.matchPlayer.getParent();
+    }
 
     /*
     Static Methods

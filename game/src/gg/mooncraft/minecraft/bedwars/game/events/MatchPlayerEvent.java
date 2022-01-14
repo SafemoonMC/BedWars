@@ -3,16 +3,18 @@ package gg.mooncraft.minecraft.bedwars.game.events;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatch;
-import gg.mooncraft.minecraft.bedwars.game.match.tasks.GameMatchEvent;
+import gg.mooncraft.minecraft.bedwars.game.match.GameMatchPlayer;
+import gg.mooncraft.minecraft.bedwars.game.match.GameMatchTeam;
 
 @Getter
 @AllArgsConstructor
-public class MatchUpdateGameEvent extends Event {
+public class MatchPlayerEvent extends Event {
 
     /*
     Constants
@@ -22,8 +24,19 @@ public class MatchUpdateGameEvent extends Event {
     /*
     Fields
      */
-    private final @NotNull GameMatch match;
-    private final @NotNull GameMatchEvent matchEvent;
+    private final @NotNull Player player;
+    private final @NotNull GameMatchPlayer matchPlayer;
+
+    /*
+    Methods
+     */
+    public @NotNull GameMatch getMatch() {
+        return this.matchPlayer.getParent().getParent();
+    }
+
+    public @NotNull GameMatchTeam getMatchTeam() {
+        return this.matchPlayer.getParent();
+    }
 
     /*
     Static Methods

@@ -70,7 +70,7 @@ public class MatchListeners implements Listener {
      */
     @EventHandler
     public void on(@NotNull MatchUpdateStateEvent e) {
-        GameMatch gameMatch = e.getGameMatch();
+        GameMatch gameMatch = e.getMatch();
 
         switch (gameMatch.getGameState()) {
             case PLAYING -> {
@@ -129,8 +129,8 @@ public class MatchListeners implements Listener {
 
     @EventHandler
     public void on(@NotNull MatchUpdateGameEvent e) {
-        GameMatch gameMatch = e.getGameMatch();
-        GameMatchEvent gameMatchEvent = e.getGameMatchEvent();
+        GameMatch gameMatch = e.getMatch();
+        GameMatchEvent gameMatchEvent = e.getMatchEvent();
         gameMatch.getGeneratorSystem().getTaskList().forEach(GeneratorTask::forceUpdateHologram);
         Bukkit.broadcastMessage(gameMatch.getDimension().getName() + " match event: " + gameMatchEvent.getGameEvent().name());
     }
@@ -138,14 +138,13 @@ public class MatchListeners implements Listener {
 
     @EventHandler
     public void on(@NotNull MatchUpdatePlayerEvent e) {
-        GameMatch gameMatch = e.getGameMatch();
-        GameMatchTeam gameMatchTeam = e.getGameMatchTeam();
-        GameMatchPlayer gameMatchPlayer = e.getGameMatchPlayer();
+        GameMatch gameMatch = e.getMatch();
+        GameMatchPlayer gameMatchPlayer = e.getMatchPlayer();
 
         switch (gameMatchPlayer.getPlayerStatus()) {
             case ALIVE -> {
-                e.getGameMatchPlayer().getPlayer().ifPresent(player -> {
-                    e.getGameMatchPlayer().getParent().getMapPointList().stream().filter(teamMapPoint -> teamMapPoint.getType() == PointTypes.TEAM.TEAM_SPAWNPOINT).findFirst().ifPresent(teamMapPoint -> {
+                e.getMatchPlayer().getPlayer().ifPresent(player -> {
+                    e.getMatchPlayer().getParent().getMapPointList().stream().filter(teamMapPoint -> teamMapPoint.getType() == PointTypes.TEAM.TEAM_SPAWNPOINT).findFirst().ifPresent(teamMapPoint -> {
                         Location location = PointAdapter.adapt(gameMatch, teamMapPoint);
                         player.teleportAsync(location);
                     });
@@ -158,7 +157,7 @@ public class MatchListeners implements Listener {
                 });
             }
             case RESPAWNING -> {
-                e.getGameMatchPlayer().getPlayer().ifPresent(player -> {
+                e.getMatchPlayer().getPlayer().ifPresent(player -> {
                     player.getInventory().clear();
                     player.getActivePotionEffects().forEach(potionEffect -> player.removePotionEffect(potionEffect.getType()));
                     player.setGameMode(GameMode.SPECTATOR);
@@ -171,9 +170,9 @@ public class MatchListeners implements Listener {
     @EventHandler
     public void on(@NotNull MatchPlayerJoinEvent e) {
         Player player = e.getPlayer();
-        GameMatch gameMatch = e.getGameMatch();
-        GameMatchPlayer gameMatchPlayer = e.getGameMatchPlayer();
-        GameMatchTeam gameMatchTeam = e.getGameMatchTeam();
+        GameMatch gameMatch = e.getMatch();
+        GameMatchPlayer gameMatchPlayer = e.getMatchPlayer();
+        GameMatchTeam gameMatchTeam = e.getMatchTeam();
 
         // Clear chat and inventory
         for (int i = 0; i < 256; i++) {
@@ -232,15 +231,15 @@ public class MatchListeners implements Listener {
     @EventHandler
     public void on(@NotNull MatchPlayerQuitEvent e) {
         Player player = e.getPlayer();
-        GameMatch gameMatch = e.getGameMatch();
+        GameMatch gameMatch = e.getMatch();
 
         // If the game is still waiting for players, a quit has to free team slot
         // Else the player must be set as a spectator
         if (gameMatch.getGameState() != GameState.WAITING) {
-            GameMatchPlayer gameMatchPlayer = e.getGameMatchPlayer();
+            GameMatchPlayer gameMatchPlayer = e.getMatchPlayer();
             gameMatchPlayer.updateStatus(PlayerStatus.SPECTATING);
         } else {
-            e.getGameMatchTeam().delPlayer(player.getUniqueId());
+            e.getMatchTeam().delPlayer(player.getUniqueId());
         }
 
         // Send quit message
@@ -270,7 +269,7 @@ public class MatchListeners implements Listener {
     public void on(@NotNull MatchBlockPlaceEvent e) {
         Player player = e.getPlayer();
         Location location = e.getLocation();
-        GameMatch gameMatch = e.getGameMatch();
+        GameMatch gameMatch = e.getMatch();
         if (location.getBlockY() > gameMatch.getBedWarsMap().map(BedWarsMap::getPointsContainer).map(MapPointsContainer::getMaximumBlockHeight).orElse(0) || location.getBlockY() < gameMatch.getBedWarsMap().map(BedWarsMap::getPointsContainer).map(MapPointsContainer::getMinimumBlockHeight).orElse(0)) {
             player.sendMessage(GameConstants.MESSAGE_BLOCK_HEIGHT_LIMIT);
             e.setCancelled(true);
@@ -287,12 +286,12 @@ public class MatchListeners implements Listener {
     public void on(@NotNull MatchBlockBreakEvent e) {
         Player player = e.getPlayer();
         Location location = e.getLocation();
-        GameMatch gameMatch = e.getGameMatch();
+        GameMatch gameMatch = e.getMatch();
 
         // Check if it's a bed
         if (location.getBlock().getType().name().contains("BED")) {
             Location[] parts = WorldUtilities.getBedParts(location.getBlock());
-            boolean cancelled = !new MatchBedBreakEvent(player, parts, e.getGameMatch(), e.getGameMatchPlayer()).callEvent();
+            boolean cancelled = !new MatchBedBreakEvent(player, e.getMatchPlayer(), parts).callEvent();
             e.setCancelled(cancelled);
             return;
         }
@@ -317,26 +316,26 @@ public class MatchListeners implements Listener {
             e.setCancelled(true);
             return;
         }
-        Optional<GameMatchTeam> optionalBedTeamOwner = e.getGameMatchTeamOwner();
+        Optional<GameMatchTeam> optionalBedTeamOwner = e.getMatchTeamOwner();
         optionalBedTeamOwner.ifPresent(gameMatchTeam -> {
             // Create explosion effect and play sound
             Arrays.stream(e.getBedParts()).forEach(location -> location.getWorld().createExplosion(location, 1, false, false));
             gameMatchTeam.broadcastAction(gameMatchPlayer -> gameMatchPlayer.getPlayer().ifPresent(streamPlayer -> streamPlayer.playSound(streamPlayer.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, 1, 1)));
 
             // Broadcast messages
-            e.getGameMatch().getPlayerList().forEach(streamPlayer -> {
+            e.getMatch().getPlayerList().forEach(streamPlayer -> {
                 if (gameMatchTeam.hasPlayer(streamPlayer.getUniqueId())) {
                     streamPlayer.showTitle(Title.title(Component.text(GameConstants.MESSAGE_BED_DESTRUCTION_TITLE), Component.text(GameConstants.MESSAGE_BED_DESTRUCTION_SUBTITLE)));
                     GameConstants.MESSAGE_BED_DESTRUCTION_YOUR.forEach(line -> streamPlayer.sendMessage(line
-                            .replaceAll("%destroyer-team-color%", e.getGameMatchTeam().getGameTeam().getChatColor().toString())
+                            .replaceAll("%destroyer-team-color%", e.getMatchTeam().getGameTeam().getChatColor().toString())
                             .replaceAll("%destroyer-player-name%", player.getName())
                     ));
                 } else {
                     GameConstants.MESSAGE_BED_DESTRUCTION_OTHERS.forEach(line -> streamPlayer.sendMessage(line
                             .replaceAll("%team-color%", gameMatchTeam.getGameTeam().getChatColor().toString())
                             .replaceAll("%team-name%", gameMatchTeam.getGameTeam().getDisplay())
-                            .replaceAll("%destroyer-team-color%", e.getGameMatchTeam().getGameTeam().getChatColor().toString())
-                            .replaceAll("%destroyer-team-name%", e.getGameMatchTeam().getGameTeam().getDisplay())
+                            .replaceAll("%destroyer-team-color%", e.getMatchTeam().getGameTeam().getChatColor().toString())
+                            .replaceAll("%destroyer-team-name%", e.getMatchTeam().getGameTeam().getDisplay())
                             .replaceAll("%destroyer-player-name%", player.getName())
                     ));
                 }
@@ -347,12 +346,12 @@ public class MatchListeners implements Listener {
     @EventHandler
     public void on(@NotNull MatchPlayerDeathEvent e) {
         Player player = e.getPlayer();
-        GameMatch gameMatch = e.getGameMatch();
-        GameMatchPlayer gameMatchPlayer = e.getPlayerMatchPlayer();
+        GameMatch gameMatch = e.getMatch();
+        GameMatchPlayer gameMatchPlayer = e.getMatchPlayer();
         gameMatchPlayer.updateStatus(PlayerStatus.RESPAWNING);
 
         gameMatch.getPlayerList().forEach(streamPlayer -> {
-            if (e.getReason() == MatchPlayerDeathEvent.Reason.PLAYER) {
+            if (e.getDeathReason() == MatchPlayerDeathEvent.DeathReason.PLAYER) {
                 streamPlayer.sendMessage(GameConstants.MESSAGE_PLAYER_KILL
                         .replaceAll("%killer%", e.getLastPlayerDamage().getPlayer().getName())
                         .replaceAll("%killed%", player.getName())
@@ -381,8 +380,8 @@ public class MatchListeners implements Listener {
         Player player = e.getPlayer();
 
         // Check team upgrades
-        if (e.getGameMatchTeam().getGameTeam() == e.getTeam()) {
-            if (e.getGameMatchTeam().getUpgradeTier("healpool") == 1) {
+        if (e.getMatchTeam().getGameTeam() == e.getTeam()) {
+            if (e.getMatchTeam().getUpgradeTier("healpool") == 1) {
                 switch (e.getAction()) {
                     case ENTER -> {
                         player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, Integer.MAX_VALUE, 0, true, true, true));
@@ -399,10 +398,10 @@ public class MatchListeners implements Listener {
     @EventHandler
     public void on(@NotNull MatchVillagerInteractEvent e) {
         if (e.getMatchVillager().getVillagerType() == VillagerType.ITEM_SHOP) {
-            ShopMenu shopMenu = new ShopMenu(e.getPlayer(), e.getGameMatch(), e.getGameMatchPlayer());
+            ShopMenu shopMenu = new ShopMenu(e.getPlayer(), e.getMatch(), e.getMatchPlayer());
             e.getPlayer().openInventory(shopMenu.getInventory());
         } else if (e.getMatchVillager().getVillagerType() == VillagerType.UPGRADE_SHOP) {
-            ShopUpgradesMenu shopUpgradesMenu = new ShopUpgradesMenu(e.getPlayer(), e.getGameMatch(), e.getGameMatchPlayer());
+            ShopUpgradesMenu shopUpgradesMenu = new ShopUpgradesMenu(e.getPlayer(), e.getMatch(), e.getMatchPlayer());
             e.getPlayer().openInventory(shopUpgradesMenu.getInventory());
         }
     }

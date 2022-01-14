@@ -22,7 +22,7 @@ public class MatchUpdateStateEvent extends Event {
     /*
     Fields
      */
-    private final @NotNull GameMatch gameMatch;
+    private final @NotNull GameMatch match;
 
     /*
     Static Methods

@@ -1,47 +1,25 @@
 package gg.mooncraft.minecraft.bedwars.game.events;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
-import gg.mooncraft.minecraft.bedwars.game.match.GameMatch;
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatchPlayer;
-import gg.mooncraft.minecraft.bedwars.game.match.GameMatchTeam;
 
 @Getter
-@AllArgsConstructor
-public class MatchPlayerDamageEvent extends Event {
-
-    /*
-    Constants
-     */
-    private static final @NotNull HandlerList HANDLERS = new HandlerList();
+public class MatchPlayerDamageEvent extends MatchPlayerEvent {
 
     /*
     Fields
      */
-    private final @NotNull Player player;
-    private final @NotNull GameMatch gameMatch;
-    private final @NotNull GameMatchTeam playerMatchTeam;
-    private final @NotNull GameMatchPlayer playerMatchPlayer;
     private final double damage;
 
     /*
-    Static Methods
+    Constructor
      */
-    public static @NotNull HandlerList getHandlerList() {
-        return HANDLERS;
-    }
-
-    /*
-    Override Methods
-     */
-    @Override
-    public @NotNull HandlerList getHandlers() {
-        return HANDLERS;
+    public MatchPlayerDamageEvent(@NotNull Player player, @NotNull GameMatchPlayer matchPlayer, double damage) {
+        super(player, matchPlayer);
+        this.damage = damage;
     }
 }

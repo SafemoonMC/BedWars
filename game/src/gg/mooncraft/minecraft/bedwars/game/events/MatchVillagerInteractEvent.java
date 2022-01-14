@@ -1,21 +1,16 @@
 package gg.mooncraft.minecraft.bedwars.game.events;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
-import gg.mooncraft.minecraft.bedwars.game.match.GameMatch;
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatchPlayer;
-import gg.mooncraft.minecraft.bedwars.game.match.GameMatchTeam;
 import gg.mooncraft.minecraft.bedwars.game.match.tasks.MatchVillager;
 
 @Getter
-@AllArgsConstructor
-public class MatchVillagerInteractEvent extends Event {
+public class MatchVillagerInteractEvent extends MatchPlayerEvent {
 
     /*
     Constants
@@ -25,33 +20,13 @@ public class MatchVillagerInteractEvent extends Event {
     /*
     Fields
      */
-    private final @NotNull Player player;
-    private final @NotNull GameMatchPlayer gameMatchPlayer;
     private final @NotNull MatchVillager matchVillager;
 
     /*
-    Methods
+    Constructor
      */
-    public @NotNull GameMatch getGameMatch() {
-        return this.matchVillager.getGameMatch();
-    }
-
-    public @NotNull GameMatchTeam getGameMatchTeam() {
-        return this.gameMatchPlayer.getParent();
-    }
-
-    /*
-    Static Methods
-     */
-    public static @NotNull HandlerList getHandlerList() {
-        return HANDLERS;
-    }
-
-    /*
-    Override Methods
-     */
-    @Override
-    public @NotNull HandlerList getHandlers() {
-        return HANDLERS;
+    public MatchVillagerInteractEvent(@NotNull Player player, @NotNull GameMatchPlayer matchPlayer, @NotNull MatchVillager matchVillager) {
+        super(player, matchPlayer);
+        this.matchVillager = matchVillager;
     }
 }

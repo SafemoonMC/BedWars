@@ -106,7 +106,7 @@ public final class GameMatchPlayer {
 
     public void updateStatus(@NotNull PlayerStatus playerStatus) {
         this.playerStatus = playerStatus;
-        EventsAPI.callEventSync(new MatchUpdatePlayerEvent(getParent().getParent(), this));
+        EventsAPI.callEventSync(new MatchUpdatePlayerEvent(this));
     }
 
     public @NotNull Optional<Player> getPlayer() {
