@@ -63,6 +63,7 @@ public final class MatchManager {
 
     public void destroyMatch(@NotNull GameMatch gameMatch) {
         this.matchList.remove(gameMatch);
+        BedWarsPlugin.getInstance().getGameServerManager().sendGameServerMessage();
     }
 
     public @NotNull Optional<GameMatch> getGameMatch(@NotNull World world) {
