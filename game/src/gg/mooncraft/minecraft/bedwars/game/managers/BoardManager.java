@@ -21,6 +21,7 @@ import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
 import gg.mooncraft.minecraft.bedwars.game.GameConstants;
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatch;
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatchTeam;
+import gg.mooncraft.minecraft.bedwars.game.match.PlayerStatus;
 import gg.mooncraft.minecraft.bedwars.game.match.TeamStatus;
 import gg.mooncraft.minecraft.bedwars.game.match.tasks.GameMatchEvent;
 import gg.mooncraft.minecraft.bedwars.game.utilities.DisplayUtilities;
@@ -119,7 +120,18 @@ public final class BoardManager {
                 Player player = (Player) tabPlayer.getPlayer();
                 Optional<GameMatch> matchOptional = BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player);
 
-                return matchOptional.flatMap(gameMatch -> gameMatch.getTeam(gameTeam)).map(GameMatchTeam::getTeamStatus).map(TeamStatus::getSymbol).orElse("-");
+                return matchOptional.flatMap(gameMatch -> gameMatch.getTeam(gameTeam)).map(gameMatchTeam -> {
+                    if (gameMatchTeam.getTeamStatus() == TeamStatus.NOT_ALIVE) {
+                        long playersAlive = gameMatchTeam.getMatchPlayerList().stream().filter(gameMatchPlayer -> gameMatchPlayer.getPlayerStatus() == PlayerStatus.RESPAWNING || gameMatchPlayer.getPlayerStatus() == PlayerStatus.ALIVE).count();
+                        if (playersAlive == 0) {
+                            return TeamStatus.NOT_ALIVE.getSymbol();
+                        } else {
+                            return String.valueOf(playersAlive);
+                        }
+                    } else {
+                        return TeamStatus.ALIVE.getSymbol();
+                    }
+                }).orElse("-");
             });
 
             updatablePlaceholderList.add("%game-team-status-" + gameTeam.name() + "%");

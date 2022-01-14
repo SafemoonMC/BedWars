@@ -41,6 +41,7 @@ import gg.mooncraft.minecraft.bedwars.game.match.GameMatch;
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatchPlayer;
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatchTeam;
 import gg.mooncraft.minecraft.bedwars.game.match.PlayerStatus;
+import gg.mooncraft.minecraft.bedwars.game.match.TeamStatus;
 import gg.mooncraft.minecraft.bedwars.game.match.VillagerType;
 import gg.mooncraft.minecraft.bedwars.game.match.tasks.GameMatchEvent;
 import gg.mooncraft.minecraft.bedwars.game.match.tasks.GeneratorTask;
@@ -163,6 +164,13 @@ public class MatchListeners implements Listener {
                     player.setGameMode(GameMode.SPECTATOR);
                 });
                 new SpectatorTask(gameMatch, gameMatchPlayer).play();
+            }
+            case SPECTATING -> {
+                e.getMatchPlayer().getPlayer().ifPresent(player -> {
+                    player.getInventory().clear();
+                    player.getActivePotionEffects().forEach(potionEffect -> player.removePotionEffect(potionEffect.getType()));
+                    player.setGameMode(GameMode.SPECTATOR);
+                });
             }
         }
     }
@@ -318,6 +326,9 @@ public class MatchListeners implements Listener {
         }
         Optional<GameMatchTeam> optionalBedTeamOwner = e.getMatchTeamOwner();
         optionalBedTeamOwner.ifPresent(gameMatchTeam -> {
+            // Update team status
+            gameMatchTeam.setStatus(TeamStatus.NOT_ALIVE);
+
             // Create explosion effect and play sound
             Arrays.stream(e.getBedParts()).forEach(location -> location.getWorld().createExplosion(location, 1, false, false));
             gameMatchTeam.broadcastAction(gameMatchPlayer -> gameMatchPlayer.getPlayer().ifPresent(streamPlayer -> streamPlayer.playSound(streamPlayer.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, 1, 1)));
@@ -347,8 +358,13 @@ public class MatchListeners implements Listener {
     public void on(@NotNull MatchPlayerDeathEvent e) {
         Player player = e.getPlayer();
         GameMatch gameMatch = e.getMatch();
+        GameMatchTeam gameMatchTeam = e.getMatchTeam();
         GameMatchPlayer gameMatchPlayer = e.getMatchPlayer();
-        gameMatchPlayer.updateStatus(PlayerStatus.RESPAWNING);
+        if (gameMatchTeam.getTeamStatus() == TeamStatus.ALIVE) {
+            gameMatchPlayer.updateStatus(PlayerStatus.RESPAWNING);
+        } else {
+            gameMatchPlayer.updateStatus(PlayerStatus.SPECTATING);
+        }
 
         gameMatch.getPlayerList().forEach(streamPlayer -> {
             if (e.getDeathReason() == MatchPlayerDeathEvent.DeathReason.PLAYER) {
