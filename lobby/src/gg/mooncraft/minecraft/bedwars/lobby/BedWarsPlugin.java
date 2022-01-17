@@ -19,6 +19,7 @@ import gg.mooncraft.minecraft.bedwars.data.UserDAO;
 import gg.mooncraft.minecraft.bedwars.lobby.handlers.commands.Commands;
 import gg.mooncraft.minecraft.bedwars.lobby.handlers.listeners.PlayerListeners;
 import gg.mooncraft.minecraft.bedwars.lobby.managers.GameServerManager;
+import gg.mooncraft.minecraft.bedwars.lobby.managers.MatchmakingManager;
 import gg.mooncraft.minecraft.bedwars.lobby.messaging.LobbyRedisMessenger;
 import gg.mooncraft.minecraft.bedwars.lobby.papi.BedWarsExpansion;
 import redis.clients.jedis.HostAndPort;
@@ -35,6 +36,7 @@ public class BedWarsPlugin extends ComplexJavaPlugin {
     Fields
      */
     private GameServerManager gameServerManager;
+    private MatchmakingManager matchmakingManager;
 
     /*
     Override Methods
@@ -62,6 +64,7 @@ public class BedWarsPlugin extends ComplexJavaPlugin {
 
         // Load managers
         this.gameServerManager = new GameServerManager();
+        this.matchmakingManager = new MatchmakingManager();
 
         // Listeners
         new PlayerListeners();
@@ -75,6 +78,9 @@ public class BedWarsPlugin extends ComplexJavaPlugin {
     @Override
     public void onDisable() {
         super.shutdown();
+        if (getMatchmakingManager() != null) {
+            getMatchmakingManager().getSchedulerTask().cancel();
+        }
         getLogger().info("Disabled!");
     }
 

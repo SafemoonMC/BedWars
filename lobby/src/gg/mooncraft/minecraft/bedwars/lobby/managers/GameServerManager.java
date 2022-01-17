@@ -51,4 +51,7 @@ public final class GameServerManager {
                 .sum();
     }
 
+    public boolean areGameServersRunning() {
+        return this.gameServerList.stream().anyMatch(gameServer -> gameServer.getServerStatus() == GameServerMessage.ServerStatus.ENABLED);
+    }
 }
