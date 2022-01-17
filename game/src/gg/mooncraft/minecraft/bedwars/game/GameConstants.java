@@ -59,11 +59,12 @@ public final class GameConstants {
             DisplayUtilities.getColored("&eSpawning in &c%time-left% &e%time-unit%")
     );
 
-    public static final @NotNull String SHOP_ITEMS_TITLE = DisplayUtilities.getColored("&8Items Shop");
     public static final @NotNull String SHOP_UPGRADES_TITLE = DisplayUtilities.getColored("&8Upgrades & Traps Shop");
 
     public static final @NotNull String MESSAGE_SHOP_CANNOT_AFFORD = DisplayUtilities.getColored("&cYou don't have enough materials!");
     public static final @NotNull String MESSAGE_SHOP_BUY = DisplayUtilities.getColored("&bYou purchased &3%shop-item%");
+
+    public static final @NotNull String MESSAGE_GENERATOR_UPDATE = DisplayUtilities.getColored("%type% Generators &ehave been upgraded to Tier &c%tier%");
 
     public static final @NotNull String MESSAGE_SPECTATOR_TITLE = DisplayUtilities.getColored("&cYOU DIED!");
     public static final @NotNull String MESSAGE_SPECTATOR_SUBTITLE = DisplayUtilities.getColored("&eYou will respawn in %time% %time-unit%!");
@@ -93,7 +94,7 @@ public final class GameConstants {
     public static final @NotNull String MESSAGE_PLAYER_KILL = DisplayUtilities.getColored("%killed-team-color%%killed% &7was killed by %killer-team-color%%killer%");
     public static final @NotNull String MESSAGE_PLAYER_JOIN = "%vault_rankprefix%%vault_suffix%%player_name% &ehas joined (&b%game-players-count%&e/&b%game-players-capacity%&e)!";
     public static final @NotNull String MESSAGE_PLAYER_QUIT = "%vault_rankprefix%%vault_suffix%%player_name% &ehas quit!";
-    public static final @NotNull String MESSAGE_WINNER_TITLE = "";
+    public static final @NotNull String MESSAGE_WINNER_TITLE = DisplayUtilities.getColored("&6&lVICTORY!");
     public static final @NotNull List<String> MESSAGE_GLOBAL_WINNER = Arrays.asList(
             DisplayUtilities.getColored("&9&m                                                                             &r"),
             DisplayUtilities.getColored("&7                              &f&lBED WARS"),
