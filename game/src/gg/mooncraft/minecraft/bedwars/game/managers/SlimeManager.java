@@ -136,6 +136,7 @@ public final class SlimeManager {
             newWorld.setGameRule(GameRule.DO_TRADER_SPAWNING, false);
             newWorld.setGameRule(GameRule.NATURAL_REGENERATION, true);
             newWorld.setGameRule(GameRule.REDUCED_DEBUG_INFO, true);
+            newWorld.setGameRule(GameRule.SEND_COMMAND_FEEDBACK, false);
             worldConsumer.accept(newWorld);
         });
     }
