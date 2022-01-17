@@ -14,6 +14,7 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -52,7 +53,6 @@ import gg.mooncraft.minecraft.bedwars.game.match.tasks.GeneratorTask;
 import gg.mooncraft.minecraft.bedwars.game.match.tasks.SpectatorTask;
 import gg.mooncraft.minecraft.bedwars.game.menu.ShopMenu;
 import gg.mooncraft.minecraft.bedwars.game.menu.ShopUpgradesMenu;
-import gg.mooncraft.minecraft.bedwars.game.utilities.DisplayUtilities;
 import gg.mooncraft.minecraft.bedwars.game.utilities.PointAdapter;
 import gg.mooncraft.minecraft.bedwars.game.utilities.WorldUtilities;
 
@@ -132,17 +132,28 @@ public class MatchListeners implements Listener {
                     });
                 }
             }
-            case ENDING -> {
+            case UNLOADING -> {
                 Optional<GameMatchTeam> winnerTeamOptional = gameMatch.getTeamList().stream().filter(GameMatchTeam::isAnyAlive).findFirst();
                 winnerTeamOptional.ifPresent(winnerTeam -> {
                     EventsAPI.callEventSync(new MatchTeamWinEvent(winnerTeam));
                     winnerTeam.broadcastAction(gameMatchPlayer -> {
                         gameMatchPlayer.getPlayer().ifPresent(player -> {
-                            player.sendMessage(Component.text(DisplayUtilities.getColored("You won this match!")));
+                            player.showTitle(Title.title(Component.text(GameConstants.MESSAGE_WINNER_TITLE), Component.empty()));
+                        });
+                    });
+
+                    gameMatch.getPlayerList().forEach(player -> {
+                        player.showBossBar(BedWarsPlugin.getInstance().getBossBar());
+                        GameConstants.MESSAGE_GLOBAL_WINNER.forEach(line -> {
+                            player.sendMessage(line
+                                    .replaceAll("%team-color%", winnerTeam.getGameTeam().getChatColor().toString())
+                                    .replaceAll("%team-name%", winnerTeam.getGameTeam().name())
+                            );
                         });
                     });
                 });
-
+            }
+            case ENDING -> {
                 for (GameMatchTeam gameMatchTeam : gameMatch.getTeamList()) {
                     gameMatchTeam.getScoreboard().unregister();
                 }
@@ -203,7 +214,7 @@ public class MatchListeners implements Listener {
                         .filter(GameMatchTeam::isAnyAlive)
                         .count();
                 if (teamsAlive == 1) {
-                    gameMatch.updateState(GameState.ENDING);
+                    gameMatch.getGameTicker().getGameEndTask().play();
                 }
             }
         }
@@ -348,7 +359,7 @@ public class MatchListeners implements Listener {
         gameMatch.getBlocksSystem().breakBlock(location);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void on(@NotNull MatchBedBreakEvent e) {
         Player player = e.getPlayer();
 
@@ -399,6 +410,7 @@ public class MatchListeners implements Listener {
         } else {
             gameMatchPlayer.updateStatus(PlayerStatus.SPECTATING);
         }
+        Bukkit.getLogger().info("Death: " + gameMatchPlayer.getPlayerStatus().name() + " - " + gameMatchTeam.isAnyAlive());
 
         gameMatch.getPlayerList().forEach(streamPlayer -> {
             if (e.getDeathReason() == MatchPlayerDeathEvent.DeathReason.PLAYER) {

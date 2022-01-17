@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 
 import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
 import gg.mooncraft.minecraft.bedwars.game.GameConstants;
+import gg.mooncraft.minecraft.bedwars.game.match.tasks.GameEndTask;
 import gg.mooncraft.minecraft.bedwars.game.match.tasks.GameRunnable;
 import gg.mooncraft.minecraft.bedwars.game.match.tasks.GameStartTask;
 
@@ -24,6 +25,7 @@ public final class GameTicker extends GameRunnable {
     Fields
      */
     private final @NotNull GameMatch gameMatch;
+    private final @NotNull GameEndTask gameEndTask;
     private final @NotNull GameStartTask gameStartTask;
     private final @NotNull SchedulerTask schedulerTask;
 
@@ -33,6 +35,7 @@ public final class GameTicker extends GameRunnable {
     public GameTicker(@NotNull GameMatch gameMatch) {
         super();
         this.gameMatch = gameMatch;
+        this.gameEndTask = new GameEndTask(gameMatch);
         this.gameStartTask = new GameStartTask(gameMatch);
         this.schedulerTask = BedWarsPlugin.getInstance().getScheduler().asyncRepeating(this, 50, TimeUnit.MILLISECONDS);
     }

@@ -66,7 +66,7 @@ public final class Commands {
                         .executes(player -> {
                             BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player).ifPresentOrElse(gameMatch -> {
                                 if (gameMatch.getGameState() == GameState.PLAYING) {
-                                    gameMatch.terminate();
+                                    gameMatch.getGameTicker().getGameEndTask().play();
                                     player.sendMessage("This game is going to be stopped.");
                                 } else {
                                     player.sendMessage("This game has not been started yet!");
