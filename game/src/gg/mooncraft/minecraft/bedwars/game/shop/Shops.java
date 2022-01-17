@@ -3,6 +3,7 @@ package gg.mooncraft.minecraft.bedwars.game.shop;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -55,7 +56,7 @@ public final class Shops {
                         "&7Immune to explosions.",
                         new OptionEntry<>(Material.IRON_INGOT, 12),
                         Material.WHITE_STAINED_GLASS,
-                        gameMatchPlayer -> ItemStackCreator.using(ItemsUtilities.createGlassItem(gameMatchPlayer.getParent().getGameTeam())).amount(4).create()
+                        gameMatchPlayer -> ItemStackCreator.using(ItemsUtilities.createGlassItem(gameMatchPlayer.getParent().getGameTeam())).amount(4).meta().display(ChatColor.WHITE + "Blast-Proof Glass").stack().create()
                 )
         );
         SOLO_SHOP.addItem("blocks", new ShopElementItem(
@@ -112,7 +113,7 @@ public final class Shops {
                         "&7Immune to explosions.",
                         new OptionEntry<>(Material.IRON_INGOT, 12),
                         Material.WHITE_STAINED_GLASS,
-                        gameMatchPlayer -> ItemStackCreator.using(ItemsUtilities.createGlassItem(gameMatchPlayer.getParent().getGameTeam())).amount(4).create()
+                        gameMatchPlayer -> ItemStackCreator.using(ItemsUtilities.createGlassItem(gameMatchPlayer.getParent().getGameTeam())).amount(4).meta().display(ChatColor.WHITE + "Blast-Proof Glass").stack().create()
                 )
         );
         DUOS_SHOP.addItem("blocks", new ShopElementItem(
@@ -169,7 +170,7 @@ public final class Shops {
                         "&7Immune to explosions.",
                         new OptionEntry<>(Material.IRON_INGOT, 12),
                         Material.WHITE_STAINED_GLASS,
-                        gameMatchPlayer -> ItemStackCreator.using(ItemsUtilities.createGlassItem(gameMatchPlayer.getParent().getGameTeam())).amount(4).create()
+                        gameMatchPlayer -> ItemStackCreator.using(ItemsUtilities.createGlassItem(gameMatchPlayer.getParent().getGameTeam())).amount(4).meta().display(ChatColor.WHITE + "Blast-Proof Glass").stack().create()
                 )
         );
         TRIOS_SHOP.addItem("blocks", new ShopElementItem(
@@ -226,7 +227,7 @@ public final class Shops {
                         "&7Immune to explosions.",
                         new OptionEntry<>(Material.IRON_INGOT, 12),
                         Material.WHITE_STAINED_GLASS,
-                        gameMatchPlayer -> ItemStackCreator.using(ItemsUtilities.createGlassItem(gameMatchPlayer.getParent().getGameTeam())).amount(4).create()
+                        gameMatchPlayer -> ItemStackCreator.using(ItemsUtilities.createGlassItem(gameMatchPlayer.getParent().getGameTeam())).amount(4).meta().display(ChatColor.WHITE + "Blast-Proof Glass").stack().create()
                 )
         );
         QUADS_SHOP.addItem("blocks", new ShopElementItem(
