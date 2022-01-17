@@ -7,16 +7,18 @@ CREATE TABLE IF NOT EXISTS bw_users
 );
 CREATE TABLE IF NOT EXISTS bw_users_stats_games
 (
-    unique_id CHAR(36)        NOT NULL PRIMARY KEY,
+    unique_id CHAR(36)        NOT NULL,
     mode      VARCHAR(32)     NOT NULL,
     name      VARCHAR(32)     NOT NULL,
     amount    BIGINT UNSIGNED NOT NULL,
+    PRIMARY KEY (unique_id, mode, name),
     FOREIGN KEY (unique_id) REFERENCES bw_users (unique_id) ON DELETE CASCADE
 );
 CREATE TABLE IF NOT EXISTS bw_users_stats_overall
 (
-    unique_id CHAR(36)        NOT NULL PRIMARY KEY,
+    unique_id CHAR(36)        NOT NULL,
     name      VARCHAR(32)     NOT NULL,
     amount    BIGINT UNSIGNED NOT NULL,
+    PRIMARY KEY (unique_id, name),
     FOREIGN KEY (unique_id) REFERENCES bw_users (unique_id) ON DELETE CASCADE
 );
