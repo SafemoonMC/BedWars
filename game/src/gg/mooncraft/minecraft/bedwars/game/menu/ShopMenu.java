@@ -5,6 +5,7 @@ import lombok.Getter;
 import net.kyori.adventure.text.Component;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
@@ -26,7 +27,6 @@ import gg.mooncraft.minecraft.bedwars.game.shop.ShopElementItem;
 import gg.mooncraft.minecraft.bedwars.game.shop.ShopElementItemDynamic;
 import gg.mooncraft.minecraft.bedwars.game.shop.ShopElementItemUtility;
 import gg.mooncraft.minecraft.bedwars.game.shop.Shops;
-import gg.mooncraft.minecraft.bedwars.game.utilities.DisplayUtilities;
 import gg.mooncraft.minecraft.bedwars.game.utilities.ItemsUtilities;
 
 import java.util.Arrays;
@@ -62,25 +62,31 @@ public final class ShopMenu implements ShopInterface {
     private final @NotNull Player player;
     private final @NotNull GameMatch gameMatch;
     private final @NotNull GameMatchPlayer gameMatchPlayer;
-    private final @NotNull Inventory inventory;
     private final @NotNull Map<Integer, ShopCategory> categoryMap;
     private final @NotNull Map<Integer, ShopElement> elementMap;
 
+    private final @NotNull Inventory inventory;
     private int selectedCategorySlot = -1;
 
     /*
     Constructor
      */
     public ShopMenu(@NotNull Player player, @NotNull GameMatch gameMatch, @NotNull GameMatchPlayer gameMatchPlayer) {
+        this(player, gameMatch, gameMatchPlayer, Shops.getShop(gameMatch.getGameMode()).getCategoryList().get(0));
+    }
+
+    public ShopMenu(@NotNull Player player, @NotNull GameMatch gameMatch, @NotNull GameMatchPlayer gameMatchPlayer, @NotNull ShopCategory shopCategory) {
         this.player = player;
         this.gameMatch = gameMatch;
         this.gameMatchPlayer = gameMatchPlayer;
-        this.inventory = Bukkit.createInventory(this, 54, Component.text(GameConstants.SHOP_ITEMS_TITLE));
         this.categoryMap = new HashMap<>();
         this.elementMap = new HashMap<>();
+        this.inventory = Bukkit.createInventory(this, 54, Component.text(ChatColor.DARK_GRAY + ChatColor.stripColor(shopCategory.getIconItem().getItemMeta().getDisplayName()).replace("(Click)", "")));
+
         // Load and select default category
         load();
-        select(1);
+        select(this.categoryMap.entrySet().stream().filter(entry -> entry.getValue().getIdentifier().equalsIgnoreCase(shopCategory.getIdentifier())).map(Map.Entry::getKey).findFirst().orElse(1));
+
         // Place design items which won't be updated anymore
         Arrays.stream(DESIGN).forEach(slot -> this.inventory.setItem(slot, ItemStackCreator.using(Material.BLACK_STAINED_GLASS_PANE).meta().display("&4").stack().create()));
     }
@@ -137,7 +143,9 @@ public final class ShopMenu implements ShopInterface {
     @Override
     public void onClick(int slot, @NotNull Player player, @NotNull GameMatchPlayer gameMatchPlayer, @NotNull GameMatchTeam gameMatchTeam) {
         if (this.categoryMap.containsKey(slot)) {
-            select(slot);
+            ShopCategory shopCategory = this.categoryMap.get(slot);
+            ShopMenu shopMenu = new ShopMenu(player, gameMatch, gameMatchPlayer, shopCategory);
+            this.player.openInventory(shopMenu.inventory);
             return;
         }
 
@@ -155,7 +163,6 @@ public final class ShopMenu implements ShopInterface {
             if (shopElement instanceof ShopElementItem shopElementItem) {
                 player.getInventory().removeItemAnySlot(costItem);
                 player.getInventory().addItem(shopElementItem.getItemStack());
-                player.sendMessage(GameConstants.MESSAGE_SHOP_BUY.replaceAll("%shop-item%", DisplayUtilities.getDisplay(shopElementItem.getItemStack())));
             }
             if (shopElement instanceof ShopElementItemDynamic shopElementItemDynamic) {
                 player.getInventory().removeItemAnySlot(costItem);
@@ -170,15 +177,15 @@ public final class ShopMenu implements ShopInterface {
                 } else {
                     player.getInventory().addItem(itemStack);
                 }
-                player.sendMessage(GameConstants.MESSAGE_SHOP_BUY.replaceAll("%shop-item%", DisplayUtilities.getDisplay(shopElementItemDynamic.getItemStackFunction().apply(gameMatchPlayer))));
             }
             if (shopElement instanceof ShopElementItemUtility shopElementItemUtility) {
                 player.getInventory().removeItemAnySlot(costItem);
                 player.getInventory().addItem(shopElementItemUtility.getItemStack(gameMatchPlayer));
-                player.sendMessage(GameConstants.MESSAGE_SHOP_BUY.replaceAll("%shop-item%", DisplayUtilities.getDisplay(shopElementItemUtility.getItemStackFunction().apply(gameMatchPlayer))));
             }
 
             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_TRADE, 1, 1);
+            player.sendMessage(GameConstants.MESSAGE_SHOP_BUY.replaceAll("%shop-item%", shopElement.getDisplay()));
+
             select(selectedCategorySlot);
         }
     }
