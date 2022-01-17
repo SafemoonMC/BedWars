@@ -37,7 +37,7 @@ public final class MatchmakingManager {
             Matchmaking matchmaking = this.matchmakingQueue.poll();
             if (matchmaking == null) return;
             matchmaking.process();
-        }, 400, TimeUnit.MILLISECONDS);
+        }, 450, TimeUnit.MILLISECONDS);
     }
 
     /*
