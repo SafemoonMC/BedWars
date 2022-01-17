@@ -11,8 +11,8 @@ import org.jetbrains.annotations.NotNull;
 @AllArgsConstructor
 public enum GeneratorType {
 
-    DIAMOND(ChatColor.AQUA + "Diamond", Material.DIAMOND_BLOCK, Material.DIAMOND),
-    EMERALD(ChatColor.DARK_GREEN + "Emerald", Material.EMERALD_BLOCK, Material.EMERALD);
+    DIAMOND(ChatColor.AQUA + "" + ChatColor.BOLD + "Diamond", Material.DIAMOND_BLOCK, Material.DIAMOND),
+    EMERALD(ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "Emerald", Material.EMERALD_BLOCK, Material.EMERALD);
 
 
     /*
