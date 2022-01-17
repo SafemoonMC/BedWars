@@ -19,6 +19,7 @@ import java.math.BigInteger;
  * - %bw_level% -> returns level
  * - %bw_experience% -> returns experience
  * - %bw_stat-game-[type]% -> returns a sum of all [type] amount from all games
+ * - %bw_stat-game-[mode]-[type]% -> returns the statistic [type] for that [mode]
  * - %bw_stat-overall-[type]% -> returns an overall statistic
  * - %bw_counter-[game mode]% -> returns the amount of players playing that game mode
  */
@@ -74,6 +75,22 @@ public class BedWarsExpansion extends PlaceholderExpansion {
                         return BedWarsPlugin.getInstance().getUserFactory().getUser(player)
                                 .map(BedWarsUser::getStatisticContainer)
                                 .map(userStatisticContainer -> userStatisticContainer.getOverallStatistic(stat))
+                                .map(BigInteger::intValue)
+                                .map(String::valueOf)
+                                .orElse("0");
+                    }
+                }
+            }
+            if (args.length == 4) {
+                String name = args[0];
+                String type = args[1];
+                if (name.equalsIgnoreCase("stat")) {
+                    if (type.equalsIgnoreCase("game")) {
+                        GameMode mode = GameMode.valueOf(args[2].toUpperCase());
+                        StatisticTypes.GAME stat = StatisticTypes.GAME.valueOf(args[3].toUpperCase());
+                        return BedWarsPlugin.getInstance().getUserFactory().getUser(player)
+                                .map(BedWarsUser::getStatisticContainer)
+                                .map(userStatisticContainer -> userStatisticContainer.getGameStatistic(mode, stat))
                                 .map(BigInteger::intValue)
                                 .map(String::valueOf)
                                 .orElse("0");
