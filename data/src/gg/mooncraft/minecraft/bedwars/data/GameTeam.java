@@ -14,7 +14,7 @@ public enum GameTeam {
     GREEN('G', "Green", ChatColor.GREEN),
     AQUA('A', "Aqua", ChatColor.AQUA),
     RED('R', "Red", ChatColor.RED),
-    GRAY('S', "Gray", ChatColor.DARK_GRAY),
+    GRAY('S', "Silver", ChatColor.GRAY),
     BLUE('B', "Blue", ChatColor.BLUE),
     PINK('P', "Pink", ChatColor.LIGHT_PURPLE),
     YELLOW('Y', "Yellow", ChatColor.YELLOW),
