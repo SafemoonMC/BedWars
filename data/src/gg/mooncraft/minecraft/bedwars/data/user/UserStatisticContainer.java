@@ -50,6 +50,7 @@ public final class UserStatisticContainer implements EntityChild<BedWarsUser>, E
                     UserStatisticDAO.update(gameStatistic);
                 }, () -> {
                     GameStatistic gameStatistic = new GameStatistic(this, gameMode, type, new AtomicInteger(amount));
+                    this.gameStatisticList.add(gameStatistic);
                     UserStatisticDAO.create(gameStatistic);
                 });
     }
@@ -63,6 +64,7 @@ public final class UserStatisticContainer implements EntityChild<BedWarsUser>, E
                     UserStatisticDAO.update(overallStatistic);
                 }, () -> {
                     OverallStatistic overallStatistic = new OverallStatistic(this, type, new AtomicInteger(amount));
+                    this.overallStatisticList.add(overallStatistic);
                     UserStatisticDAO.create(overallStatistic);
                 });
     }
