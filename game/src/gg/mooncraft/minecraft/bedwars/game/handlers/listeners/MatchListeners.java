@@ -20,6 +20,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 
 import gg.mooncraft.minecraft.bedwars.data.GameState;
+import gg.mooncraft.minecraft.bedwars.data.GameTeam;
 import gg.mooncraft.minecraft.bedwars.data.map.BedWarsMap;
 import gg.mooncraft.minecraft.bedwars.data.map.MapPointsContainer;
 import gg.mooncraft.minecraft.bedwars.data.map.point.PointTypes;
@@ -402,13 +403,15 @@ public class MatchListeners implements Listener {
         gameMatch.getPlayerList().forEach(streamPlayer -> {
             if (e.getDeathReason() == MatchPlayerDeathEvent.DeathReason.PLAYER) {
                 streamPlayer.sendMessage(GameConstants.MESSAGE_PLAYER_KILL
+                        .replaceAll("%killer-team-color%", gameMatch.getTeamOf(e.getLastPlayerDamage().getPlayer()).map(GameMatchTeam::getGameTeam).map(GameTeam::getChatColor).map(net.md_5.bungee.api.ChatColor::toString).orElse(ChatColor.RESET.toString()))
+                        .replaceAll("%killed-team-color%", gameMatchTeam.getGameTeam().getChatColor().toString())
                         .replaceAll("%killer%", e.getLastPlayerDamage().getPlayer().getName())
                         .replaceAll("%killed%", player.getName())
-                        .replaceAll("%weapon%", DisplayUtilities.getDisplay(e.getLastPlayerDamage().getWeapon())
-                        ));
+                );
             } else {
                 streamPlayer.sendMessage(GameConstants.MESSAGE_PLAYER_DIES
                         .replaceAll("%player%", player.getName())
+                        .replaceAll("%team-color%", gameMatchTeam.getGameTeam().getChatColor().toString())
                 );
             }
         });
