@@ -6,6 +6,7 @@ import lombok.Getter;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatch;
 import gg.mooncraft.minecraft.bedwars.game.match.tasks.GameMatchEvent;
@@ -24,6 +25,7 @@ public class MatchUpdateGameEvent extends Event {
      */
     private final @NotNull GameMatch match;
     private final @NotNull GameMatchEvent matchEvent;
+    private final @Nullable GameMatchEvent previousEvent;
 
     /*
     Static Methods

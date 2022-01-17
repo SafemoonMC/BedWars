@@ -42,17 +42,18 @@ import gg.mooncraft.minecraft.bedwars.game.events.MatchUpdateGameEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchUpdatePlayerEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchUpdateStateEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchVillagerInteractEvent;
+import gg.mooncraft.minecraft.bedwars.game.match.GameEvent;
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatch;
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatchPlayer;
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatchTeam;
 import gg.mooncraft.minecraft.bedwars.game.match.PlayerStatus;
 import gg.mooncraft.minecraft.bedwars.game.match.TeamStatus;
 import gg.mooncraft.minecraft.bedwars.game.match.VillagerType;
-import gg.mooncraft.minecraft.bedwars.game.match.tasks.GameMatchEvent;
 import gg.mooncraft.minecraft.bedwars.game.match.tasks.GeneratorTask;
 import gg.mooncraft.minecraft.bedwars.game.match.tasks.SpectatorTask;
 import gg.mooncraft.minecraft.bedwars.game.menu.ShopMenu;
 import gg.mooncraft.minecraft.bedwars.game.menu.ShopUpgradesMenu;
+import gg.mooncraft.minecraft.bedwars.game.utilities.DisplayUtilities;
 import gg.mooncraft.minecraft.bedwars.game.utilities.PointAdapter;
 import gg.mooncraft.minecraft.bedwars.game.utilities.WorldUtilities;
 
@@ -168,11 +169,28 @@ public class MatchListeners implements Listener {
     @EventHandler
     public void on(@NotNull MatchUpdateGameEvent e) {
         GameMatch gameMatch = e.getMatch();
-        GameMatchEvent gameMatchEvent = e.getMatchEvent();
         gameMatch.getGeneratorSystem().getTaskList().forEach(GeneratorTask::forceUpdateHologram);
-        Bukkit.broadcastMessage(gameMatch.getDimension().getName() + " match event: " + gameMatchEvent.getGameEvent().name());
-    }
 
+        if (e.getPreviousEvent() == null) return;
+        switch (e.getPreviousEvent().getGameEvent()) {
+            case DIAMOND -> {
+                gameMatch.getPlayerList().forEach(player -> {
+                    player.sendMessage(GameConstants.MESSAGE_GENERATOR_UPDATE
+                            .replaceAll("%type%", ChatColor.AQUA + GameEvent.DIAMOND.getDisplay())
+                            .replaceAll("%tier%", DisplayUtilities.getLiteral(gameMatch.getGeneratorSystem().getDiamondTier()))
+                    );
+                });
+            }
+            case EMERALD -> {
+                gameMatch.getPlayerList().forEach(player -> {
+                    player.sendMessage(GameConstants.MESSAGE_GENERATOR_UPDATE
+                            .replaceAll("%type%", ChatColor.DARK_GREEN + GameEvent.EMERALD.getDisplay())
+                            .replaceAll("%tier%", DisplayUtilities.getLiteral(gameMatch.getGeneratorSystem().getEmeraldTier()))
+                    );
+                });
+            }
+        }
+    }
 
     @EventHandler
     public void on(@NotNull MatchUpdatePlayerEvent e) {

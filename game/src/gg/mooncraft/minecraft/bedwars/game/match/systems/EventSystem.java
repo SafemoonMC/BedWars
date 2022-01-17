@@ -42,8 +42,8 @@ public final class EventSystem implements TickSystem {
         if (this.nextMatchEvent == null || this.nextMatchEvent.getTimeLeft() == -1) {
             Optional<GameMatchEvent> matchEventOptional = this.eventList.stream().filter(gameMatchEvent -> gameMatchEvent.getTimeLeft() != -1).min(Comparator.comparingLong(GameMatchEvent::getTimeLeft));
             matchEventOptional.ifPresent(gameMatchEvent -> {
+                EventsAPI.callEventSync(new MatchUpdateGameEvent(this.gameMatch, gameMatchEvent, this.nextMatchEvent));
                 this.nextMatchEvent = gameMatchEvent;
-                EventsAPI.callEventSync(new MatchUpdateGameEvent(this.gameMatch, this.nextMatchEvent));
             });
         }
     }
