@@ -33,11 +33,9 @@ public class StatsListeners implements Listener {
         Player player = e.getPlayer();
         BedWarsPlugin.getInstance().getUserFactory().getUser(player).ifPresent(bedWarsUser -> {
             if (!e.getMatchTeam().isAnyAlive()) {
-                Bukkit.getLogger().info("MatchTeam: " + e.getMatchTeam().getGameTeam() + " - " + e.getMatchTeam().isAnyAlive() + " - UPDATING LOSSES AND FINAL DEATHS");
                 bedWarsUser.getStatisticContainer().updateGameStatistic(e.getMatch().getGameMode(), StatisticTypes.GAME.LOSSES, 1);
                 bedWarsUser.getStatisticContainer().updateGameStatistic(e.getMatch().getGameMode(), StatisticTypes.GAME.FINAL_DEATHS, 1);
             } else {
-                Bukkit.getLogger().info("MatchTeam: " + e.getMatchTeam().getGameTeam() + " - " + e.getMatchTeam().isAnyAlive() + " - UPDATING NORMAL DEATHS");
                 bedWarsUser.getStatisticContainer().updateGameStatistic(e.getMatch().getGameMode(), StatisticTypes.GAME.NORMAL_DEATHS, 1);
             }
         });
