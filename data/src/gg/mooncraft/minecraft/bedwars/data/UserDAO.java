@@ -47,10 +47,9 @@ public final class UserDAO {
      */
     public static @NotNull CompletableFuture<BedWarsUser> create(@NotNull BedWarsUser bedWarsUser) {
         Objects.requireNonNull(database, "The DAO hasn't been registered yet.");
-        Query query = Query.single("INSERT INTO " + TABLE_NAME + " VALUES (?, ?, ?, ?);")
+        Query query = Query.single("INSERT INTO " + TABLE_NAME + " VALUES (?, ?, ?);")
                 .with(bedWarsUser.getUniqueId().toString())
                 .with(bedWarsUser.getCoins())
-                .with(bedWarsUser.getLevel())
                 .with(bedWarsUser.getExperience())
                 .build();
         return database.updateQuery(query, u -> bedWarsUser);
@@ -67,21 +66,18 @@ public final class UserDAO {
             }
             ResultSetWrapper resultSetWrapper = new ResultSetWrapper(resultSetIterator.next());
             BigInteger coins = resultSetWrapper.get("coins", BigInteger.class);
-            BigInteger level = resultSetWrapper.get("level", BigInteger.class);
             BigInteger experience = resultSetWrapper.get("experience", BigInteger.class);
-            return new BedWarsUser(uniqueId, coins, level, experience).withChildren().join();
+            return new BedWarsUser(uniqueId, coins, experience).withChildren().join();
         });
     }
 
     public static @NotNull CompletableFuture<BedWarsUser> update(@NotNull BedWarsUser bedWarsUser) {
         Objects.requireNonNull(database, "The DAO hasn't been registered yet.");
-        Query query = Query.single("UPDATE " + TABLE_NAME + " SET coins = ?, level = ?, experience = ? WHERE unique_id = ?;")
+        Query query = Query.single("UPDATE " + TABLE_NAME + " SET coins = ?, experience = ? WHERE unique_id = ?;")
                 .with(bedWarsUser.getCoins())
-                .with(bedWarsUser.getLevel())
                 .with(bedWarsUser.getExperience())
                 .with(bedWarsUser.getUniqueId().toString())
                 .build();
         return database.updateQuery(query, u -> bedWarsUser);
     }
-
 }

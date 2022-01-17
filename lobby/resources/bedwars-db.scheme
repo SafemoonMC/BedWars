@@ -2,7 +2,6 @@ CREATE TABLE IF NOT EXISTS bw_users
 (
     unique_id  CHAR(36)        NOT NULL PRIMARY KEY,
     coins      BIGINT UNSIGNED NOT NULL,
-    level      BIGINT UNSIGNED NOT NULL,
     experience BIGINT UNSIGNED NOT NULL
 );
 CREATE TABLE IF NOT EXISTS bw_users_stats_games
