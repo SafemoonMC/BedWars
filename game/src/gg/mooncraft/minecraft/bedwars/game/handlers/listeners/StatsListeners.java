@@ -3,6 +3,7 @@ package gg.mooncraft.minecraft.bedwars.game.handlers.listeners;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -27,14 +28,16 @@ public class StatsListeners implements Listener {
     /*
     Handlers
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void on(@NotNull MatchPlayerDeathEvent e) {
         Player player = e.getPlayer();
         BedWarsPlugin.getInstance().getUserFactory().getUser(player).ifPresent(bedWarsUser -> {
             if (!e.getMatchTeam().isAnyAlive()) {
+                Bukkit.getLogger().info("MatchTeam: " + e.getMatchTeam().getGameTeam() + " - " + e.getMatchTeam().isAnyAlive() + " - UPDATING LOSSES AND FINAL DEATHS");
                 bedWarsUser.getStatisticContainer().updateGameStatistic(e.getMatch().getGameMode(), StatisticTypes.GAME.LOSSES, 1);
                 bedWarsUser.getStatisticContainer().updateGameStatistic(e.getMatch().getGameMode(), StatisticTypes.GAME.FINAL_DEATHS, 1);
             } else {
+                Bukkit.getLogger().info("MatchTeam: " + e.getMatchTeam().getGameTeam() + " - " + e.getMatchTeam().isAnyAlive() + " - UPDATING NORMAL DEATHS");
                 bedWarsUser.getStatisticContainer().updateGameStatistic(e.getMatch().getGameMode(), StatisticTypes.GAME.NORMAL_DEATHS, 1);
             }
         });
@@ -50,7 +53,7 @@ public class StatsListeners implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void on(@NotNull MatchPlayerPickupItemEvent e) {
         Player player = e.getPlayer();
         BedWarsPlugin.getInstance().getUserFactory().getUser(player).ifPresent(bedWarsUser -> {
@@ -72,7 +75,7 @@ public class StatsListeners implements Listener {
         });
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void on(@NotNull MatchBedBreakEvent e) {
         Player player = e.getPlayer();
         BedWarsPlugin.getInstance().getUserFactory().getUser(player).ifPresent(bedWarsUser -> {
@@ -80,7 +83,7 @@ public class StatsListeners implements Listener {
         });
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void on(@NotNull MatchTeamWinEvent e) {
         e.getMatchTeam().broadcastAction(gameMatchPlayer -> {
             gameMatchPlayer.getPlayer().ifPresent(player -> {
