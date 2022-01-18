@@ -8,6 +8,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.jetbrains.annotations.NotNull;
 
@@ -40,6 +41,9 @@ public final class ShopElementItem extends ShopElement {
         if (itemStack.getType() == Material.POTION) {
             ItemStack clone = this.itemStack.clone();
             clone.addItemFlags(ItemFlag.values());
+            ItemMeta itemMeta = itemStack.getItemMeta();
+            itemMeta.setUnbreakable(true);
+            itemStack.setItemMeta(itemMeta);
             return ItemStackCreator.using(clone).meta().display(ChatColor.WHITE + getDisplay()).lore(List.of(getDescription())).stack().create();
         }
         return this.itemStack;
