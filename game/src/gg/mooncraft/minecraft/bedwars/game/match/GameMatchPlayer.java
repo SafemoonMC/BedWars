@@ -48,9 +48,9 @@ public final class GameMatchPlayer {
     private @NotNull PlayerStatus playerStatus;
     private @NotNull PlaytimeTask playtimeTask;
 
-    private @NotNull AtomicInteger experienceReward;
-    private @NotNull Map<StatisticTypes.GAME, AtomicInteger> gameStatistics;
-    private @NotNull Map<StatisticTypes.OVERALL, AtomicInteger> overallStatistics;
+    private final @NotNull AtomicInteger experienceReward;
+    private final @NotNull Map<StatisticTypes.GAME, AtomicInteger> gameStatistics;
+    private final @NotNull Map<StatisticTypes.OVERALL, AtomicInteger> overallStatistics;
 
     private final @NotNull ItemStack weapon;
     private final @NotNull ItemStack utility;
