@@ -103,24 +103,32 @@ public final class GameConstants {
     public static final @NotNull String MESSAGE_PLAYER_QUIT = "%vault_rankprefix%%vault_suffix%%player_name% &ehas quit!";
     public static final @NotNull String MESSAGE_WINNER_TITLE = DisplayUtilities.getColored("&6&lVICTORY!");
     public static final @NotNull List<String> MESSAGE_GLOBAL_WINNER = Arrays.asList(
-            DisplayUtilities.getColored("&9&m                                                                             &r"),
-            DisplayUtilities.getColored("&7                              &f&lBED WARS"),
+            DisplayUtilities.getColored("&7&a▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"),
+            DisplayUtilities.getColored("&7                              &f&lBed Wars"),
             "",
-            DisplayUtilities.getColored("&7                   &7The %team-color%&l%team-name% &7team has won!"),
+            DisplayUtilities.getColored("&7                     &7The %team-color%&l%team-name% &7team has won!"),
             "",
-            DisplayUtilities.getColored("&9&m                                                                             &r")
+            "",
+            DisplayUtilities.getColored("&7                          &f&lReward Summary"),
+            "",
+            DisplayUtilities.getColored("&7               &bLevel %level-current%                          &bLevel %level-next%"),
+            DisplayUtilities.getColored("&7            %experience-progress-bar%"),
+            DisplayUtilities.getColored("&7                          &b%experience-current% &7/ &a%experience-required% &7(%experience-percentage%%)"),
+            "",
+            DisplayUtilities.getColored("&7You earned &b%experience-reward% Bed Wars Experience"),
+            DisplayUtilities.getColored("&7&a▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬")
     );
     public static final @NotNull String MESSAGE_GLOBAL_STARTING = DisplayUtilities.getColored("&eThe game starts in %time-color%%time-left% %time-unit%!");
     public static final @NotNull String MESSAGE_ACTIONBAR_WAITING = DisplayUtilities.getColored("&6The game will start once the necessary players join");
     public static final @NotNull List<String> MESSAGE_PLAYER_MOVE = Arrays.asList(DisplayUtilities.getColored("&8Sending you to %server-name%..."), "", "");
     public static final @NotNull List<String> MESSAGE_STARTING_TIP = Arrays.asList(
-            DisplayUtilities.getColored("&b&m                                                                             &r"),
+            DisplayUtilities.getColored("&7&a▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"),
             DisplayUtilities.getColored("                                &3&lBED WARS"),
             DisplayUtilities.getColored(""),
             DisplayUtilities.getColored("         &f&lProtect your bed and destroy enemy beds."),
             DisplayUtilities.getColored("     &f&lUpgrade yourself and your team by collecting"),
             DisplayUtilities.getColored("                  &f&lminerals from Generators."),
             DisplayUtilities.getColored(""),
-            DisplayUtilities.getColored("&b&m                                                                             &r")
+            DisplayUtilities.getColored("&7&a▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬")
     );
 }

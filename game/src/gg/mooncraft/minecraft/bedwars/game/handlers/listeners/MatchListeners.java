@@ -27,6 +27,7 @@ import gg.mooncraft.minecraft.bedwars.data.map.BedWarsMap;
 import gg.mooncraft.minecraft.bedwars.data.map.MapPointsContainer;
 import gg.mooncraft.minecraft.bedwars.data.map.point.PointTypes;
 import gg.mooncraft.minecraft.bedwars.data.map.point.TeamMapPoint;
+import gg.mooncraft.minecraft.bedwars.data.user.BedWarsUser;
 import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
 import gg.mooncraft.minecraft.bedwars.game.GameConstants;
 import gg.mooncraft.minecraft.bedwars.game.events.EventsAPI;
@@ -59,10 +60,12 @@ import gg.mooncraft.minecraft.bedwars.game.utilities.ItemsUtilities;
 import gg.mooncraft.minecraft.bedwars.game.utilities.PointAdapter;
 import gg.mooncraft.minecraft.bedwars.game.utilities.WorldUtilities;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class MatchListeners implements Listener {
 
@@ -146,11 +149,20 @@ public class MatchListeners implements Listener {
                     });
 
                     gameMatch.getPlayerList().forEach(player -> {
+                        Optional<BedWarsUser> bedWarsUserOptional = BedWarsPlugin.getInstance().getUserFactory().getUser(player);
+
                         player.showBossBar(BedWarsPlugin.getInstance().getBossBar());
                         GameConstants.MESSAGE_GLOBAL_WINNER.forEach(line -> {
                             player.sendMessage(line
                                     .replaceAll("%team-color%", winnerTeam.getGameTeam().getChatColor().toString())
                                     .replaceAll("%team-name%", winnerTeam.getGameTeam().name())
+                                    .replaceAll("%level-current%", bedWarsUserOptional.map(BedWarsUser::getLevel).map(String::valueOf).orElse("-"))
+                                    .replaceAll("%level-next%", bedWarsUserOptional.map(BedWarsUser::getNextLevel).map(String::valueOf).orElse("-"))
+                                    .replaceAll("%experience-reward%", gameMatch.getDataOf(player).map(GameMatchPlayer::getExperienceReward).map(AtomicInteger::get).map(String::valueOf).orElse("-"))
+                                    .replaceAll("%experience-current%", bedWarsUserOptional.map(BedWarsUser::getExperienceCurrent).map(String::valueOf).orElse("-"))
+                                    .replaceAll("%experience-required%", bedWarsUserOptional.map(BedWarsUser::getExperienceRequired).map(String::valueOf).orElse("-"))
+                                    .replaceAll("%experience-percentage%", bedWarsUserOptional.map(BedWarsUser::getExperiencePercentage).map(d -> new DecimalFormat("#.##").format(d)).orElse("-"))
+                                    .replaceAll("%experience-progress-bar%", bedWarsUserOptional.map(BedWarsUser::getExperienceProgressBar).orElse("-"))
                             );
                         });
                     });
@@ -164,8 +176,6 @@ public class MatchListeners implements Listener {
             }
         }
         BedWarsPlugin.getInstance().getGameServerManager().sendGameServerMessage();
-
-        Bukkit.broadcastMessage(gameMatch.getDimension().getName() + " match status: " + gameMatch.getGameState().name());
     }
 
     @EventHandler
@@ -197,6 +207,9 @@ public class MatchListeners implements Listener {
     @EventHandler
     public void on(@NotNull MatchUpdatePlayerEvent e) {
         GameMatch gameMatch = e.getMatch();
+        if (gameMatch.getGameState() != GameState.PLAYING) {
+            return;
+        }
         GameMatchPlayer gameMatchPlayer = e.getMatchPlayer();
 
         switch (gameMatchPlayer.getPlayerStatus()) {
@@ -227,6 +240,15 @@ public class MatchListeners implements Listener {
                     player.getInventory().clear();
                     player.getActivePotionEffects().forEach(potionEffect -> player.removePotionEffect(potionEffect.getType()));
                     player.setGameMode(GameMode.SPECTATOR);
+
+                    BedWarsPlugin.getInstance().getUserFactory().getUser(player).ifPresent(bedWarsUser -> {
+                        e.getMatchPlayer().getGameStatistics().forEach((k, v) -> {
+                            bedWarsUser.getStatisticContainer().updateGameStatistic(gameMatch.getGameMode(), k, v.get());
+                        });
+                        e.getMatchPlayer().getOverallStatistics().forEach((k, v) -> {
+                            bedWarsUser.getStatisticContainer().updateOverallStatistic(k, v.get());
+                        });
+                    });
                 });
 
                 long teamsAlive = e.getMatch().getTeamList()

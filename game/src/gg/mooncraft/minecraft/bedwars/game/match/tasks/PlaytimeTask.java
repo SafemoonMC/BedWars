@@ -46,6 +46,7 @@ public class PlaytimeTask extends GameRunnable {
                         );
                     });
                 });
+                this.matchPlayer.updateExperience(GameConstants.EXPERIENCE_PLAYTIME);
             }
         }
     }

@@ -22,13 +22,13 @@ public final class ExpCalculator {
     /*
     Static Methods
      */
-    public static @NotNull Prestige getPrestigeForExperience(long experience) {
-        return getPrestigeForLevel(getLevelForExperience(experience));
-    }
-
     public static @NotNull Prestige getPrestigeForLevel(int level) {
         int prestige = (int) ((double) level / LEVELS_PER_PRESTIGE);
         return Prestiges.getPrestige(prestige);
+    }
+
+    public static @NotNull Prestige getPrestigeForExperience(long experience) {
+        return getPrestigeForLevel(getLevelForExperience(experience));
     }
 
     public static int getLevelForExperience(long experience) {
@@ -43,6 +43,24 @@ public final class ExpCalculator {
         }
         level += experienceWithoutPrestiges / 5000;
         return level;
+    }
+
+    public static long getExperienceForLevelPlain(int level) {
+        int prestige = (int) ((double) level / LEVELS_PER_PRESTIGE);
+        long experience = prestige * XP_PER_PRESTIGE;
+
+        int levelRespectingPrestige = getLevelRespectingPrestige(level);
+
+        if (levelRespectingPrestige > EASY_LEVELS) {
+            experience += 5000 * LEVELS_PER_PRESTIGE - EASY_LEVELS;
+        }
+        for (int i = 1; i < EASY_LEVELS; i++) {
+            if (i > levelRespectingPrestige) break;
+            long experienceForEasyLevel = getExperienceForLevel(i);
+            experience += experienceForEasyLevel;
+        }
+
+        return experience;
     }
 
     public static long getExperienceForLevel(int level) {

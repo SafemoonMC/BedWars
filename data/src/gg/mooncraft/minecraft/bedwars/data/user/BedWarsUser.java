@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import gg.mooncraft.minecraft.bedwars.data.Prestige;
 import gg.mooncraft.minecraft.bedwars.data.UserDAO;
 import gg.mooncraft.minecraft.bedwars.data.user.utility.ExpCalculator;
+import joptsimple.internal.Strings;
 
 import java.math.BigInteger;
 import java.util.UUID;
@@ -64,12 +65,44 @@ public final class BedWarsUser implements EntityParent<BedWarsUser> {
         return ExpCalculator.getLevelForExperience(getExperience());
     }
 
+    public int getNextLevel() {
+        return getLevel() + 1;
+    }
+
     public long getExperience() {
         return this.experience.longValue();
     }
 
+    public long getExperienceCurrent() {
+        return getExperience() - ExpCalculator.getExperienceForLevelPlain(getLevel());
+    }
+
+    public long getExperienceRequired() {
+        return ExpCalculator.getExperienceForLevel(getNextLevel());
+    }
+
+    public float getExperiencePercentage() {
+        long current = getExperienceCurrent();
+        long required = getExperienceRequired();
+        return (float) (100 * current) / required;
+    }
+
+    public @NotNull String getExperienceProgressBar() {
+        char square = '■';
+        int squares = 32;
+
+        float percentage = getExperiencePercentage();
+        int yesSquares = percentage < 1 ? 0 : (int) (squares * percentage / 100);
+        int noSquares = 32 - yesSquares;
+        return "§8[§b" + Strings.repeat(square, yesSquares) + "§7" + Strings.repeat(square, noSquares) + "§8]";
+    }
+
     public @NotNull Prestige getPrestige() {
         return ExpCalculator.getPrestigeForExperience(getExperience());
+    }
+
+    public @NotNull Prestige getNextPrestige() {
+        return ExpCalculator.getPrestigeForLevel(getNextLevel());
     }
 
     /*

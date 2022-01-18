@@ -16,15 +16,19 @@ import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import gg.mooncraft.minecraft.bedwars.data.user.stats.StatisticTypes;
 import gg.mooncraft.minecraft.bedwars.game.events.EventsAPI;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchUpdatePlayerEvent;
 import gg.mooncraft.minecraft.bedwars.game.items.ItemStackCreator;
 import gg.mooncraft.minecraft.bedwars.game.match.tasks.PlaytimeTask;
 import gg.mooncraft.minecraft.bedwars.game.utilities.ItemsUtilities;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Getter
 public final class GameMatchPlayer {
@@ -41,6 +45,10 @@ public final class GameMatchPlayer {
     private @NotNull PlayerStatus playerStatus;
     private @NotNull PlaytimeTask playtimeTask;
 
+    private @NotNull AtomicInteger experienceReward;
+    private @NotNull Map<StatisticTypes.GAME, AtomicInteger> gameStatistics;
+    private @NotNull Map<StatisticTypes.OVERALL, AtomicInteger> overallStatistics;
+
     private final @NotNull ItemStack weapon;
     private final @NotNull ItemStack[] armor;
 
@@ -52,6 +60,10 @@ public final class GameMatchPlayer {
         this.uniqueId = uniqueId;
         this.playerStatus = PlayerStatus.ALIVE;
         this.playtimeTask = new PlaytimeTask(this);
+
+        this.experienceReward = new AtomicInteger();
+        this.gameStatistics = new HashMap<>();
+        this.overallStatistics = new HashMap<>();
 
         this.weapon = ItemsUtilities.createPureItem(Material.WOODEN_SWORD);
         this.weapon.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
@@ -111,6 +123,20 @@ public final class GameMatchPlayer {
     public void updateStatus(@NotNull PlayerStatus playerStatus) {
         this.playerStatus = playerStatus;
         EventsAPI.callEventSync(new MatchUpdatePlayerEvent(this));
+    }
+
+    public void updateExperience(int amount) {
+        this.experienceReward.addAndGet(amount);
+    }
+
+    public void updateGameStatistic(StatisticTypes.GAME type, int amount) {
+        this.gameStatistics.putIfAbsent(type, new AtomicInteger());
+        this.gameStatistics.get(type).addAndGet(amount);
+    }
+
+    public void updateOverallStatistic(StatisticTypes.OVERALL type, int amount) {
+        this.overallStatistics.putIfAbsent(type, new AtomicInteger());
+        this.overallStatistics.get(type).addAndGet(amount);
     }
 
     public @NotNull Optional<Player> getPlayer() {
