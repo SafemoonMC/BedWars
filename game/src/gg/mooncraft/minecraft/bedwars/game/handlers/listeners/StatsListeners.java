@@ -51,7 +51,7 @@ public class StatsListeners implements Listener {
                 if (!e.getMatchTeam().isAnyAlive()) {
                     bedWarsUser.getStatisticContainer().updateGameStatistic(e.getMatch().getGameMode(), StatisticTypes.GAME.FINAL_KILLS, 1);
                     bedWarsUser.addExperience(GameConstants.EXPERIENCE_FINALKILL);
-                    player.sendMessage(GameConstants.MESSAGE_EXPERIENCE_RECEIVED
+                    playerDamage.getPlayer().sendMessage(GameConstants.MESSAGE_EXPERIENCE_RECEIVED
                             .replaceAll("%amount%", String.valueOf(GameConstants.EXPERIENCE_FINALKILL))
                             .replaceAll("%action%", "Final Kill")
                     );
