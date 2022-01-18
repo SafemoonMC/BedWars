@@ -79,7 +79,7 @@ public final class RedisMessenger implements Messenger {
                 jedis.publish(redisChannel.getChannel(), outgoingMessage.asJsonString());
                 return true;
             } catch (Exception e) {
-                e.printStackTrace();
+                getPlugin().getLogger().severe("[Redis Pub/Sub] Error sendMessage: " + e.getMessage());
                 return false;
             }
         });
@@ -92,6 +92,9 @@ public final class RedisMessenger implements Messenger {
             try (Jedis jedis = jedisPool.getResource()) {
                 jedis.set(key, value);
                 return true;
+            } catch (Exception e) {
+                getPlugin().getLogger().severe("[Redis Key/Value] Error addKeyValue: " + e.getMessage());
+                return false;
             }
         });
     }
@@ -103,6 +106,9 @@ public final class RedisMessenger implements Messenger {
             try (Jedis jedis = jedisPool.getResource()) {
                 jedis.del(key);
                 return true;
+            } catch (Exception e) {
+                getPlugin().getLogger().severe("[Redis Key/Value] Error delKeyValue: " + e.getMessage());
+                return false;
             }
         });
     }
@@ -113,6 +119,9 @@ public final class RedisMessenger implements Messenger {
         return CompletableFuture.supplyAsync(() -> {
             try (Jedis jedis = jedisPool.getResource()) {
                 return jedis.get(key);
+            } catch (Exception e) {
+                getPlugin().getLogger().severe("[Redis Key/Value] Error getKetValue: " + e.getMessage());
+                return null;
             }
         });
     }
