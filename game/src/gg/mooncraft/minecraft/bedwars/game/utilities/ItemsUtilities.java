@@ -7,6 +7,7 @@ import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.jetbrains.annotations.NotNull;
 
@@ -18,6 +19,9 @@ public final class ItemsUtilities {
     public static @NotNull ItemStack createPureItem(@NotNull Material material) {
         ItemStack itemStack = new ItemStack(material);
         itemStack.addItemFlags(ItemFlag.values());
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.setUnbreakable(true);
+        itemStack.setItemMeta(itemMeta);
         return itemStack;
     }
 
