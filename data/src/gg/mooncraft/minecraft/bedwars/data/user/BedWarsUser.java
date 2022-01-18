@@ -7,6 +7,7 @@ import me.eduardwayland.mooncraft.waylander.database.entities.EntityParent;
 import org.jetbrains.annotations.NotNull;
 
 import gg.mooncraft.minecraft.bedwars.data.Prestige;
+import gg.mooncraft.minecraft.bedwars.data.UserDAO;
 import gg.mooncraft.minecraft.bedwars.data.user.utility.ExpCalculator;
 
 import java.math.BigInteger;
@@ -44,16 +45,19 @@ public final class BedWarsUser implements EntityParent<BedWarsUser> {
     public void addCoins(int coins) {
         if (coins <= 0) return;
         this.coins = this.coins.add(BigInteger.valueOf(coins));
+        UserDAO.update(this);
     }
 
     public void delCoins(int coins) {
         if (coins <= 0) return;
         this.coins = this.coins.subtract(BigInteger.valueOf(coins)).max(BigInteger.ZERO);
+        UserDAO.update(this);
     }
 
     public void addExperience(long experience) {
         if (experience <= 0) return;
         this.experience = this.experience.add(BigInteger.valueOf(experience));
+        UserDAO.update(this);
     }
 
     public int getLevel() {
