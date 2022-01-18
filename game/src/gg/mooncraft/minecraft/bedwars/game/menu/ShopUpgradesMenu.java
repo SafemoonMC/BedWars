@@ -113,7 +113,7 @@ public final class ShopUpgradesMenu implements ShopInterface {
             ItemStack itemStack = teamTrap.getIconItem(player, gameMatchPlayer).clone();
             this.inventory.setItem(slot, itemStack);
 
-            if (!this.gameMatchPlayer.getParent().getTrapList().contains(teamTrap)) {
+            if (!this.gameMatchPlayer.getParent().getTrapList().contains(teamTrap) && this.gameMatchPlayer.getParent().getTrapList().size() < 3) {
                 this.trapMap.put(slot, teamTrap);
             }
 
