@@ -20,6 +20,11 @@ public final class GameConstants {
 
     public static final int ANNOUNCER_TIP_INTERVAL = 190;
     public static final int ISLAND_AREA_RANGE = 13;
+    public static final int EXPERIENCE_WIN_SOLODUOS = 120;
+    public static final int EXPERIENCE_WIN_TRIOSQUADS = 75;
+    public static final int EXPERIENCE_PLAYTIME = 25;
+    public static final int EXPERIENCE_FINALKILL = 6;
+    public static final int EXPERIENCE_BEDDESTRUCTION = 8;
 
     public static final @NotNull List<String> ANNOUNCER_MESSAGES = Arrays.asList(
             DisplayUtilities.getColored("&cCross-teaming is not allowed! Report rule breakers with /report <player>."),
@@ -65,6 +70,8 @@ public final class GameConstants {
     public static final @NotNull String MESSAGE_SHOP_BUY = DisplayUtilities.getColored("&bYou purchased &3%shop-item%");
 
     public static final @NotNull String MESSAGE_GENERATOR_UPDATE = DisplayUtilities.getColored("%type% Generators &ehave been upgraded to Tier &c%tier%");
+
+    public static final @NotNull String MESSAGE_EXPERIENCE_RECEIVED = DisplayUtilities.getColored("&b+%amount% Bed Wars Experience (%action%)");
 
     public static final @NotNull String MESSAGE_SPECTATOR_TITLE = DisplayUtilities.getColored("&cYOU DIED!");
     public static final @NotNull String MESSAGE_SPECTATOR_SUBTITLE = DisplayUtilities.getColored("&eYou will respawn in %time% %time-unit%!");

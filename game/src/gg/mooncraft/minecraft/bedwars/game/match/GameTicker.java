@@ -59,6 +59,9 @@ public final class GameTicker extends GameRunnable {
                 gameMatch.getFurnaceSystem().tick();
                 gameMatch.getGeneratorSystem().tick();
                 gameMatch.getAnnouncerSystem().tick();
+                gameMatch.getMatchPlayerList().stream()
+                        .filter(gameMatchPlayer -> gameMatchPlayer.getPlayerStatus() != PlayerStatus.SPECTATING)
+                        .forEach(gameMatchPlayer -> gameMatchPlayer.getPlaytimeTask().run());
                 if (tick % 2 == 0) {
                     gameMatch.getPlayerList().forEach(player -> {
                         TabPlayer tabPlayer = TabAPI.getInstance().getPlayer(player.getUniqueId());

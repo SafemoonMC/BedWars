@@ -19,6 +19,7 @@ import org.jetbrains.annotations.Nullable;
 import gg.mooncraft.minecraft.bedwars.game.events.EventsAPI;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchUpdatePlayerEvent;
 import gg.mooncraft.minecraft.bedwars.game.items.ItemStackCreator;
+import gg.mooncraft.minecraft.bedwars.game.match.tasks.PlaytimeTask;
 import gg.mooncraft.minecraft.bedwars.game.utilities.ItemsUtilities;
 
 import java.util.Objects;
@@ -38,6 +39,7 @@ public final class GameMatchPlayer {
     private @Nullable TabPlayer tabPlayer;
 
     private @NotNull PlayerStatus playerStatus;
+    private @NotNull PlaytimeTask playtimeTask;
 
     private final @NotNull ItemStack weapon;
     private final @NotNull ItemStack[] armor;
@@ -49,6 +51,8 @@ public final class GameMatchPlayer {
         this.parent = gameMatchTeam;
         this.uniqueId = uniqueId;
         this.playerStatus = PlayerStatus.ALIVE;
+        this.playtimeTask = new PlaytimeTask(this);
+        
         this.weapon = ItemsUtilities.createPureItem(Material.WOODEN_SWORD);
         this.weapon.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
 
