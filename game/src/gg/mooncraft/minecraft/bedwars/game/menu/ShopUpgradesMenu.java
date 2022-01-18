@@ -82,6 +82,7 @@ public final class ShopUpgradesMenu implements ShopInterface {
     Methods
      */
     private void load() {
+        this.trapMap.clear();
         this.upgradeMap.clear();
 
         // Clear old references
@@ -111,9 +112,33 @@ public final class ShopUpgradesMenu implements ShopInterface {
             int slot = TRAPS[index];
             ItemStack itemStack = teamTrap.getIconItem(player, gameMatchPlayer).clone();
             this.inventory.setItem(slot, itemStack);
-            this.trapMap.put(slot, teamTrap);
+
+            if (!this.gameMatchPlayer.getParent().getTrapList().contains(teamTrap)) {
+                this.trapMap.put(slot, teamTrap);
+            }
 
             index++;
+        }
+
+        // Place queue group
+        index = 0;
+        for (TeamTrap teamTrap : gameMatchPlayer.getParent().getTrapList()) {
+            int slot = QUEUE[index];
+            ItemStack itemStack = teamTrap.getIconItem(player, gameMatchPlayer).clone();
+            this.inventory.setItem(slot, itemStack);
+
+            index++;
+        }
+
+        // Place placeholders queue group
+        ItemStack itemStack = ItemStackCreator.using(Material.WHITE_STAINED_GLASS_PANE).meta()
+                .display("&cNo trap yet")
+                .lore(Arrays.asList("&7You have to buy a trap first."))
+                .stack().create();
+        for (int i = 0; i < 3; i++) {
+            int slot = QUEUE[i];
+            if (this.inventory.getItem(slot) != null) continue;
+            this.inventory.setItem(slot, itemStack);
         }
     }
 
@@ -152,7 +177,7 @@ public final class ShopUpgradesMenu implements ShopInterface {
             costItem.setAmount(teamTrap.getCostEntry().getValue());
 
             player.getInventory().removeItemAnySlot(costItem);
-
+            gameMatchTeam.addTrap(teamTrap);
             player.sendMessage(GameConstants.MESSAGE_SHOP_BUY.replaceAll("%shop-item%", teamTrap.getDisplay()));
 
             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_TRADE, 1, 1);
