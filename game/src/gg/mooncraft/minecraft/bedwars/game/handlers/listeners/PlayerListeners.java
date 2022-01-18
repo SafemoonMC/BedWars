@@ -4,6 +4,7 @@ import net.kyori.adventure.text.Component;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -42,10 +43,13 @@ import gg.mooncraft.minecraft.bedwars.game.events.MatchPlayerQuitEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchVillagerInteractEvent;
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatch;
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatchTeam;
+import gg.mooncraft.minecraft.bedwars.game.utilities.ItemsUtilities;
 import gg.mooncraft.minecraft.bedwars.game.utilities.PointAdapter;
 import gg.mooncraft.minecraft.bedwars.game.utilities.WorldUtilities;
 
+import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class PlayerListeners implements Listener {
 
@@ -156,13 +160,13 @@ public class PlayerListeners implements Listener {
         Player player = e.getPlayer();
         BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player).ifPresent(gameMatch -> {
             gameMatch.getDataOf(player).ifPresent(gameMatchPlayer -> {
-                BedWarsPlugin.getInstance().getScheduler().executeSync(() -> {
-                    player.spigot().respawn();
+                Map<Material, AtomicInteger> items = ItemsUtilities.getResourceItems(player);
+                BedWarsPlugin.getInstance().getScheduler().executeSync(() -> player.spigot().respawn());
 
-                    gameMatch.getDamageSystem().getHighestTracker(player)
-                            .ifPresentOrElse(playerDamage -> new MatchPlayerDeathEvent(player, gameMatchPlayer, MatchPlayerDeathEvent.DeathReason.PLAYER, playerDamage).callEvent(),
-                                    () -> new MatchPlayerDeathEvent(player, gameMatchPlayer, MatchPlayerDeathEvent.DeathReason.UNKNOWN).callEvent());
-                });
+                gameMatch.getDamageSystem().getHighestTracker(player)
+                        .ifPresentOrElse(playerDamage -> new MatchPlayerDeathEvent(player, gameMatchPlayer, MatchPlayerDeathEvent.DeathReason.PLAYER, items, playerDamage).callEvent(),
+                                () -> new MatchPlayerDeathEvent(player, gameMatchPlayer, MatchPlayerDeathEvent.DeathReason.UNKNOWN, items).callEvent());
+
                 e.setCancelled(true);
                 e.setKeepLevel(false);
                 e.setKeepInventory(false);

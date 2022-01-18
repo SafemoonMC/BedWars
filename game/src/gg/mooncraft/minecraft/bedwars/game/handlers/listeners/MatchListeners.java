@@ -62,9 +62,7 @@ import gg.mooncraft.minecraft.bedwars.game.utilities.WorldUtilities;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class MatchListeners implements Listener {
 
@@ -433,6 +431,19 @@ public class MatchListeners implements Listener {
             gameMatchPlayer.updateStatus(PlayerStatus.SPECTATING);
         }
 
+        if (e.getDeathReason() == MatchPlayerDeathEvent.DeathReason.PLAYER) {
+            e.getLastPlayerDamage().getPlayer().sendMessage(ChatColor.RESET.toString());
+            e.getItems().forEach((k, v) -> {
+                ItemStack itemStack = ItemsUtilities.createPureItem(k);
+                itemStack.setAmount(v.get());
+
+                e.getLastPlayerDamage().getPlayer().getInventory().addItem(itemStack);
+                ChatColor color = itemStack.getType() == Material.DIAMOND ? ChatColor.AQUA : itemStack.getType() == Material.EMERALD ? ChatColor.DARK_GREEN : itemStack.getType() == Material.GOLD_INGOT ? ChatColor.GOLD : ChatColor.WHITE;
+                e.getLastPlayerDamage().getPlayer().sendMessage(color + "+" + v.get() + " " + DisplayUtilities.getDisplay(itemStack));
+            });
+            e.getLastPlayerDamage().getPlayer().sendMessage(ChatColor.RESET.toString());
+        }
+
         gameMatch.getPlayerList().forEach(streamPlayer -> {
             if (e.getDeathReason() == MatchPlayerDeathEvent.DeathReason.PLAYER) {
                 streamPlayer.sendMessage(GameConstants.MESSAGE_PLAYER_KILL
@@ -441,18 +452,6 @@ public class MatchListeners implements Listener {
                         .replaceAll("%killer%", e.getLastPlayerDamage().getPlayer().getName())
                         .replaceAll("%killed%", player.getName())
                 );
-
-                Map<Material, AtomicInteger> dropMap = ItemsUtilities.getResourceItems(player);
-                player.sendMessage(ChatColor.RESET.toString());
-                dropMap.forEach((k, v) -> {
-                    ItemStack itemStack = ItemsUtilities.createPureItem(k);
-                    itemStack.setAmount(v.get());
-
-                    e.getLastPlayerDamage().getPlayer().getInventory().addItem(itemStack);
-                    ChatColor color = itemStack.getType() == Material.DIAMOND ? ChatColor.AQUA : itemStack.getType() == Material.EMERALD ? ChatColor.GREEN : itemStack.getType() == Material.GOLD_INGOT ? ChatColor.GOLD : ChatColor.WHITE;
-                    player.sendMessage(color + "+" + v.get() + " " + DisplayUtilities.getDisplay(itemStack));
-                });
-                player.sendMessage(ChatColor.RESET.toString());
             } else {
                 streamPlayer.sendMessage(GameConstants.MESSAGE_PLAYER_DIES
                         .replaceAll("%player%", player.getName())
