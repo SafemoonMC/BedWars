@@ -112,11 +112,11 @@ public final class UserStatisticDAO {
 
     public static @NotNull CompletableFuture<GameStatistic> update(@NotNull GameStatistic gameStatistic) {
         Objects.requireNonNull(database, "The DAO hasn't been registered yet.");
-        Query query = Query.single("UPDATE " + GAME_TABLE_NAME + " SET amount = ? WHERE unique_id = ? AND mode = ? AND name = ?;")
+        Query query = Query.single("UPDATE " + GAME_TABLE_NAME + " SET amount = ? WHERE unique_id = ? AND name = ? AND mode = ?;")
                 .with(gameStatistic.getAmount().get())
                 .with(gameStatistic.getParent().getParent().getUniqueId().toString())
-                .with(gameStatistic.getGameMode().name())
                 .with(gameStatistic.getType().name())
+                .with(gameStatistic.getGameMode().name())
                 .build();
         return database.updateQuery(query, u -> gameStatistic);
     }
