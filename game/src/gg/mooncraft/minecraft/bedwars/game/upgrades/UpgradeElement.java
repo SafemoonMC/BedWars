@@ -39,7 +39,7 @@ public final class UpgradeElement {
                 .display(color + group.getDisplay())
                 .lore(StringUtilities.isBlankOrEmpty(getDescription()) ?
                         Arrays.asList(group.getDescription(), "", "&7Cost: " + getCost(), "", gameMatchPlayer.getParent().getUpgradeTier(group.getIdentifier()) == group.getUpgradeElementList().size() ? group.isSingleTier() ? "&aAlready Unlocked!" : "&aMAX TIER!" : lastLine) :
-                        Arrays.asList(group.getDescription(), "", group.getUpgradeElementList().stream().map(upgradeElement -> String.format("%sTier %d: %s. %s", getTierColor(upgradeElement, gameMatchPlayer), upgradeElement.getTier(), upgradeElement.getDescription(), getCost())).collect(Collectors.joining("\n")), "", gameMatchPlayer.getParent().getUpgradeTier(group.getIdentifier()) == group.getUpgradeElementList().size() ? group.isSingleTier() ? "&aAlready Unlocked!" : "&aMAX TIER!" : lastLine))
+                        Arrays.asList(group.getDescription(), "", group.getUpgradeElementList().stream().map(upgradeElement -> String.format("%sTier %d: %s. %s", getTierColor(upgradeElement, gameMatchPlayer), upgradeElement.getTier(), upgradeElement.getDescription(), upgradeElement.getCost())).collect(Collectors.joining("\n")), "", gameMatchPlayer.getParent().getUpgradeTier(group.getIdentifier()) == group.getUpgradeElementList().size() ? group.isSingleTier() ? "&aAlready Unlocked!" : "&aMAX TIER!" : lastLine))
                 .stack().create();
     }
 
