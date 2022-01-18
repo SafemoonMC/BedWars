@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -13,8 +14,24 @@ import org.jetbrains.annotations.NotNull;
 
 import gg.mooncraft.minecraft.bedwars.data.GameTeam;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public final class ItemsUtilities {
+
+    public static @NotNull Map<Material, AtomicInteger> getResourceItems(@NotNull Player player) {
+        Map<Material, AtomicInteger> map = new HashMap<>();
+        for (ItemStack itemStack : player.getInventory()) {
+            if (itemStack == null) continue;
+            if (itemStack.getType() == Material.DIAMOND || itemStack.getType() == Material.EMERALD || itemStack.getType() == Material.IRON_INGOT) {
+                map.putIfAbsent(itemStack.getType(), new AtomicInteger());
+                map.get(itemStack.getType()).addAndGet(itemStack.getAmount());
+            }
+        }
+        return map;
+    }
 
     public static @NotNull ItemStack createPureItem(@NotNull Material material) {
         ItemStack itemStack = new ItemStack(material);

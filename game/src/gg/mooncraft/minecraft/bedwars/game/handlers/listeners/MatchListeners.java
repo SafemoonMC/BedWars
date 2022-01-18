@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
@@ -54,13 +55,16 @@ import gg.mooncraft.minecraft.bedwars.game.match.tasks.SpectatorTask;
 import gg.mooncraft.minecraft.bedwars.game.menu.ShopMenu;
 import gg.mooncraft.minecraft.bedwars.game.menu.ShopUpgradesMenu;
 import gg.mooncraft.minecraft.bedwars.game.utilities.DisplayUtilities;
+import gg.mooncraft.minecraft.bedwars.game.utilities.ItemsUtilities;
 import gg.mooncraft.minecraft.bedwars.game.utilities.PointAdapter;
 import gg.mooncraft.minecraft.bedwars.game.utilities.WorldUtilities;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class MatchListeners implements Listener {
 
@@ -428,7 +432,6 @@ public class MatchListeners implements Listener {
         } else {
             gameMatchPlayer.updateStatus(PlayerStatus.SPECTATING);
         }
-        Bukkit.getLogger().info("Death: " + gameMatchPlayer.getPlayerStatus().name() + " - " + gameMatchTeam.isAnyAlive());
 
         gameMatch.getPlayerList().forEach(streamPlayer -> {
             if (e.getDeathReason() == MatchPlayerDeathEvent.DeathReason.PLAYER) {
@@ -438,6 +441,18 @@ public class MatchListeners implements Listener {
                         .replaceAll("%killer%", e.getLastPlayerDamage().getPlayer().getName())
                         .replaceAll("%killed%", player.getName())
                 );
+
+                Map<Material, AtomicInteger> dropMap = ItemsUtilities.getResourceItems(player);
+                player.sendMessage(ChatColor.RESET.toString());
+                dropMap.forEach((k, v) -> {
+                    ItemStack itemStack = ItemsUtilities.createPureItem(k);
+                    itemStack.setAmount(v.get());
+
+                    e.getLastPlayerDamage().getPlayer().getInventory().addItem(itemStack);
+                    ChatColor color = itemStack.getType() == Material.DIAMOND ? ChatColor.AQUA : itemStack.getType() == Material.EMERALD ? ChatColor.GREEN : itemStack.getType() == Material.GOLD_INGOT ? ChatColor.GOLD : ChatColor.WHITE;
+                    player.sendMessage(color + "+" + v.get() + " " + DisplayUtilities.getDisplay(itemStack));
+                });
+                player.sendMessage(ChatColor.RESET.toString());
             } else {
                 streamPlayer.sendMessage(GameConstants.MESSAGE_PLAYER_DIES
                         .replaceAll("%player%", player.getName())
