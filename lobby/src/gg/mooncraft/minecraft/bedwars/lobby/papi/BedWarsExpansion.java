@@ -37,13 +37,11 @@ public class BedWarsExpansion extends PlaceholderExpansion {
         } else if (params.equalsIgnoreCase("level")) {
             return BedWarsPlugin.getInstance().getUserFactory().getUser(player)
                     .map(BedWarsUser::getLevel)
-                    .map(BigInteger::intValue)
                     .map(String::valueOf)
                     .orElse("0");
         } else if (params.equalsIgnoreCase("experience")) {
             return BedWarsPlugin.getInstance().getUserFactory().getUser(player)
                     .map(BedWarsUser::getExperience)
-                    .map(BigInteger::intValue)
                     .map(String::valueOf)
                     .orElse("0");
         }

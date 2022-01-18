@@ -27,7 +27,6 @@ public class TeamExtension extends PlaceholderExpansion {
         if (params.equalsIgnoreCase("level")) {
             return BedWarsPlugin.getInstance().getUserFactory().getUser(player)
                     .map(BedWarsUser::getLevel)
-                    .map(BigInteger::intValue)
                     .map(String::valueOf)
                     .orElse("0");
         }
