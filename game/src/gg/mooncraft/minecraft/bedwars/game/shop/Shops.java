@@ -504,7 +504,7 @@ public final class Shops {
                 )
         );
         SOLO_SHOP.addItem("tools", new ShopElementItem(
-                        "&6Wooden Pickaxe",
+                        "Wooden Pickaxe",
                         "",
                         new OptionEntry<>(Material.IRON_INGOT, 2),
                         Material.WOODEN_PICKAXE,
@@ -512,7 +512,7 @@ public final class Shops {
                 )
         );
         SOLO_SHOP.addItem("tools", new ShopElementItemDynamic(
-                        "&6Wooden Axe",
+                        "Wooden Axe",
                         "",
                         new OptionEntry<>(Material.IRON_INGOT, 2),
                         Material.WOODEN_AXE,
@@ -529,7 +529,7 @@ public final class Shops {
                 )
         );
         DUOS_SHOP.addItem("tools", new ShopElementItem(
-                        "&6Wooden Pickaxe",
+                        "Wooden Pickaxe",
                         "",
                         new OptionEntry<>(Material.IRON_INGOT, 2),
                         Material.WOODEN_PICKAXE,
@@ -537,7 +537,7 @@ public final class Shops {
                 )
         );
         DUOS_SHOP.addItem("tools", new ShopElementItemDynamic(
-                        "&6Wooden Axe",
+                        "Wooden Axe",
                         "",
                         new OptionEntry<>(Material.IRON_INGOT, 2),
                         Material.WOODEN_AXE,
@@ -554,7 +554,7 @@ public final class Shops {
                 )
         );
         TRIOS_SHOP.addItem("tools", new ShopElementItem(
-                        "&6Wooden Pickaxe",
+                        "Wooden Pickaxe",
                         "",
                         new OptionEntry<>(Material.IRON_INGOT, 2),
                         Material.WOODEN_PICKAXE,
@@ -562,7 +562,7 @@ public final class Shops {
                 )
         );
         TRIOS_SHOP.addItem("tools", new ShopElementItemDynamic(
-                        "&6Wooden Axe",
+                        "Wooden Axe",
                         "",
                         new OptionEntry<>(Material.IRON_INGOT, 2),
                         Material.WOODEN_AXE,
@@ -579,7 +579,7 @@ public final class Shops {
                 )
         );
         QUADS_SHOP.addItem("tools", new ShopElementItem(
-                        "&6Wooden Pickaxe",
+                        "Wooden Pickaxe",
                         "",
                         new OptionEntry<>(Material.IRON_INGOT, 2),
                         Material.WOODEN_PICKAXE,
@@ -587,7 +587,7 @@ public final class Shops {
                 )
         );
         QUADS_SHOP.addItem("tools", new ShopElementItemDynamic(
-                        "&6Wooden Axe",
+                        "Wooden Axe",
                         "",
                         new OptionEntry<>(Material.IRON_INGOT, 2),
                         Material.WOODEN_AXE,
