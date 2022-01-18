@@ -9,6 +9,7 @@ import me.eduardwayland.mooncraft.waylander.database.Database;
 import me.eduardwayland.mooncraft.waylander.database.connection.hikari.impl.MariaDBConnectionFactory;
 import me.eduardwayland.mooncraft.waylander.database.scheme.db.NormalDatabaseScheme;
 import me.eduardwayland.mooncraft.waylander.database.scheme.file.NormalSchemeFile;
+import me.eduardwayland.mooncraft.waylander.scheduler.SchedulerTask;
 
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
@@ -50,6 +51,7 @@ import redis.clients.jedis.JedisPoolConfig;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.util.concurrent.TimeUnit;
 
 @Getter
 public class BedWarsPlugin extends ComplexJavaPlugin {
@@ -70,6 +72,8 @@ public class BedWarsPlugin extends ComplexJavaPlugin {
 
     private GameServerManager gameServerManager;
     private GameRequestManager gameRequestManager;
+
+    private SchedulerTask heartbeatTask;
 
     private BossBar bossBar;
 
@@ -106,6 +110,8 @@ public class BedWarsPlugin extends ComplexJavaPlugin {
         this.mapManager = new MapManager();
         this.gameServerManager = new GameServerManager();
         this.gameRequestManager = new GameRequestManager();
+
+        this.heartbeatTask = getScheduler().asyncRepeating(() -> getGameServerManager().sendGameServerMessage(), 30, TimeUnit.SECONDS);
 
         this.bossBar = BossBar.bossBar(Component.text(GameConstants.BOSSBAR_TITLE), 1.0f, BossBar.Color.BLUE, BossBar.Overlay.PROGRESS);
 
