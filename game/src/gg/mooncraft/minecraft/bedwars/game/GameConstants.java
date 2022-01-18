@@ -123,7 +123,7 @@ public final class GameConstants {
     public static final @NotNull List<String> MESSAGE_PLAYER_MOVE = Arrays.asList(DisplayUtilities.getColored("&8Sending you to %server-name%..."), "", "");
     public static final @NotNull List<String> MESSAGE_STARTING_TIP = Arrays.asList(
             DisplayUtilities.getColored("&7&a▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"),
-            DisplayUtilities.getColored("                                &3&lBED WARS"),
+            DisplayUtilities.getColored("                                &e&lBED WARS"),
             DisplayUtilities.getColored(""),
             DisplayUtilities.getColored("         &f&lProtect your bed and destroy enemy beds."),
             DisplayUtilities.getColored("     &f&lUpgrade yourself and your team by collecting"),
