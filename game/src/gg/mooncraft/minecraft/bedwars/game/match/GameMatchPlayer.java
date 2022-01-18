@@ -52,13 +52,13 @@ public final class GameMatchPlayer {
         this.uniqueId = uniqueId;
         this.playerStatus = PlayerStatus.ALIVE;
         this.playtimeTask = new PlaytimeTask(this);
-        
+
         this.weapon = ItemsUtilities.createPureItem(Material.WOODEN_SWORD);
         this.weapon.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
 
         this.armor = new ItemStack[4];
-        this.armor[0] = new ItemStack(Material.AIR);
-        this.armor[1] = new ItemStack(Material.AIR);
+        this.armor[0] = ItemsUtilities.createArmorItem(gameMatchTeam.getGameTeam(), Material.LEATHER_BOOTS);
+        this.armor[1] = ItemsUtilities.createArmorItem(gameMatchTeam.getGameTeam(), Material.LEATHER_LEGGINGS);
         this.armor[2] = ItemsUtilities.createArmorItem(gameMatchTeam.getGameTeam(), Material.LEATHER_CHESTPLATE);
         this.armor[3] = ItemStackCreator.using(ItemsUtilities.createArmorItem(gameMatchTeam.getGameTeam(), Material.LEATHER_HELMET)).enchant(Enchantment.WATER_WORKER, 1).create();
     }
