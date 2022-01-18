@@ -395,112 +395,112 @@ public final class Shops {
                 )
         );
         // Armor SOLO
-        SOLO_SHOP.addItem("armor", new ShopElementItemDynamic(
+        SOLO_SHOP.addItem("armor", new ShopElementItemPermanent(
                         "Permanent Chainmail Armor",
                         "&7Chainmail leggings and boots\n&7which you will always spawn\n&7with.",
                         new OptionEntry<>(Material.IRON_INGOT, 30),
                         Material.CHAINMAIL_BOOTS,
-                        gameMatchPlayer -> ItemStackCreator.using(Material.CHAINMAIL_BOOTS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, gameMatchPlayer.getParent().getUpgradeTier("armor")).amount(1).create()
+                        PermanentElement.ST_ARMOR
                 )
         );
-        SOLO_SHOP.addItem("armor", new ShopElementItemDynamic(
+        SOLO_SHOP.addItem("armor", new ShopElementItemPermanent(
                         "Permanent Iron Armor",
                         "&7Iron leggings and boots which\n&7you will always spawn with.",
                         new OptionEntry<>(Material.GOLD_INGOT, 12),
                         Material.IRON_BOOTS,
-                        gameMatchPlayer -> ItemStackCreator.using(Material.IRON_BOOTS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, gameMatchPlayer.getParent().getUpgradeTier("armor")).amount(1).create()
+                        PermanentElement.ND_ARMOR
                 )
         );
-        SOLO_SHOP.addItem("armor", new ShopElementItemDynamic(
+        SOLO_SHOP.addItem("armor", new ShopElementItemPermanent(
                         "Permanent Diamond Armor",
                         "&7Diamond leggings and boots which\n&7you will always crush with.",
                         new OptionEntry<>(Material.EMERALD, 6),
                         Material.DIAMOND_BOOTS,
-                        gameMatchPlayer -> ItemStackCreator.using(Material.DIAMOND_BOOTS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, gameMatchPlayer.getParent().getUpgradeTier("armor")).amount(1).create()
+                        PermanentElement.RD_ARMOR
                 )
         );
         // Armor DUOS
-        DUOS_SHOP.addItem("armor", new ShopElementItemDynamic(
+        DUOS_SHOP.addItem("armor", new ShopElementItemPermanent(
                         "Permanent Chainmail Armor",
                         "&7Chainmail leggings and boots\n&7which you will always spawn\n&7with.",
                         new OptionEntry<>(Material.IRON_INGOT, 30),
                         Material.CHAINMAIL_BOOTS,
-                        gameMatchPlayer -> ItemStackCreator.using(Material.CHAINMAIL_BOOTS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, gameMatchPlayer.getParent().getUpgradeTier("armor")).amount(1).create()
+                        PermanentElement.ST_ARMOR
                 )
         );
-        DUOS_SHOP.addItem("armor", new ShopElementItemDynamic(
+        DUOS_SHOP.addItem("armor", new ShopElementItemPermanent(
                         "Permanent Iron Armor",
                         "&7Iron leggings and boots which\n&7you will always spawn with.",
                         new OptionEntry<>(Material.GOLD_INGOT, 12),
                         Material.IRON_BOOTS,
-                        gameMatchPlayer -> ItemStackCreator.using(Material.IRON_BOOTS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, gameMatchPlayer.getParent().getUpgradeTier("armor")).amount(1).create()
+                        PermanentElement.ND_ARMOR
                 )
         );
-        DUOS_SHOP.addItem("armor", new ShopElementItemDynamic(
+        DUOS_SHOP.addItem("armor", new ShopElementItemPermanent(
                         "Permanent Diamond Armor",
                         "&7Diamond leggings and boots which\n&7you will always crush with.",
                         new OptionEntry<>(Material.EMERALD, 6),
                         Material.DIAMOND_BOOTS,
-                        gameMatchPlayer -> ItemStackCreator.using(Material.DIAMOND_BOOTS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, gameMatchPlayer.getParent().getUpgradeTier("armor")).amount(1).create()
+                        PermanentElement.RD_ARMOR
                 )
         );
         // Armor TRIOS
-        TRIOS_SHOP.addItem("armor", new ShopElementItemDynamic(
+        TRIOS_SHOP.addItem("armor", new ShopElementItemPermanent(
                         "Permanent Chainmail Armor",
                         "&7Chainmail leggings and boots\n&7which you will always spawn\n&7with.",
                         new OptionEntry<>(Material.IRON_INGOT, 30),
                         Material.CHAINMAIL_BOOTS,
-                        gameMatchPlayer -> ItemStackCreator.using(Material.CHAINMAIL_BOOTS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, gameMatchPlayer.getParent().getUpgradeTier("armor")).amount(1).create()
+                        PermanentElement.ST_ARMOR
                 )
         );
-        TRIOS_SHOP.addItem("armor", new ShopElementItemDynamic(
+        TRIOS_SHOP.addItem("armor", new ShopElementItemPermanent(
                         "Permanent Iron Armor",
                         "&7Iron leggings and boots which\n&7you will always spawn with.",
                         new OptionEntry<>(Material.GOLD_INGOT, 12),
                         Material.IRON_BOOTS,
-                        gameMatchPlayer -> ItemStackCreator.using(Material.IRON_BOOTS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, gameMatchPlayer.getParent().getUpgradeTier("armor")).amount(1).create()
+                        PermanentElement.ND_ARMOR
                 )
         );
-        TRIOS_SHOP.addItem("armor", new ShopElementItemDynamic(
+        TRIOS_SHOP.addItem("armor", new ShopElementItemPermanent(
                         "Permanent Diamond Armor",
                         "&7Diamond leggings and boots which\n&7you will always crush with.",
                         new OptionEntry<>(Material.EMERALD, 6),
                         Material.DIAMOND_BOOTS,
-                        gameMatchPlayer -> ItemStackCreator.using(Material.DIAMOND_BOOTS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, gameMatchPlayer.getParent().getUpgradeTier("armor")).amount(1).create()
+                        PermanentElement.RD_ARMOR
                 )
         );
         // Armor QUADS
-        QUADS_SHOP.addItem("armor", new ShopElementItemDynamic(
+        QUADS_SHOP.addItem("armor", new ShopElementItemPermanent(
                         "Permanent Chainmail Armor",
                         "&7Chainmail leggings and boots\n&7which you will always spawn\n&7with.",
                         new OptionEntry<>(Material.IRON_INGOT, 30),
                         Material.CHAINMAIL_BOOTS,
-                        gameMatchPlayer -> ItemStackCreator.using(Material.CHAINMAIL_BOOTS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, gameMatchPlayer.getParent().getUpgradeTier("armor")).amount(1).create()
+                        PermanentElement.ST_ARMOR
                 )
         );
-        QUADS_SHOP.addItem("armor", new ShopElementItemDynamic(
+        QUADS_SHOP.addItem("armor", new ShopElementItemPermanent(
                         "Permanent Iron Armor",
                         "&7Iron leggings and boots which\n&7you will always spawn with.",
                         new OptionEntry<>(Material.GOLD_INGOT, 12),
                         Material.IRON_BOOTS,
-                        gameMatchPlayer -> ItemStackCreator.using(Material.IRON_BOOTS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, gameMatchPlayer.getParent().getUpgradeTier("armor")).amount(1).create()
+                        PermanentElement.ND_ARMOR
                 )
         );
-        QUADS_SHOP.addItem("armor", new ShopElementItemDynamic(
+        QUADS_SHOP.addItem("armor", new ShopElementItemPermanent(
                         "Permanent Diamond Armor",
                         "&7Diamond leggings and boots which\n&7you will always crush with.",
                         new OptionEntry<>(Material.EMERALD, 6),
                         Material.DIAMOND_BOOTS,
-                        gameMatchPlayer -> ItemStackCreator.using(Material.DIAMOND_BOOTS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, gameMatchPlayer.getParent().getUpgradeTier("armor")).amount(1).create()
+                        PermanentElement.RD_ARMOR
                 )
         );
         // Tools SOLO
-        SOLO_SHOP.addItem("tools", new ShopElementItem(
+        SOLO_SHOP.addItem("tools", new ShopElementItemPermanent(
                         "Permanent Shears",
                         "&7Great job to get rid of wool. You\n&7will always spawn with these\n&7shears.",
                         new OptionEntry<>(Material.IRON_INGOT, 20),
                         Material.SHEARS,
-                        ItemStackCreator.using(Material.SHEARS).amount(1).create()
+                        PermanentElement.SHEARS
                 )
         );
         SOLO_SHOP.addItem("tools", new ShopElementItem(
@@ -520,12 +520,12 @@ public final class Shops {
                 )
         );
         // Tools DUOS
-        DUOS_SHOP.addItem("tools", new ShopElementItem(
+        DUOS_SHOP.addItem("tools", new ShopElementItemPermanent(
                         "Permanent Shears",
                         "&7Great job to get rid of wool. You\n&7will always spawn with these\n&7shears.",
                         new OptionEntry<>(Material.IRON_INGOT, 20),
                         Material.SHEARS,
-                        ItemStackCreator.using(Material.SHEARS).amount(1).create()
+                        PermanentElement.SHEARS
                 )
         );
         DUOS_SHOP.addItem("tools", new ShopElementItem(
@@ -545,12 +545,12 @@ public final class Shops {
                 )
         );
         // Tools TRIOS
-        TRIOS_SHOP.addItem("tools", new ShopElementItem(
+        TRIOS_SHOP.addItem("tools", new ShopElementItemPermanent(
                         "Permanent Shears",
                         "&7Great job to get rid of wool. You\n&7will always spawn with these\n&7shears.",
                         new OptionEntry<>(Material.IRON_INGOT, 20),
                         Material.SHEARS,
-                        ItemStackCreator.using(Material.SHEARS).amount(1).create()
+                        PermanentElement.SHEARS
                 )
         );
         TRIOS_SHOP.addItem("tools", new ShopElementItem(
@@ -570,12 +570,12 @@ public final class Shops {
                 )
         );
         // Tools QUADS
-        QUADS_SHOP.addItem("tools", new ShopElementItem(
+        QUADS_SHOP.addItem("tools", new ShopElementItemPermanent(
                         "Permanent Shears",
                         "&7Great job to get rid of wool. You\n&7will always spawn with these\n&7shears.",
                         new OptionEntry<>(Material.IRON_INGOT, 20),
                         Material.SHEARS,
-                        ItemStackCreator.using(Material.SHEARS).amount(1).create()
+                        PermanentElement.SHEARS
                 )
         );
         QUADS_SHOP.addItem("tools", new ShopElementItem(

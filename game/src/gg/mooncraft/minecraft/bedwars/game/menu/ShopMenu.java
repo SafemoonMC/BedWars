@@ -25,6 +25,7 @@ import gg.mooncraft.minecraft.bedwars.game.shop.ShopCategory;
 import gg.mooncraft.minecraft.bedwars.game.shop.ShopElement;
 import gg.mooncraft.minecraft.bedwars.game.shop.ShopElementItem;
 import gg.mooncraft.minecraft.bedwars.game.shop.ShopElementItemDynamic;
+import gg.mooncraft.minecraft.bedwars.game.shop.ShopElementItemPermanent;
 import gg.mooncraft.minecraft.bedwars.game.shop.ShopElementItemUtility;
 import gg.mooncraft.minecraft.bedwars.game.shop.Shops;
 import gg.mooncraft.minecraft.bedwars.game.utilities.ItemsUtilities;
@@ -168,15 +169,14 @@ public final class ShopMenu implements ShopInterface {
                 player.getInventory().removeItemAnySlot(costItem);
 
                 ItemStack itemStack = shopElementItemDynamic.getItemStackFunction().apply(gameMatchPlayer);
-                if (itemStack.getType().name().contains("BOOTS")) {
-                    gameMatchPlayer.getArmor()[0] = itemStack;
-                    ItemStack leggings = itemStack.clone();
-                    leggings.setType(Material.valueOf(itemStack.getType().name().replaceAll("BOOTS", "LEGGINGS")));
-                    gameMatchPlayer.getArmor()[1] = leggings;
-                    player.getInventory().setArmorContents(gameMatchPlayer.getArmor());
-                } else {
-                    player.getInventory().addItem(itemStack);
+                player.getInventory().addItem(itemStack);
+            }
+            if (shopElement instanceof ShopElementItemPermanent shopElementItemPermanent) {
+                if (gameMatchPlayer.getPermanentElementList().contains(shopElementItemPermanent.getPermanentElement())) {
+                    return;
                 }
+                player.getInventory().removeItemAnySlot(costItem);
+                shopElementItemPermanent.getPermanentElement().apply(gameMatchPlayer);
             }
             if (shopElement instanceof ShopElementItemUtility shopElementItemUtility) {
                 player.getInventory().removeItemAnySlot(costItem);

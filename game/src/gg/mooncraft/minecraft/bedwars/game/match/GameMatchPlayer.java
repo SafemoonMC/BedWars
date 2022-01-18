@@ -21,9 +21,12 @@ import gg.mooncraft.minecraft.bedwars.game.events.EventsAPI;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchUpdatePlayerEvent;
 import gg.mooncraft.minecraft.bedwars.game.items.ItemStackCreator;
 import gg.mooncraft.minecraft.bedwars.game.match.tasks.PlaytimeTask;
+import gg.mooncraft.minecraft.bedwars.game.shop.PermanentElement;
 import gg.mooncraft.minecraft.bedwars.game.utilities.ItemsUtilities;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -50,7 +53,9 @@ public final class GameMatchPlayer {
     private @NotNull Map<StatisticTypes.OVERALL, AtomicInteger> overallStatistics;
 
     private final @NotNull ItemStack weapon;
+    private final @NotNull ItemStack utility;
     private final @NotNull ItemStack[] armor;
+    private final @NotNull List<PermanentElement> permanentElementList;
 
     /*
     Constructor
@@ -68,11 +73,14 @@ public final class GameMatchPlayer {
         this.weapon = ItemsUtilities.createPureItem(Material.WOODEN_SWORD);
         this.weapon.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
 
+        this.utility = new ItemStack(Material.AIR);
+
         this.armor = new ItemStack[4];
         this.armor[0] = ItemsUtilities.createArmorItem(gameMatchTeam.getGameTeam(), Material.LEATHER_BOOTS);
         this.armor[1] = ItemsUtilities.createArmorItem(gameMatchTeam.getGameTeam(), Material.LEATHER_LEGGINGS);
         this.armor[2] = ItemsUtilities.createArmorItem(gameMatchTeam.getGameTeam(), Material.LEATHER_CHESTPLATE);
         this.armor[3] = ItemStackCreator.using(ItemsUtilities.createArmorItem(gameMatchTeam.getGameTeam(), Material.LEATHER_HELMET)).enchant(Enchantment.WATER_WORKER, 1).create();
+        this.permanentElementList = new ArrayList<>();
     }
 
     /*

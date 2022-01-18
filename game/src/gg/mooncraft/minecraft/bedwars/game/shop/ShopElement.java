@@ -41,7 +41,7 @@ public class ShopElement {
                 .stack().create();
     }
 
-    private @NotNull String getCost() {
+    protected @NotNull String getCost() {
         String material = this.costEntry.getKey() == Material.IRON_INGOT ? "Iron" : this.costEntry.getKey() == Material.GOLD_INGOT ? "Gold" : this.costEntry.getKey() == Material.DIAMOND ? "Diamond" : "Emerald";
         String color = this.costEntry.getKey() == Material.IRON_INGOT ? "&f" : this.costEntry.getKey() == Material.GOLD_INGOT ? "&6" : this.costEntry.getKey() == Material.DIAMOND ? "&b" : "&2";
         return color + this.costEntry.getValue() + " " + material;
