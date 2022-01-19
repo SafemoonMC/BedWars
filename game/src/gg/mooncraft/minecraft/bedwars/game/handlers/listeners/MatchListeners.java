@@ -56,6 +56,7 @@ import gg.mooncraft.minecraft.bedwars.game.match.tasks.SpectatorTask;
 import gg.mooncraft.minecraft.bedwars.game.menu.ShopMenu;
 import gg.mooncraft.minecraft.bedwars.game.menu.ShopUpgradesMenu;
 import gg.mooncraft.minecraft.bedwars.game.utilities.DisplayUtilities;
+import gg.mooncraft.minecraft.bedwars.game.utilities.InvisibilityUtilities;
 import gg.mooncraft.minecraft.bedwars.game.utilities.ItemsUtilities;
 import gg.mooncraft.minecraft.bedwars.game.utilities.PointAdapter;
 import gg.mooncraft.minecraft.bedwars.game.utilities.WorldUtilities;
@@ -65,6 +66,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class MatchListeners implements Listener {
@@ -257,7 +259,7 @@ public class MatchListeners implements Listener {
                         .filter(GameMatchTeam::isAnyAlive)
                         .count();
                 if (teamsAlive == 1) {
-                    gameMatch.getGameTicker().getGameEndTask().play();
+                    BedWarsPlugin.getInstance().getScheduler().asyncLater(() -> gameMatch.getGameTicker().getGameEndTask().play(), 1, TimeUnit.SECONDS);
                 }
             }
         }
@@ -513,6 +515,44 @@ public class MatchListeners implements Listener {
             }
         }
 
+        // Check for traps
+        if (e.getAction() == MatchIslandRegionEvent.Action.ENTER && e.getMatchTeam().getGameTeam() != e.getTeam()) {
+            if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - e.getMatchPlayer().getLastMagicMilk().get()) <= GameConstants.MAGIC_MILK_TIME) {
+                return;
+            }
+            e.getMatch().getTeam(e.getTeam()).ifPresent(gameMatchTeam -> {
+                gameMatchTeam.getTeamTrap().ifPresent(teamTrap -> {
+                    switch (teamTrap) {
+                        case TRAP_1 -> {
+                            player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20 * 8, 0, true, true, true));
+                            player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 8, 0, true, true, true));
+                        }
+                        case TRAP_2 -> {
+                            gameMatchTeam.broadcastAction(teamMatchPlayer -> {
+                                teamMatchPlayer.getPlayer().ifPresent(teamPlayer -> {
+                                    if (gameMatchTeam.isBedArea(teamPlayer.getLocation())) {
+                                        teamPlayer.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 20 * 15, 1, true, true, true));
+                                        teamPlayer.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 20 * 15, 1, true, true, true));
+                                    }
+                                });
+                            });
+                        }
+                        case TRAP_3 -> {
+                            player.removePotionEffect(PotionEffectType.INVISIBILITY);
+                            InvisibilityUtilities.showArmor(player);
+                        }
+                        case TRAP_4 -> {
+                            player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 20 * 10, 0, true, true, true));
+                        }
+                    }
+                    gameMatchTeam.broadcastAction(gameMatchPlayer -> {
+                        gameMatchPlayer.getPlayer().ifPresent(matchPlayer -> {
+                            matchPlayer.showTitle(Title.title(Component.text(GameConstants.MESSAGE_TRAP_TITLE), Component.text(GameConstants.MESSAGE_TRAP_SUBTITLE.replaceAll("%trap%", teamTrap.getDisplay()))));
+                        });
+                    });
+                });
+            });
+        }
     }
 
     @EventHandler

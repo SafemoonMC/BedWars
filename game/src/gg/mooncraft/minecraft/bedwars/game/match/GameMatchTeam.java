@@ -104,6 +104,11 @@ public final class GameMatchTeam {
         this.trapList.add(teamTrap);
     }
 
+    public @NotNull Optional<TeamTrap> getTeamTrap() {
+        if (this.trapList.isEmpty()) return Optional.empty();
+        return Optional.ofNullable(this.trapList.remove(0));
+    }
+
     public int getUpgradeTier(@NotNull String identifier) {
         return this.upgradesMap.getOrDefault(identifier, 0);
     }
