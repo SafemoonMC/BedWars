@@ -503,12 +503,12 @@ public final class Shops {
                         PermanentElement.SHEARS
                 )
         );
-        SOLO_SHOP.addItem("tools", new ShopElementItem(
+        SOLO_SHOP.addItem("tools", new ShopElementItemDynamic(
                         "Wooden Pickaxe",
                         "",
                         new OptionEntry<>(Material.IRON_INGOT, 2),
                         Material.WOODEN_PICKAXE,
-                        ItemStackCreator.using(Material.WOODEN_PICKAXE).amount(1).enchant(Enchantment.DIG_SPEED, 1).create()
+                        gameMatchPlayer -> ItemStackCreator.using(Material.WOODEN_PICKAXE).enchant(Enchantment.DIG_SPEED, 1).enchant(Enchantment.DAMAGE_ALL, gameMatchPlayer.getParent().getUpgradeTier("weapon")).amount(1).create()
                 )
         );
         SOLO_SHOP.addItem("tools", new ShopElementItemDynamic(
@@ -528,12 +528,12 @@ public final class Shops {
                         PermanentElement.SHEARS
                 )
         );
-        DUOS_SHOP.addItem("tools", new ShopElementItem(
+        DUOS_SHOP.addItem("tools", new ShopElementItemDynamic(
                         "Wooden Pickaxe",
                         "",
                         new OptionEntry<>(Material.IRON_INGOT, 2),
                         Material.WOODEN_PICKAXE,
-                        ItemStackCreator.using(Material.WOODEN_PICKAXE).enchant(Enchantment.DIG_SPEED, 1).amount(1).create()
+                        gameMatchPlayer -> ItemStackCreator.using(Material.WOODEN_PICKAXE).enchant(Enchantment.DIG_SPEED, 1).enchant(Enchantment.DAMAGE_ALL, gameMatchPlayer.getParent().getUpgradeTier("weapon")).amount(1).create()
                 )
         );
         DUOS_SHOP.addItem("tools", new ShopElementItemDynamic(
@@ -553,12 +553,12 @@ public final class Shops {
                         PermanentElement.SHEARS
                 )
         );
-        TRIOS_SHOP.addItem("tools", new ShopElementItem(
+        TRIOS_SHOP.addItem("tools", new ShopElementItemDynamic(
                         "Wooden Pickaxe",
                         "",
                         new OptionEntry<>(Material.IRON_INGOT, 2),
                         Material.WOODEN_PICKAXE,
-                        ItemStackCreator.using(Material.WOODEN_PICKAXE).enchant(Enchantment.DIG_SPEED, 1).amount(1).create()
+                        gameMatchPlayer -> ItemStackCreator.using(Material.WOODEN_PICKAXE).enchant(Enchantment.DIG_SPEED, 1).enchant(Enchantment.DAMAGE_ALL, gameMatchPlayer.getParent().getUpgradeTier("weapon")).amount(1).create()
                 )
         );
         TRIOS_SHOP.addItem("tools", new ShopElementItemDynamic(
@@ -578,12 +578,12 @@ public final class Shops {
                         PermanentElement.SHEARS
                 )
         );
-        QUADS_SHOP.addItem("tools", new ShopElementItem(
+        QUADS_SHOP.addItem("tools", new ShopElementItemDynamic(
                         "Wooden Pickaxe",
                         "",
                         new OptionEntry<>(Material.IRON_INGOT, 2),
                         Material.WOODEN_PICKAXE,
-                        ItemStackCreator.using(Material.WOODEN_PICKAXE).enchant(Enchantment.DIG_SPEED, 1).amount(1).create()
+                        gameMatchPlayer -> ItemStackCreator.using(Material.WOODEN_PICKAXE).enchant(Enchantment.DIG_SPEED, 1).enchant(Enchantment.DAMAGE_ALL, gameMatchPlayer.getParent().getUpgradeTier("weapon")).amount(1).create()
                 )
         );
         QUADS_SHOP.addItem("tools", new ShopElementItemDynamic(

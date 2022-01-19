@@ -25,12 +25,21 @@ public final class ItemsUtilities {
         Map<Material, AtomicInteger> map = new HashMap<>();
         for (ItemStack itemStack : player.getInventory()) {
             if (itemStack == null) continue;
-            if (itemStack.getType() == Material.DIAMOND || itemStack.getType() == Material.EMERALD || itemStack.getType() == Material.IRON_INGOT) {
+            if (itemStack.getType() == Material.DIAMOND || itemStack.getType() == Material.EMERALD || itemStack.getType() == Material.IRON_INGOT || itemStack.getType() == Material.GOLD_INGOT) {
                 map.putIfAbsent(itemStack.getType(), new AtomicInteger());
                 map.get(itemStack.getType()).addAndGet(itemStack.getAmount());
             }
         }
         return map;
+    }
+
+    public static @NotNull ItemStack makeUnbreakable(@NotNull ItemStack itemStack) {
+        ItemStack clone = itemStack.clone();
+        ItemMeta itemMeta = clone.getItemMeta();
+        itemMeta.setUnbreakable(true);
+        clone.setItemMeta(itemMeta);
+        clone.addItemFlags(ItemFlag.values());
+        return clone;
     }
 
     public static @NotNull ItemStack createPureItem(@NotNull Material material) {
