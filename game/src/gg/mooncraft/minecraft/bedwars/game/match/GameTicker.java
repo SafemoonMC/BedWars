@@ -62,6 +62,16 @@ public final class GameTicker extends GameRunnable {
                 gameMatch.getMatchPlayerList().stream()
                         .filter(gameMatchPlayer -> gameMatchPlayer.getPlayerStatus() != PlayerStatus.SPECTATING)
                         .forEach(gameMatchPlayer -> gameMatchPlayer.getPlaytimeTask().run());
+                gameMatch.getEventSystem().getCurrentEvent().ifPresent(gameMatchEvent -> {
+                    if (gameMatchEvent.getGameEvent() == GameEvent.SUDDEN_DEATH) {
+                        gameMatch.getDragonTaskList()
+                                .stream()
+                                .filter(dragonTask -> gameMatch.getTeam(dragonTask.getGameTeam())
+                                        .map(GameMatchTeam::getTeamStatus)
+                                        .orElse(TeamStatus.NOT_ALIVE) == TeamStatus.ALIVE)
+                                .forEach(GameRunnable::run);
+                    }
+                });
                 if (tick % 2 == 0) {
                     gameMatch.getPlayerList().forEach(player -> {
                         TabPlayer tabPlayer = TabAPI.getInstance().getPlayer(player.getUniqueId());

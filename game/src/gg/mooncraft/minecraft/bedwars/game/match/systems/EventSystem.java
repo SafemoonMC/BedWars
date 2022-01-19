@@ -74,8 +74,13 @@ public final class EventSystem implements TickSystem {
         tick();
     }
 
+    public @NotNull Optional<GameMatchEvent> getCurrentEvent() {
+        if (this.nextMatchEvent == null) return Optional.empty();
+        return getEventList().stream().filter(gameMatchEvent -> gameMatchEvent.getId() == this.nextMatchEvent.getId() - 1).findFirst();
+    }
+
     public @NotNull Optional<GameMatchEvent> getNextEvent() {
-        return Optional.ofNullable(nextMatchEvent);
+        return Optional.ofNullable(this.nextMatchEvent);
     }
 
     @UnmodifiableView

@@ -14,6 +14,7 @@ import gg.mooncraft.minecraft.bedwars.data.GameMode;
 import gg.mooncraft.minecraft.bedwars.data.GameState;
 import gg.mooncraft.minecraft.bedwars.data.GameTeam;
 import gg.mooncraft.minecraft.bedwars.data.map.BedWarsMap;
+import gg.mooncraft.minecraft.bedwars.data.map.point.PointTypes;
 import gg.mooncraft.minecraft.bedwars.data.map.point.TeamMapPoint;
 import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
 import gg.mooncraft.minecraft.bedwars.game.events.EventsAPI;
@@ -25,8 +26,11 @@ import gg.mooncraft.minecraft.bedwars.game.match.systems.EventSystem;
 import gg.mooncraft.minecraft.bedwars.game.match.systems.FurnaceSystem;
 import gg.mooncraft.minecraft.bedwars.game.match.systems.GeneratorSystem;
 import gg.mooncraft.minecraft.bedwars.game.match.systems.VillagersSystem;
+import gg.mooncraft.minecraft.bedwars.game.match.tasks.DragonTask;
 import gg.mooncraft.minecraft.bedwars.game.slime.SlimeBukkitPair;
+import gg.mooncraft.minecraft.bedwars.game.utilities.PointAdapter;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -48,6 +52,7 @@ public final class GameMatch {
     private final @NotNull Scoreboard scoreboard;
 
     private final @NotNull List<GameMatchTeam> teamList = new LinkedList<>();
+    private final @NotNull List<DragonTask> dragonTaskList = new ArrayList<>();
 
     private GameState gameState;
     private EventSystem eventSystem;
@@ -75,8 +80,19 @@ public final class GameMatch {
                     .map(TeamMapPoint::getGameTeam)
                     .sorted((o1, o2) -> o1.getDisplay().compareToIgnoreCase(o2.getDisplay()))
                     .distinct()
-                    .forEach(gameTeam -> this.teamList.add(new GameMatchTeam(this, this.teamList.size(), gameTeam)));
-            this.teamList.forEach(gameMatchTeam -> gameMatchTeam.initScoreboard(this));
+                    .forEach(gameTeam -> {
+                        GameMatchTeam gameMatchTeam = new GameMatchTeam(this, this.teamList.size(), gameTeam);
+                        this.teamList.add(gameMatchTeam);
+                    });
+            this.teamList.forEach(gameMatchTeam -> {
+                gameMatchTeam.initScoreboard(this);
+                gameMatchTeam.getMapPointList()
+                        .stream()
+                        .filter(teamMapPoint -> teamMapPoint.getType() == PointTypes.TEAM.TEAM_BED)
+                        .map(teamMapPoint -> PointAdapter.adapt(this, teamMapPoint))
+                        .findFirst()
+                        .ifPresent(location -> this.dragonTaskList.add(new DragonTask(this, gameMatchTeam.getGameTeam(), location)));
+            });
         });
 
         updateState(GameState.WAITING);
