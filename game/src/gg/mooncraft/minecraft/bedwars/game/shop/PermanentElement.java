@@ -22,6 +22,7 @@ public enum PermanentElement {
             gameMatchPlayer.getArmor()[0] = ItemsUtilities.makeUnbreakable(ItemStackCreator.using(Material.CHAINMAIL_BOOTS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, gameMatchPlayer.getParent().getUpgradeTier("armor")).amount(1).create());
             gameMatchPlayer.getArmor()[1] = ItemsUtilities.makeUnbreakable(ItemStackCreator.using(Material.CHAINMAIL_LEGGINGS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, gameMatchPlayer.getParent().getUpgradeTier("armor")).amount(1).create());
             gameMatchPlayer.getPlayer().ifPresent(player -> player.getInventory().setArmorContents(gameMatchPlayer.getArmor()));
+            gameMatchPlayer.getPermanentElementList().add(PermanentElement.ST_ARMOR);
         }
     },
     ND_ARMOR("armor") {
@@ -30,6 +31,7 @@ public enum PermanentElement {
             gameMatchPlayer.getArmor()[0] = ItemsUtilities.makeUnbreakable(ItemStackCreator.using(Material.IRON_BOOTS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, gameMatchPlayer.getParent().getUpgradeTier("armor")).amount(1).create());
             gameMatchPlayer.getArmor()[1] = ItemsUtilities.makeUnbreakable(ItemStackCreator.using(Material.IRON_LEGGINGS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, gameMatchPlayer.getParent().getUpgradeTier("armor")).amount(1).create());
             gameMatchPlayer.getPlayer().ifPresent(player -> player.getInventory().setArmorContents(gameMatchPlayer.getArmor()));
+            gameMatchPlayer.getPermanentElementList().add(PermanentElement.ND_ARMOR);
         }
     },
     RD_ARMOR("armor") {
@@ -38,6 +40,7 @@ public enum PermanentElement {
             gameMatchPlayer.getArmor()[0] = ItemsUtilities.makeUnbreakable(ItemStackCreator.using(Material.DIAMOND_BOOTS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, gameMatchPlayer.getParent().getUpgradeTier("armor")).amount(1).create());
             gameMatchPlayer.getArmor()[1] = ItemsUtilities.makeUnbreakable(ItemStackCreator.using(Material.DIAMOND_LEGGINGS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, gameMatchPlayer.getParent().getUpgradeTier("armor")).amount(1).create());
             gameMatchPlayer.getPlayer().ifPresent(player -> player.getInventory().setArmorContents(gameMatchPlayer.getArmor()));
+            gameMatchPlayer.getPermanentElementList().add(PermanentElement.RD_ARMOR);
         }
     },
     SHEARS("shears") {
@@ -48,6 +51,7 @@ public enum PermanentElement {
             itemMeta.setUnbreakable(true);
             gameMatchPlayer.getUtility().setItemMeta(itemMeta);
             gameMatchPlayer.getPlayer().ifPresent(player -> player.getInventory().addItem(gameMatchPlayer.getUtility()));
+            gameMatchPlayer.getPermanentElementList().add(PermanentElement.SHEARS);
         }
     };
 

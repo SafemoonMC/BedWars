@@ -13,7 +13,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import gg.mooncraft.minecraft.bedwars.game.GameConstants;
@@ -170,10 +169,7 @@ public final class ShopMenu implements ShopInterface {
                 player.getInventory().removeItemAnySlot(costItem);
 
                 ItemStack itemStack = shopElementItemDynamic.getItemStackFunction().apply(gameMatchPlayer);
-                ItemMeta itemMeta = itemStack.getItemMeta();
-                itemMeta.setUnbreakable(true);
-                itemStack.setItemMeta(itemMeta);
-                player.getInventory().addItem(itemStack);
+                player.getInventory().addItem(ItemsUtilities.makeUnbreakable(itemStack));
             }
             if (shopElement instanceof ShopElementItemPermanent shopElementItemPermanent) {
                 if (gameMatchPlayer.getPermanentElementList().contains(shopElementItemPermanent.getPermanentElement())) {

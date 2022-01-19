@@ -222,6 +222,7 @@ public class MatchListeners implements Listener {
 
                     gameMatchPlayer.updateEffect();
                     player.getInventory().setItem(0, gameMatchPlayer.getWeapon());
+                    player.getInventory().setItem(1, gameMatchPlayer.getUtility());
                     player.getInventory().setArmorContents(gameMatchPlayer.getArmor());
 
                     player.setGameMode(GameMode.SURVIVAL);
