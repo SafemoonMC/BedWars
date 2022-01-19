@@ -91,6 +91,8 @@ public final class GameConstants {
             ""
     );
 
+    public static final @NotNull String MESSAGE_BOW_DAMAGE = DisplayUtilities.getColored("%team-color%%player% &7is on &c%health% HP");
+
     public static final @NotNull String MESSAGE_BRIDGEEGG_WRONG_ANGLE = DisplayUtilities.getColored("&cYou can't throw the Bridge Egg at that angle (too high or too low)!");
     public static final @NotNull String MESSAGE_BLOCK_NO_BUILD = DisplayUtilities.getColored("&cYou can't build there!");
     public static final @NotNull String MESSAGE_BLOCK_UNBREAKABLE = DisplayUtilities.getColored("&cYou can only break blocks placed by other players!");

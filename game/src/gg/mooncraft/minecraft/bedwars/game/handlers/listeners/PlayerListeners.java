@@ -30,6 +30,7 @@ import gg.mooncraft.minecraft.bedwars.data.GameTeam;
 import gg.mooncraft.minecraft.bedwars.data.map.BedWarsMap;
 import gg.mooncraft.minecraft.bedwars.data.map.point.PointTypes;
 import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
+import gg.mooncraft.minecraft.bedwars.game.GameConstants;
 import gg.mooncraft.minecraft.bedwars.game.events.EventsAPI;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchBlockBreakEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchBlockPlaceEvent;
@@ -47,6 +48,7 @@ import gg.mooncraft.minecraft.bedwars.game.utilities.ItemsUtilities;
 import gg.mooncraft.minecraft.bedwars.game.utilities.PointAdapter;
 import gg.mooncraft.minecraft.bedwars.game.utilities.WorldUtilities;
 
+import java.text.DecimalFormat;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -150,6 +152,14 @@ public class PlayerListeners implements Listener {
                     }
                     gameMatch.getDamageSystem().trackPlayer(player, damager, e.getFinalDamage());
                     EventsAPI.callEventSync(new MatchPlayerDamageEvent(player, gameMatchPlayer, e.getFinalDamage()));
+
+                    if (damager.getInventory().getItemInMainHand().getType() == Material.BOW) {
+                        damager.sendMessage(GameConstants.MESSAGE_BOW_DAMAGE
+                                .replaceAll("%team-color%", gameMatchPlayer.getParent().getGameTeam().getChatColor().toString())
+                                .replaceAll("%player%", player.getName())
+                                .replaceAll("%health%", new DecimalFormat("#.##").format(player.getHealth()))
+                        );
+                    }
                 });
             });
         }
