@@ -39,7 +39,7 @@ public final class ShopElementItemPermanent extends ShopElement {
     @Override
     public @NotNull ItemStack getIconItem(@NotNull Player player, @NotNull GameMatchPlayer gameMatchPlayer) {
         String color = player.getInventory().contains(getCostEntry().getKey(), getCostEntry().getValue()) ? "&a" : "&c";
-        String lastLine = player.getInventory().contains(getCostEntry().getKey(), getCostEntry().getValue()) ? "&eClick to purchase!" : "&cYou can't afford this.";
+        String lastLine = gameMatchPlayer.getPermanentElementList().contains(this.permanentElement) ? "&aAlready bought!" : player.getInventory().contains(getCostEntry().getKey(), getCostEntry().getValue()) ? "&eClick to purchase!" : "&cYou can't afford this.";
         ItemStack itemStack = ItemStackCreator.using(ItemsUtilities.createPureItem(getDisplayIcon()))
                 .meta()
                 .display(color + getDisplay())
