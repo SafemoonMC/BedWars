@@ -371,6 +371,7 @@ public class MatchListeners implements Listener {
             return;
         }
         if (!gameMatch.getBlocksSystem().canPlace(location)) {
+            player.sendMessage(GameConstants.MESSAGE_BLOCK_NO_BUILD);
             e.setCancelled(true);
             return;
         }
@@ -397,7 +398,7 @@ public class MatchListeners implements Listener {
             e.setCancelled(true);
             return;
         }
-        location.getBlock().getDrops(player.getInventory().getItemInMainHand()).forEach(itemStack -> player.getInventory().addItem(itemStack));
+        location.getBlock().getDrops(player.getInventory().getItemInMainHand()).forEach(itemStack -> player.getInventory().addItem(ItemsUtilities.createPureItem(itemStack.getType())));
         gameMatch.getBlocksSystem().breakBlock(location);
     }
 

@@ -92,6 +92,7 @@ public final class GameConstants {
     );
 
     public static final @NotNull String MESSAGE_BRIDGEEGG_WRONG_ANGLE = DisplayUtilities.getColored("&cYou can't throw the Bridge Egg at that angle (too high or too low)!");
+    public static final @NotNull String MESSAGE_BLOCK_NO_BUILD = DisplayUtilities.getColored("&cYou can't build there!");
     public static final @NotNull String MESSAGE_BLOCK_UNBREAKABLE = DisplayUtilities.getColored("&cYou can only break blocks placed by other players!");
     public static final @NotNull String MESSAGE_BLOCK_HEIGHT_LIMIT = DisplayUtilities.getColored("&cBuild height limit reached!");
     public static final @NotNull String MESSAGE_PLAYER_INVISIBILITY = DisplayUtilities.getColored("&aYou are completely invisible including your armor for the next 30 seconds or until you get hit!");
