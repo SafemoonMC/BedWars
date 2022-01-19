@@ -203,6 +203,19 @@ public class MatchListeners implements Listener {
                     );
                 });
             }
+            case BED_DESTRUCTION -> {
+                gameMatch.getTeamList().forEach(gameMatchTeam -> {
+                    gameMatchTeam.getMapPointList()
+                            .stream()
+                            .filter(teamMapPoint -> teamMapPoint.getType() == PointTypes.TEAM.TEAM_BED)
+                            .map(teamMapPoint -> PointAdapter.adapt(gameMatch, teamMapPoint))
+                            .forEach(location -> {
+                                Location[] parts = WorldUtilities.getBedParts(location.getBlock());
+                                Arrays.stream(parts).forEach(streamLocation -> streamLocation.getBlock().setType(Material.AIR));
+                            });
+                    gameMatchTeam.updateStatus(TeamStatus.NOT_ALIVE);
+                });
+            }
         }
     }
 
