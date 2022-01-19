@@ -17,6 +17,7 @@ import gg.mooncraft.minecraft.bedwars.game.items.PotionMetaCreator;
 import gg.mooncraft.minecraft.bedwars.game.match.options.OptionEntry;
 import gg.mooncraft.minecraft.bedwars.game.shop.itemdata.BedbugItem;
 import gg.mooncraft.minecraft.bedwars.game.shop.itemdata.BridgeEggItem;
+import gg.mooncraft.minecraft.bedwars.game.shop.itemdata.DreamDefenderItem;
 import gg.mooncraft.minecraft.bedwars.game.utilities.ItemsUtilities;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -844,12 +845,12 @@ public final class Shops {
                         gameMatchPlayer -> new BedbugItem(gameMatchPlayer.getUniqueId(), gameMatchPlayer.getParent().getGameTeam()).update(ItemStackCreator.using(ItemsUtilities.createPureItem(Material.SNOWBALL)).amount(1).create())
                 )
         );
-        SOLO_SHOP.addItem("utility", new ShopElementItem(
+        SOLO_SHOP.addItem("utility", new ShopElementItemUtility(
                         "Dream Defender",
                         "&7Iron Golem to help defend your\n&7base. Lasts 4 minutes.",
                         new OptionEntry<>(Material.IRON_INGOT, 120),
                         Material.POLAR_BEAR_SPAWN_EGG,
-                        ItemStackCreator.using(Material.POLAR_BEAR_SPAWN_EGG).amount(1).create()
+                        gameMatchPlayer -> new DreamDefenderItem(gameMatchPlayer.getUniqueId(), gameMatchPlayer.getParent().getGameTeam()).update(ItemStackCreator.using(Material.POLAR_BEAR_SPAWN_EGG).amount(1).create())
                 )
         );
         SOLO_SHOP.addItem("utility", new ShopElementItemUtility(
@@ -933,12 +934,12 @@ public final class Shops {
                         gameMatchPlayer -> new BedbugItem(gameMatchPlayer.getUniqueId(), gameMatchPlayer.getParent().getGameTeam()).update(ItemStackCreator.using(ItemsUtilities.createPureItem(Material.SNOWBALL)).amount(1).create())
                 )
         );
-        DUOS_SHOP.addItem("utility", new ShopElementItem(
+        DUOS_SHOP.addItem("utility", new ShopElementItemUtility(
                         "Dream Defender",
                         "&7Iron Golem to help defend your\n&7base. Lasts 4 minutes.",
                         new OptionEntry<>(Material.IRON_INGOT, 120),
                         Material.POLAR_BEAR_SPAWN_EGG,
-                        ItemStackCreator.using(Material.POLAR_BEAR_SPAWN_EGG).amount(1).create()
+                        gameMatchPlayer -> new DreamDefenderItem(gameMatchPlayer.getUniqueId(), gameMatchPlayer.getParent().getGameTeam()).update(ItemStackCreator.using(Material.POLAR_BEAR_SPAWN_EGG).amount(1).create())
                 )
         );
         DUOS_SHOP.addItem("utility", new ShopElementItemUtility(
@@ -1022,12 +1023,12 @@ public final class Shops {
                         gameMatchPlayer -> new BedbugItem(gameMatchPlayer.getUniqueId(), gameMatchPlayer.getParent().getGameTeam()).update(ItemStackCreator.using(ItemsUtilities.createPureItem(Material.SNOWBALL)).amount(1).create())
                 )
         );
-        TRIOS_SHOP.addItem("utility", new ShopElementItem(
+        TRIOS_SHOP.addItem("utility", new ShopElementItemUtility(
                         "Dream Defender",
                         "&7Iron Golem to help defend your\n&7base. Lasts 4 minutes.",
                         new OptionEntry<>(Material.IRON_INGOT, 120),
                         Material.POLAR_BEAR_SPAWN_EGG,
-                        ItemStackCreator.using(Material.POLAR_BEAR_SPAWN_EGG).amount(1).create()
+                        gameMatchPlayer -> new DreamDefenderItem(gameMatchPlayer.getUniqueId(), gameMatchPlayer.getParent().getGameTeam()).update(ItemStackCreator.using(Material.POLAR_BEAR_SPAWN_EGG).amount(1).create())
                 )
         );
         TRIOS_SHOP.addItem("utility", new ShopElementItemUtility(
@@ -1111,12 +1112,12 @@ public final class Shops {
                         gameMatchPlayer -> new BedbugItem(gameMatchPlayer.getUniqueId(), gameMatchPlayer.getParent().getGameTeam()).update(ItemStackCreator.using(ItemsUtilities.createPureItem(Material.SNOWBALL)).amount(1).create())
                 )
         );
-        QUADS_SHOP.addItem("utility", new ShopElementItem(
+        QUADS_SHOP.addItem("utility", new ShopElementItemUtility(
                         "Dream Defender",
                         "&7Iron Golem to help defend your\n&7base. Lasts 4 minutes.",
                         new OptionEntry<>(Material.IRON_INGOT, 120),
                         Material.POLAR_BEAR_SPAWN_EGG,
-                        ItemStackCreator.using(Material.POLAR_BEAR_SPAWN_EGG).amount(1).create()
+                        gameMatchPlayer -> new DreamDefenderItem(gameMatchPlayer.getUniqueId(), gameMatchPlayer.getParent().getGameTeam()).update(ItemStackCreator.using(Material.POLAR_BEAR_SPAWN_EGG).amount(1).create())
                 )
         );
         QUADS_SHOP.addItem("utility", new ShopElementItemUtility(

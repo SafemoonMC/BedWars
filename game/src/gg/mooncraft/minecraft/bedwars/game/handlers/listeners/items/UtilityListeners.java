@@ -5,21 +5,25 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Egg;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Fireball;
+import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Silverfish;
 import org.bukkit.entity.Snowball;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
@@ -30,8 +34,10 @@ import gg.mooncraft.minecraft.bedwars.game.events.MatchBlockPlaceEvent;
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatchPlayer;
 import gg.mooncraft.minecraft.bedwars.game.match.tasks.BedbugTask;
 import gg.mooncraft.minecraft.bedwars.game.match.tasks.BridgeEggTask;
+import gg.mooncraft.minecraft.bedwars.game.match.tasks.DreamDefenderTask;
 import gg.mooncraft.minecraft.bedwars.game.shop.itemdata.BedbugItem;
 import gg.mooncraft.minecraft.bedwars.game.shop.itemdata.BridgeEggItem;
+import gg.mooncraft.minecraft.bedwars.game.shop.itemdata.DreamDefenderItem;
 
 public class UtilityListeners implements Listener {
 
@@ -55,6 +61,7 @@ public class UtilityListeners implements Listener {
             e.setReplacement(new ItemStack(Material.AIR));
         }
     }
+
     @EventHandler
     public void on(@NotNull PlayerInteractEvent e) {
         Player player = e.getPlayer();
@@ -90,7 +97,22 @@ public class UtilityListeners implements Listener {
                     player.sendMessage(GameConstants.MESSAGE_BRIDGEEGG_WRONG_ANGLE);
                 }
             });
+            DreamDefenderItem.getFrom(itemStack).ifPresent(data -> {
+                e.setCancelled(true);
+                BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player)
+                        .flatMap(gameMatch -> gameMatch.getDataOf(player))
+                        .ifPresent(gameMatchPlayer -> {
+                            IronGolem ironGolem = (IronGolem) player.getWorld().spawnEntity(player.getLocation(), EntityType.IRON_GOLEM);
+                            ironGolem.setMetadata("owner", new FixedMetadataValue(BedWarsPlugin.getInstance(), gameMatchPlayer.getUniqueId().toString()));
+                            ironGolem.setMetadata("owner-team", new FixedMetadataValue(BedWarsPlugin.getInstance(), gameMatchPlayer.getParent().getGameTeam().name()));
+                            ironGolem.setCustomName(gameMatchPlayer.getParent().getGameTeam().getChatColor() + gameMatchPlayer.getParent().getGameTeam().getDisplay() + "'s Dream Defender");
+                            ironGolem.setCustomNameVisible(true);
+                            ironGolem.setPlayerCreated(true);
 
+                            new DreamDefenderTask(gameMatchPlayer, ironGolem);
+                        });
+                player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - 1);
+            });
             if (e.getItem().getType() == Material.FIRE_CHARGE) {
                 e.getPlayer().getInventory().getItemInMainHand().setAmount(e.getItem().getAmount() - 1);
                 e.getPlayer().launchProjectile(Fireball.class);
@@ -100,18 +122,37 @@ public class UtilityListeners implements Listener {
 
     @EventHandler
     public void on(@NotNull EntityTargetLivingEntityEvent e) {
-        if (e.getEntity() instanceof Silverfish silverfish && e.getTarget() instanceof Player player) {
-            if (silverfish.hasMetadata("owner") && silverfish.hasMetadata("owner-team")) {
-                GameTeam gameTeam = GameTeam.valueOf(silverfish.getMetadata("owner-team").get(0).asString());
+        if (!(e.getTarget() instanceof Player player)) return;
+        Entity entity = e.getEntity();
+        if (entity.hasMetadata("owner") && entity.hasMetadata("owner-team")) {
+            GameTeam gameTeam = GameTeam.valueOf(entity.getMetadata("owner-team").get(0).asString());
+            BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player)
+                    .flatMap(gameMatch -> gameMatch.getTeam(gameTeam))
+                    .flatMap(gameMatchTeam -> entity.getWorld().getNearbyEntitiesByType(Player.class, entity.getLocation(), 3, 3, 3)
+                            .stream()
+                            .filter(possibleTarget -> !gameMatchTeam.hasPlayer(possibleTarget.getUniqueId()))
+                            .findAny())
+                    .ifPresentOrElse(e::setTarget, () -> e.setCancelled(true));
+        }
+    }
 
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void on(@NotNull EntityDamageByEntityEvent e) {
+        if (e.getDamager() instanceof Player player) {
+            Entity entity = e.getEntity();
+            if (entity.hasMetadata("owner") && entity.hasMetadata("owner-team")) {
+                GameTeam gameTeam = GameTeam.valueOf(entity.getMetadata("owner-team").get(0).asString());
                 BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player)
                         .flatMap(gameMatch -> gameMatch.getTeam(gameTeam))
-                        .flatMap(gameMatchTeam -> silverfish.getWorld().getNearbyEntitiesByType(Player.class, silverfish.getLocation(), 3, 3, 3)
-                                .stream()
-                                .filter(possibleTarget -> !gameMatchTeam.hasPlayer(possibleTarget.getUniqueId()))
-                                .findAny())
-                        .ifPresentOrElse(e::setTarget, () -> e.setCancelled(true));
+                        .ifPresent(gameMatchTeam -> {
+                            if (gameMatchTeam.hasPlayer(player.getUniqueId())) {
+                                e.setCancelled(true);
+                            }
+                        });
             }
+        }
+        if (e.getDamager() instanceof IronGolem) {
+            e.setDamage(e.getDamage() / 2);
         }
     }
 
