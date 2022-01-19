@@ -32,6 +32,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Getter
 public final class GameMatchPlayer {
@@ -57,6 +58,8 @@ public final class GameMatchPlayer {
     private final @NotNull ItemStack[] armor;
     private final @NotNull List<PermanentElement> permanentElementList;
 
+    private final @NotNull AtomicLong lastMagicMilk;
+
     /*
     Constructor
      */
@@ -81,6 +84,8 @@ public final class GameMatchPlayer {
         this.armor[2] = ItemsUtilities.createArmorItem(gameMatchTeam.getGameTeam(), Material.LEATHER_CHESTPLATE);
         this.armor[3] = ItemStackCreator.using(ItemsUtilities.createArmorItem(gameMatchTeam.getGameTeam(), Material.LEATHER_HELMET)).enchant(Enchantment.WATER_WORKER, 1).create();
         this.permanentElementList = new ArrayList<>();
+
+        this.lastMagicMilk = new AtomicLong();
     }
 
     /*
@@ -126,6 +131,10 @@ public final class GameMatchPlayer {
                 player.getInventory().setArmorContents(getArmor());
             }
         }
+    }
+
+    public void updateMagicMilk() {
+        this.lastMagicMilk.set(System.currentTimeMillis());
     }
 
     public void updateStatus(@NotNull PlayerStatus playerStatus) {

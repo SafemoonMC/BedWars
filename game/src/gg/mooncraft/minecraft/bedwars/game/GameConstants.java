@@ -20,6 +20,7 @@ public final class GameConstants {
 
     public static final int ANNOUNCER_TIP_INTERVAL = 190;
     public static final int ISLAND_AREA_RANGE = 13;
+    public static final int MAGIC_MILK_TIME = 30;
     public static final int EXPERIENCE_WIN_SOLODUOS = 120;
     public static final int EXPERIENCE_WIN_TRIOSQUADS = 75;
     public static final int EXPERIENCE_PLAYTIME = 25;
@@ -90,6 +91,9 @@ public final class GameConstants {
             DisplayUtilities.getColored("&f&lBED DESTRUCTION > &r%team-color%%team-name% &7Bed was destroyed by %destroyer-team-color%%destroyer-player-name%&7!"),
             ""
     );
+
+    public static final @NotNull String MESSAGE_TRAP_TITLE = DisplayUtilities.getColored("&cTRAP TRIGGERED");
+    public static final @NotNull String MESSAGE_TRAP_SUBTITLE = DisplayUtilities.getColored("&f%trap% was triggered");
 
     public static final @NotNull String MESSAGE_BOW_DAMAGE = DisplayUtilities.getColored("%team-color%%player% &7is on &c%health% HP");
 

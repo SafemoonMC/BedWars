@@ -18,6 +18,7 @@ import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
@@ -26,6 +27,7 @@ import gg.mooncraft.minecraft.bedwars.data.GameTeam;
 import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
 import gg.mooncraft.minecraft.bedwars.game.GameConstants;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchBlockPlaceEvent;
+import gg.mooncraft.minecraft.bedwars.game.match.GameMatchPlayer;
 import gg.mooncraft.minecraft.bedwars.game.match.tasks.BedbugTask;
 import gg.mooncraft.minecraft.bedwars.game.match.tasks.BridgeEggTask;
 import gg.mooncraft.minecraft.bedwars.game.shop.itemdata.BedbugItem;
@@ -43,6 +45,16 @@ public class UtilityListeners implements Listener {
     /*
     Handlers
      */
+    @EventHandler
+    public void on(@NotNull PlayerItemConsumeEvent e) {
+        Player player = e.getPlayer();
+        if (e.getItem().getType() == Material.MILK_BUCKET) {
+            BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player)
+                    .flatMap(gameMatch -> gameMatch.getDataOf(player))
+                    .ifPresent(GameMatchPlayer::updateMagicMilk);
+            e.setReplacement(new ItemStack(Material.AIR));
+        }
+    }
     @EventHandler
     public void on(@NotNull PlayerInteractEvent e) {
         Player player = e.getPlayer();
