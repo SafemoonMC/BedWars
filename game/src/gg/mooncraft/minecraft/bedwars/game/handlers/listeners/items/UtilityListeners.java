@@ -7,6 +7,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Egg;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
+import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Silverfish;
 import org.bukkit.entity.Snowball;
@@ -77,6 +78,11 @@ public class UtilityListeners implements Listener {
                     player.sendMessage(GameConstants.MESSAGE_BRIDGEEGG_WRONG_ANGLE);
                 }
             });
+
+            if (e.getItem().getType() == Material.FIRE_CHARGE) {
+                e.getPlayer().getInventory().getItemInMainHand().setAmount(e.getItem().getAmount() - 1);
+                e.getPlayer().launchProjectile(Fireball.class);
+            }
         }
     }
 
@@ -86,10 +92,13 @@ public class UtilityListeners implements Listener {
             if (silverfish.hasMetadata("owner") && silverfish.hasMetadata("owner-team")) {
                 GameTeam gameTeam = GameTeam.valueOf(silverfish.getMetadata("owner-team").get(0).asString());
 
-                BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player).flatMap(gameMatch -> gameMatch.getTeam(gameTeam)).flatMap(gameMatchTeam -> silverfish.getWorld().getNearbyEntitiesByType(Player.class, silverfish.getLocation(), 3, 3, 3)
-                        .stream()
-                        .filter(possibleTarget -> !gameMatchTeam.hasPlayer(possibleTarget.getUniqueId()))
-                        .findAny()).ifPresentOrElse(silverfish::setTarget, () -> e.setCancelled(true));
+                BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player)
+                        .flatMap(gameMatch -> gameMatch.getTeam(gameTeam))
+                        .flatMap(gameMatchTeam -> silverfish.getWorld().getNearbyEntitiesByType(Player.class, silverfish.getLocation(), 3, 3, 3)
+                                .stream()
+                                .filter(possibleTarget -> !gameMatchTeam.hasPlayer(possibleTarget.getUniqueId()))
+                                .findAny())
+                        .ifPresentOrElse(e::setTarget, () -> e.setCancelled(true));
             }
         }
     }
@@ -106,7 +115,7 @@ public class UtilityListeners implements Listener {
     @EventHandler
     public void on(@NotNull EntityExplodeEvent e) {
         BedWarsPlugin.getInstance().getMatchManager().getGameMatch(e.getLocation().getWorld()).ifPresent(gameMatch -> {
-            if (e.getEntity() instanceof TNTPrimed) {
+            if (e.getEntity() instanceof TNTPrimed || e.getEntity() instanceof Fireball) {
                 e.blockList().removeIf(block -> !gameMatch.getBlocksSystem().canBreak(block.getLocation()) || block.getType().name().contains("STAINED_GLASS"));
 
                 e.blockList().forEach(block -> {
@@ -119,7 +128,6 @@ public class UtilityListeners implements Listener {
                     fallingBlock.setHurtEntities(true);
                     fallingBlock.setVelocity(new Vector(x, y, z));
                 });
-
             }
         });
     }
