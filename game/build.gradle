@@ -17,6 +17,7 @@ dependencies {
 
     compileOnly files('../dependencies/plugins/TAB.jar')
     compileOnly files('../dependencies/plugins/PartyAndFriends.jar')
+    compileOnly files('../dependencies/plugins/FastAsyncWorldEdit.jar')
 }
 
 shadowJar {

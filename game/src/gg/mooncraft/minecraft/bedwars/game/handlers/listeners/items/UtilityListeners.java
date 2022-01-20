@@ -37,7 +37,11 @@ import gg.mooncraft.minecraft.bedwars.game.match.tasks.BridgeEggTask;
 import gg.mooncraft.minecraft.bedwars.game.match.tasks.DreamDefenderTask;
 import gg.mooncraft.minecraft.bedwars.game.shop.itemdata.BedbugItem;
 import gg.mooncraft.minecraft.bedwars.game.shop.itemdata.BridgeEggItem;
+import gg.mooncraft.minecraft.bedwars.game.shop.itemdata.CompactTowerItem;
 import gg.mooncraft.minecraft.bedwars.game.shop.itemdata.DreamDefenderItem;
+import gg.mooncraft.minecraft.bedwars.game.utilities.SchematicUtilities;
+
+import java.io.IOException;
 
 public class UtilityListeners implements Listener {
 
@@ -113,6 +117,21 @@ public class UtilityListeners implements Listener {
                         });
                 player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - 1);
             });
+            if (e.hasBlock()) {
+                CompactTowerItem.getFrom(itemStack).ifPresent(data -> {
+                    e.setCancelled(true);
+                    BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player)
+                            .flatMap(gameMatch -> gameMatch.getDataOf(player))
+                            .ifPresent(gameMatchPlayer -> {
+                                try {
+                                    SchematicUtilities.placeBlocks(player, e.getClickedBlock().getLocation(), gameMatchPlayer.getParent());
+                                } catch (IOException ex) {
+                                    ex.printStackTrace();
+                                }
+                            });
+                    player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - 1);
+                });
+            }
             if (e.getItem().getType() == Material.FIRE_CHARGE) {
                 e.getPlayer().getInventory().getItemInMainHand().setAmount(e.getItem().getAmount() - 1);
                 e.getPlayer().launchProjectile(Fireball.class);

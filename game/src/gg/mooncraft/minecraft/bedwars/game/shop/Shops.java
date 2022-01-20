@@ -17,6 +17,7 @@ import gg.mooncraft.minecraft.bedwars.game.items.PotionMetaCreator;
 import gg.mooncraft.minecraft.bedwars.game.match.options.OptionEntry;
 import gg.mooncraft.minecraft.bedwars.game.shop.itemdata.BedbugItem;
 import gg.mooncraft.minecraft.bedwars.game.shop.itemdata.BridgeEggItem;
+import gg.mooncraft.minecraft.bedwars.game.shop.itemdata.CompactTowerItem;
 import gg.mooncraft.minecraft.bedwars.game.shop.itemdata.DreamDefenderItem;
 import gg.mooncraft.minecraft.bedwars.game.utilities.ItemsUtilities;
 
@@ -41,7 +42,7 @@ public final class Shops {
                         "&7Great for bridging across\n&7islands. Turns into your team's\n&7color.",
                         new OptionEntry<>(Material.IRON_INGOT, 4),
                         Material.WHITE_WOOL,
-                        gameMatchPlayer -> ItemStackCreator.using(ItemsUtilities.createWoolitem(gameMatchPlayer.getParent().getGameTeam())).amount(16).create()
+                        gameMatchPlayer -> ItemStackCreator.using(ItemsUtilities.createWoolItem(gameMatchPlayer.getParent().getGameTeam())).amount(16).create()
                 )
         );
         SOLO_SHOP.addItem("blocks", new ShopElementItem(
@@ -98,7 +99,7 @@ public final class Shops {
                         "&7Great for bridging across\n&7islands. Turns into your team's\n&7color.",
                         new OptionEntry<>(Material.IRON_INGOT, 4),
                         Material.WHITE_WOOL,
-                        gameMatchPlayer -> ItemStackCreator.using(ItemsUtilities.createWoolitem(gameMatchPlayer.getParent().getGameTeam())).amount(16).create()
+                        gameMatchPlayer -> ItemStackCreator.using(ItemsUtilities.createWoolItem(gameMatchPlayer.getParent().getGameTeam())).amount(16).create()
                 )
         );
         DUOS_SHOP.addItem("blocks", new ShopElementItem(
@@ -155,7 +156,7 @@ public final class Shops {
                         "&7Great for bridging across\n&7islands. Turns into your team's\n&7color.",
                         new OptionEntry<>(Material.IRON_INGOT, 4),
                         Material.WHITE_WOOL,
-                        gameMatchPlayer -> ItemStackCreator.using(ItemsUtilities.createWoolitem(gameMatchPlayer.getParent().getGameTeam())).amount(16).create()
+                        gameMatchPlayer -> ItemStackCreator.using(ItemsUtilities.createWoolItem(gameMatchPlayer.getParent().getGameTeam())).amount(16).create()
                 )
         );
         TRIOS_SHOP.addItem("blocks", new ShopElementItem(
@@ -212,7 +213,7 @@ public final class Shops {
                         "&7Great for bridging across\n&7islands. Turns into your team's\n&7color.",
                         new OptionEntry<>(Material.IRON_INGOT, 4),
                         Material.WHITE_WOOL,
-                        gameMatchPlayer -> ItemStackCreator.using(ItemsUtilities.createWoolitem(gameMatchPlayer.getParent().getGameTeam())).amount(16).create()
+                        gameMatchPlayer -> ItemStackCreator.using(ItemsUtilities.createWoolItem(gameMatchPlayer.getParent().getGameTeam())).amount(16).create()
                 )
         );
         QUADS_SHOP.addItem("blocks", new ShopElementItem(
@@ -909,12 +910,12 @@ public final class Shops {
                         ItemStackCreator.using(Material.SPONGE).amount(4).create()
                 )
         );
-        SOLO_SHOP.addItem("utility", new ShopElementItem(
+        SOLO_SHOP.addItem("utility", new ShopElementItemUtility(
                         "Compact Pop-up Tower",
                         "&7Place a pop-up defense!",
                         new OptionEntry<>(Material.IRON_INGOT, 24),
                         Material.CHEST,
-                        ItemStackCreator.using(Material.CHEST).amount(1).create()
+                        gameMatchPlayer -> new CompactTowerItem(gameMatchPlayer.getUniqueId(), gameMatchPlayer.getParent().getGameTeam()).update(ItemStackCreator.using(Material.CHEST).amount(1).create())
                 )
         );
         // Utility DUOS
@@ -998,12 +999,12 @@ public final class Shops {
                         ItemStackCreator.using(Material.SPONGE).amount(4).create()
                 )
         );
-        DUOS_SHOP.addItem("utility", new ShopElementItem(
+        DUOS_SHOP.addItem("utility", new ShopElementItemUtility(
                         "Compact Pop-up Tower",
                         "&7Place a pop-up defense!",
                         new OptionEntry<>(Material.IRON_INGOT, 24),
                         Material.CHEST,
-                        ItemStackCreator.using(Material.CHEST).amount(1).create()
+                        gameMatchPlayer -> new CompactTowerItem(gameMatchPlayer.getUniqueId(), gameMatchPlayer.getParent().getGameTeam()).update(ItemStackCreator.using(Material.CHEST).amount(1).create())
                 )
         );
         // Utility TRIOS
@@ -1087,12 +1088,12 @@ public final class Shops {
                         ItemStackCreator.using(Material.SPONGE).amount(4).create()
                 )
         );
-        TRIOS_SHOP.addItem("utility", new ShopElementItem(
+        TRIOS_SHOP.addItem("utility", new ShopElementItemUtility(
                         "Compact Pop-up Tower",
                         "&7Place a pop-up defense!",
                         new OptionEntry<>(Material.IRON_INGOT, 24),
                         Material.CHEST,
-                        ItemStackCreator.using(Material.CHEST).amount(1).create()
+                        gameMatchPlayer -> new CompactTowerItem(gameMatchPlayer.getUniqueId(), gameMatchPlayer.getParent().getGameTeam()).update(ItemStackCreator.using(Material.CHEST).amount(1).create())
                 )
         );
         // Utility QUADS
@@ -1176,12 +1177,12 @@ public final class Shops {
                         ItemStackCreator.using(Material.SPONGE).amount(4).create()
                 )
         );
-        QUADS_SHOP.addItem("utility", new ShopElementItem(
+        QUADS_SHOP.addItem("utility", new ShopElementItemUtility(
                         "Compact Pop-up Tower",
                         "&7Place a pop-up defense!",
                         new OptionEntry<>(Material.IRON_INGOT, 24),
                         Material.CHEST,
-                        ItemStackCreator.using(Material.CHEST).amount(1).create()
+                        gameMatchPlayer -> new CompactTowerItem(gameMatchPlayer.getUniqueId(), gameMatchPlayer.getParent().getGameTeam()).update(ItemStackCreator.using(Material.CHEST).amount(1).create())
                 )
         );
     }
