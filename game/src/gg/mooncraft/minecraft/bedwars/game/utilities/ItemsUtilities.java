@@ -51,7 +51,7 @@ public final class ItemsUtilities {
         return itemStack;
     }
 
-    public static @NotNull ItemStack createWoolitem(@NotNull GameTeam gameTeam) {
+    public static @NotNull ItemStack createWoolItem(@NotNull GameTeam gameTeam) {
         switch (gameTeam) {
             case BLUE -> {
                 return createPureItem(Material.BLUE_WOOL);

@@ -64,7 +64,7 @@ public class BridgeEggTask implements Runnable {
         }
 
         Bukkit.getScheduler().runTaskLater(BedWarsPlugin.getInstance(), () -> blockList.forEach(block -> {
-            block.setType(ItemsUtilities.createWoolitem(this.gameMatchPlayer.getParent().getGameTeam()).getType());
+            block.setType(ItemsUtilities.createWoolItem(this.gameMatchPlayer.getParent().getGameTeam()).getType());
             if (ThreadLocalRandom.current().nextBoolean()) {
                 block.getWorld().playSound(block.getLocation(), Sound.BLOCK_WOOD_PLACE, 1, 1);
                 block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, block.getType());
