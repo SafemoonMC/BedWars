@@ -218,6 +218,13 @@ public class BedWarsPlugin extends ComplexJavaPlugin {
     }
 
     /*
+    Methods
+     */
+    public boolean isAdminServer() {
+        return getServerName().startsWith("bw-admin");
+    }
+
+    /*
     Static Methods
      */
     public static @NotNull BedWarsPlugin getInstance() {

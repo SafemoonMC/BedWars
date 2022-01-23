@@ -98,6 +98,10 @@ public final class Commands {
                         .then(RequiredCommandBuilder
                                 .<Player, String>name("map-name", StringArgumentType.word())
                                 .executes((sender, arguments) -> {
+                                    if (!BedWarsPlugin.getInstance().isAdminServer()) {
+                                        sender.sendMessage("You are not in an admin server.");
+                                        return;
+                                    }
                                     if (BedWarsPlugin.getInstance().getSetupManager().getMapBuilder(sender).isPresent()) {
                                         sender.sendMessage("You are already in setup mode. You can cancel the current one with /bw cancel.");
                                         return;
@@ -117,6 +121,10 @@ public final class Commands {
                         .then(RequiredCommandBuilder
                                 .<Player, String>name("map-name", StringArgumentType.word())
                                 .executes((sender, arguments) -> {
+                                    if (!BedWarsPlugin.getInstance().isAdminServer()) {
+                                        sender.sendMessage("You are not in an admin server.");
+                                        return;
+                                    }
                                     if (BedWarsPlugin.getInstance().getSetupManager().getMapBuilder(sender).isPresent()) {
                                         sender.sendMessage("You are in a setup mode. You can cancel the current one with /bw cancel.");
                                         return;
@@ -143,6 +151,10 @@ public final class Commands {
                         .then(RequiredCommandBuilder
                                 .<Player, String>name("map-name", StringArgumentType.word())
                                 .executes((sender, arguments) -> {
+                                    if (!BedWarsPlugin.getInstance().isAdminServer()) {
+                                        sender.sendMessage("You are not in an admin server.");
+                                        return;
+                                    }
                                     if (BedWarsPlugin.getInstance().getSetupManager().getMapBuilder(sender).isPresent()) {
                                         sender.sendMessage("You are already in setup mode. You can cancel the current one with /bw cancel.");
                                         return;
@@ -259,7 +271,7 @@ public final class Commands {
                 .build();
 
         LiteralCommand<?> leaveCommand = LiteralCommandBuilder
-                .<Player>name("leave").aliases("l")
+                .<Player>name("leave").aliases("l").permission(new Permission("bedwars.lobby", PermissionDefault.TRUE))
                 .executes(commandSender -> commandSender.kick(Component.text("Teleporting you to the lobby..."), PlayerKickEvent.Cause.PLUGIN))
                 .build();
 

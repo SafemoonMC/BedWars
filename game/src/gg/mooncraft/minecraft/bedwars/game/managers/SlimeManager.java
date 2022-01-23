@@ -72,7 +72,7 @@ public final class SlimeManager {
     public @NotNull CompletableFuture<SlimeBukkitPair> readPairAsync(@NotNull String worldName) {
         Stopwatch loadStopwatch = Stopwatch.createStarted();
         Stopwatch generateStopwatch = Stopwatch.createUnstarted();
-        return BedWarsPlugin.getAsyncSlimePlugin().loadWorld(worldName, false).thenApply(slimeWorld -> {
+        return BedWarsPlugin.getAsyncSlimePlugin().loadWorld(worldName, !BedWarsPlugin.getInstance().isAdminServer()).thenApply(slimeWorld -> {
             long loadElapsed = loadStopwatch.stop().elapsed(TimeUnit.MILLISECONDS);
             CompletableFuture<SlimeBukkitPair> completableFuture = new CompletableFuture<>();
 
