@@ -113,6 +113,7 @@ public final class GameMatch {
         getPlayerList().forEach(player -> player.kick(Component.empty()));
         BedWarsPlugin.getInstance().getSlimeManager().unloadPairAsync(this.dimension);
         BedWarsPlugin.getInstance().getMatchManager().destroyMatch(this);
+        BedWarsPlugin.getInstance().getLogger().info("Game Match " + this.uniqueId.toString() + " has been terminated!");
     }
 
     public boolean findTeamFor(@NotNull List<UUID> playerList) {
@@ -147,6 +148,10 @@ public final class GameMatch {
 
     public @NotNull Optional<GameMatchPlayer> getDataOf(@NotNull Player player) {
         return getTeamOf(player).flatMap(gameMatchTeam -> gameMatchTeam.getPlayer(player.getUniqueId()));
+    }
+
+    public boolean hasPlayer(@NotNull UUID uniqueId) {
+        return this.teamList.stream().anyMatch(gameMatchTeam -> gameMatchTeam.hasPlayer(uniqueId));
     }
 
     public @NotNull Optional<BedWarsMap> getBedWarsMap() {

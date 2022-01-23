@@ -39,6 +39,8 @@ public final class MatchManager {
                 BedWarsPlugin.getInstance().getLogger().warning("No match can be created for " + gameMode.name() + " gamemode.");
                 return null;
             }
+            BedWarsPlugin.getInstance().getLogger().info("A new match has been created for " + gameMode.name() + " gamemode: " + gameMatch.getUniqueId().toString() + ".");
+
             gameMatch.findTeamFor(playerList);
             this.matchList.add(gameMatch);
             return gameMatch;
@@ -77,6 +79,13 @@ public final class MatchManager {
         return this.matchList
                 .stream()
                 .filter(gameMatch -> gameMatch.getTeamOf(player).isPresent())
+                .findFirst();
+    }
+
+    public @NotNull Optional<GameMatch> getGameMatch(@NotNull UUID uniqueId) {
+        return this.matchList
+                .stream()
+                .filter(gameMatch -> gameMatch.hasPlayer(uniqueId))
                 .findFirst();
     }
 
