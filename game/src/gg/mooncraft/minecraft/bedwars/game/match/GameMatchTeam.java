@@ -127,6 +127,7 @@ public final class GameMatchTeam {
     }
 
     public boolean isAnyAlive() {
+        if (this.matchPlayerList.isEmpty()) return false;
         return this.matchPlayerList.stream().anyMatch(gameMatchPlayer -> gameMatchPlayer.getPlayerStatus() != PlayerStatus.SPECTATING);
     }
 

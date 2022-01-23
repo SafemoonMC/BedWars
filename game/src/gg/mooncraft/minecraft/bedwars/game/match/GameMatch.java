@@ -118,18 +118,20 @@ public final class GameMatch {
 
     public boolean findTeamFor(@NotNull List<UUID> playerList) {
         if (gameState != GameState.WAITING) return false;
+        List<UUID> finalPlayerList = new ArrayList<>(playerList);
+        finalPlayerList.removeIf(this::hasPlayer);
 
         GameMatchTeam freeMatchTeam = null;
-        for (GameMatchTeam gameMatchTeam : teamList) {
+        for (GameMatchTeam gameMatchTeam : this.teamList) {
             int teamSize = gameMatchTeam.getMatchPlayerList().size();
             int freeSlots = gameMode.getPlayersPerTeam() - teamSize;
-            if (freeSlots < playerList.size()) continue;
+            if (freeSlots < finalPlayerList.size()) continue;
             freeMatchTeam = gameMatchTeam;
             break;
         }
         if (freeMatchTeam == null) return false;
 
-        playerList.forEach(freeMatchTeam::addPlayer);
+        finalPlayerList.forEach(freeMatchTeam::addPlayer);
         return true;
     }
 

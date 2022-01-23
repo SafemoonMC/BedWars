@@ -271,7 +271,7 @@ public class MatchListeners implements Listener {
                         .stream()
                         .filter(GameMatchTeam::isAnyAlive)
                         .count();
-                if (teamsAlive == 1) {
+                if (teamsAlive <= 1) {
                     BedWarsPlugin.getInstance().getScheduler().asyncLater(() -> gameMatch.getGameTicker().getGameEndTask().play(), 1, TimeUnit.SECONDS);
                 }
             }
