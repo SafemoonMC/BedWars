@@ -37,7 +37,7 @@ public final class MatchmakingManager {
             Matchmaking matchmaking = this.matchmakingQueue.poll();
             if (matchmaking == null) return;
             matchmaking.process();
-        }, 450, TimeUnit.MILLISECONDS);
+        }, 500, TimeUnit.MILLISECONDS);
     }
 
     /*
@@ -62,14 +62,15 @@ public final class MatchmakingManager {
             return new Matchmaking(gameMode, playerList);
         }).thenAccept(matchmaking -> {
             if (matchmaking == null) return;
-            BedWarsPlugin.getInstance().getScheduler().executeAsync(() -> {
-                try {
-                    this.matchmakingQueue.put(matchmaking);
-                } catch (InterruptedException e) {
-                    BedWarsPlugin.getInstance().getLogger().severe(e.getMessage());
-                    player.sendMessage(ChatColor.RED + "Matchmaking system outage!");
+            try {
+                if (this.matchmakingQueue.stream().anyMatch(streamMatchmaking -> matchmaking.getPlayerList().containsAll(streamMatchmaking.getPlayerList()))) {
+                    return;
                 }
-            });
+                this.matchmakingQueue.put(matchmaking);
+            } catch (InterruptedException e) {
+                BedWarsPlugin.getInstance().getLogger().severe(e.getMessage());
+                player.sendMessage(ChatColor.RED + "Matchmaking system outage!");
+            }
         });
     }
 }

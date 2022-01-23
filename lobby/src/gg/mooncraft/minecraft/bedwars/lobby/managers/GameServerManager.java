@@ -8,7 +8,6 @@ import gg.mooncraft.minecraft.bedwars.data.GameMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public final class GameServerManager {
 
@@ -45,7 +44,7 @@ public final class GameServerManager {
         return this.gameServerList.stream()
                 .flatMap(gameServer -> gameServer.getMatchList().stream())
                 .filter(gameServerMatch -> gameServerMatch.getGameMode() == gameMode)
-                .collect(Collectors.toList())
+                .toList()
                 .stream()
                 .mapToInt(GameServerMessage.GameServerMatch::getPlayers)
                 .sum();

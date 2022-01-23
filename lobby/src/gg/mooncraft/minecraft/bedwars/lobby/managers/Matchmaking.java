@@ -34,7 +34,11 @@ public final class Matchmaking {
             GameRequestMessage gameRequestMessage = new GameRequestMessage(new GameRequestMessage.GameRequest(gameServer.getServerName(), gameMode, this.playerList.stream().map(Player::getUniqueId).collect(Collectors.toList())));
             BedWarsPlugin.getInstance().getMessenger().sendMessage(RedisChannel.GAME, gameRequestMessage).thenAccept(update -> {
                 if (!update) return;
-                this.playerList.forEach(player -> BungeeUtilities.teleportPlayer(player, gameServer.getServerName()));
+                String playerListText = this.playerList.stream().map(Player::getName).collect(Collectors.joining(", "));
+                this.playerList.forEach(player -> {
+                    BungeeUtilities.teleportPlayer(player, gameServer.getServerName());
+                });
+                BedWarsPlugin.getInstance().getLogger().info("Teleporting " + playerListText + " to " + gameServer.getServerName() + ". Request: " + gameRequestMessage.getUniqueId().toString());
             });
         });
     }
