@@ -189,6 +189,11 @@ public class PlayerListeners implements Listener {
     public void on(@NotNull PlayerMoveEvent e) {
         Player player = e.getPlayer();
         if (!WorldUtilities.isSameXYZ(e.getFrom(), e.getTo())) {
+            if (player.getWorld().getName().equals(GameConstants.DEFAULT_WORLD_NAME) && !player.getLocation().getBlock().getType().isAir()) {
+                player.kick(Component.text("Teleporting to lobby: no match..."));
+                return;
+            }
+
             BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player).ifPresent(gameMatch -> {
                 gameMatch.getDataOf(player).ifPresent(gameMatchPlayer -> {
                     new MatchPlayerMoveEvent(player, gameMatchPlayer, e.getTo(), e.getFrom()).callEvent();
