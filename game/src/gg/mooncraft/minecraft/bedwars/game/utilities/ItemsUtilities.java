@@ -72,7 +72,7 @@ public final class ItemsUtilities {
                 return createPureItem(Material.GREEN_WOOL);
             }
             case PINK -> {
-                return createPureItem(Material.PURPLE_WOOL);
+                return createPureItem(Material.PINK_WOOL);
             }
             default -> {
                 return createPureItem(Material.WHITE_WOOL);
