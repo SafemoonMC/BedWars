@@ -109,7 +109,7 @@ public final class GameMatchPlayer {
                 for (int i = 0; i < player.getInventory().getSize(); i++) {
                     ItemStack itemStack = player.getInventory().getItem(i);
                     if (itemStack != null && (itemStack.getType().name().contains("SWORD") || itemStack.getType().name().contains("AXE"))) {
-                        itemStack.addEnchantment(Enchantment.DAMAGE_ALL, 1);
+                        itemStack.addUnsafeEnchantment(Enchantment.DAMAGE_ALL, 1);
                     }
                 }
             }
