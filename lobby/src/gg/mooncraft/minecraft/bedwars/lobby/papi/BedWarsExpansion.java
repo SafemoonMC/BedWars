@@ -7,17 +7,26 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import gg.mooncraft.minecraft.bedwars.data.GameMode;
+import gg.mooncraft.minecraft.bedwars.data.Prestige;
 import gg.mooncraft.minecraft.bedwars.data.user.BedWarsUser;
 import gg.mooncraft.minecraft.bedwars.data.user.stats.StatisticTypes;
 import gg.mooncraft.minecraft.bedwars.lobby.BedWarsPlugin;
 
 import java.math.BigInteger;
+import java.text.DecimalFormat;
 
 /**
  * A PlaceholderAPI expansion that implements the following placeholders:
  * - %bw_coins% -> returns coins
- * - %bw_level% -> returns level
- * - %bw_experience% -> returns experience
+ * - %bw_level% -> returns current level
+ * - %bw_level-next% -> returns next level
+ * - %bw_experience% -> returns current experience
+ * - %bw_experience-current% -> returns current experience
+ * - %bw_experience-required% -> returns required experience
+ * - %bw_experience-percentage% -> returns percentage experience
+ * - %bw_experience-progress-bar% -> returns progress-bar experience
+ * - %bw_prestige% -> returns prestige
+ * - %bw_prestige-next% -> returns next prestige
  * - %bw_stat-game-[type]% -> returns a sum of all [type] amount from all games
  * - %bw_stat-game-[mode]-[type]% -> returns the statistic [type] for that [mode]
  * - %bw_stat-overall-[type]% -> returns an overall statistic
@@ -39,11 +48,49 @@ public class BedWarsExpansion extends PlaceholderExpansion {
                     .map(BedWarsUser::getLevel)
                     .map(String::valueOf)
                     .orElse("0");
+        } else if (params.equalsIgnoreCase("level-next")) {
+            return BedWarsPlugin.getInstance().getUserFactory().getUser(player)
+                    .map(BedWarsUser::getNextLevel)
+                    .map(String::valueOf)
+                    .orElse("0");
+        } else if (params.equalsIgnoreCase("level-prestige")) {
+            return BedWarsPlugin.getInstance().getUserFactory().getUser(player)
+                    .map(bedWarsUser -> bedWarsUser.getPrestige().applyColors(bedWarsUser.getLevel()))
+                    .orElse("0");
         } else if (params.equalsIgnoreCase("experience")) {
             return BedWarsPlugin.getInstance().getUserFactory().getUser(player)
                     .map(BedWarsUser::getExperience)
                     .map(String::valueOf)
                     .orElse("0");
+        } else if (params.equalsIgnoreCase("experience-current")) {
+            return BedWarsPlugin.getInstance().getUserFactory().getUser(player)
+                    .map(BedWarsUser::getExperienceCurrent)
+                    .map(String::valueOf)
+                    .orElse("0");
+        } else if (params.equalsIgnoreCase("experience-required")) {
+            return BedWarsPlugin.getInstance().getUserFactory().getUser(player)
+                    .map(BedWarsUser::getExperienceRequired)
+                    .map(String::valueOf)
+                    .orElse("0");
+        } else if (params.equalsIgnoreCase("experience-percentage")) {
+            return BedWarsPlugin.getInstance().getUserFactory().getUser(player)
+                    .map(BedWarsUser::getExperiencePercentage)
+                    .map(f -> new DecimalFormat("#.##").format(f))
+                    .orElse("0");
+        } else if (params.equalsIgnoreCase("experience-progress-bar")) {
+            return BedWarsPlugin.getInstance().getUserFactory().getUser(player)
+                    .map(BedWarsUser::getExperienceProgressBar)
+                    .orElse("0");
+        } else if (params.equalsIgnoreCase("prestige")) {
+            return BedWarsPlugin.getInstance().getUserFactory().getUser(player)
+                    .map(BedWarsUser::getPrestige)
+                    .map(Prestige::getDisplay)
+                    .orElse("-");
+        } else if (params.equalsIgnoreCase("prestige-next")) {
+            return BedWarsPlugin.getInstance().getUserFactory().getUser(player)
+                    .map(BedWarsUser::getNextPrestige)
+                    .map(Prestige::getDisplay)
+                    .orElse("-");
         }
 
         if (params.contains("-")) {
