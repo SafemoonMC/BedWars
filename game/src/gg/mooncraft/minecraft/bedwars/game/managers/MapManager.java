@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public final class MapManager {
@@ -55,7 +56,11 @@ public final class MapManager {
                         .toArray(CompletableFuture[]::new))
                 .thenAccept(completableFutures -> {
                     CompletableFuture.allOf(completableFutures)
-                            .thenAccept(v -> BedWarsPlugin.getInstance().getGameServerManager().sendServerStatus(GameServerMessage.ServerStatus.ENABLED));
+                            .thenAccept(v -> {
+                                BedWarsPlugin.getInstance().getScheduler().asyncLater(() -> {
+                                    BedWarsPlugin.getInstance().getGameServerManager().sendServerStatus(GameServerMessage.ServerStatus.ENABLED);
+                                }, 5, TimeUnit.SECONDS);
+                            });
                 });
     }
 
