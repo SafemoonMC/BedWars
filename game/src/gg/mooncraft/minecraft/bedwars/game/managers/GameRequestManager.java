@@ -18,6 +18,9 @@ public final class GameRequestManager {
     Methods
      */
     public void update(@NotNull GameRequestMessage.GameRequest gameRequest) {
+        if (gameRequest.getPlayerList().stream().anyMatch(uniqueId -> BedWarsPlugin.getInstance().getMatchManager().getGameMatch(uniqueId).isPresent())) {
+            return;
+        }
         BedWarsPlugin.getInstance().getMatchManager().findMatch(gameRequest.getGameMode(), gameRequest.getPlayerList())
                 .thenAccept(gameMatch -> {
                     // Logging

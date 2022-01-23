@@ -86,6 +86,9 @@ public final class GameRedisMessenger implements IncomingMessageConsumer {
     private void processIncomingMessage(@NotNull Message message) {
         BedWarsPlugin.getInstance().getLogger().info("[Redis] Received a new message with timestamp " + message.getTimestamp().getEpochSecond() + "s and UUID " + message.getUniqueId() + ".");
         if (message instanceof GameRequestMessage gameRequestMessage) {
+            if (!gameRequestMessage.getGameRequest().getServerName().equals(BedWarsPlugin.getInstance().getServerName())) {
+                return;
+            }
             BedWarsPlugin.getInstance().getGameRequestManager().update(gameRequestMessage.getGameRequest());
         }
     }
