@@ -215,8 +215,48 @@ public class MatchListeners implements Listener {
                             });
                     gameMatchTeam.updateStatus(TeamStatus.NOT_ALIVE);
                 });
+                gameMatch.getPlayerList().forEach(player -> {
+                    GameConstants.MESSAGE_BED_DESTRUCTION_UPDATE.forEach(player::sendMessage);
+                });
+            }
+            case SUDDEN_DEATH -> {
+                gameMatch.getPlayerList().forEach(player -> {
+                    GameConstants.MESSAGE_BED_DESTRUCTION_UPDATE.forEach(player::sendMessage);
+                });
+            }
+            case TIE -> {
+                gameMatch.getTeamList().stream().filter(GameMatchTeam::isAnyAlive).forEach(winnerTeam -> {
+                    EventsAPI.callEventSync(new MatchTeamWinEvent(winnerTeam));
+                    winnerTeam.broadcastAction(gameMatchPlayer -> {
+                        gameMatchPlayer.getPlayer().ifPresent(player -> {
+                            player.showTitle(Title.title(Component.text(GameConstants.MESSAGE_WINNER_TITLE), Component.empty()));
+                        });
+                    });
+
+                    gameMatch.getPlayerList().forEach(player -> {
+                        Optional<BedWarsUser> bedWarsUserOptional = BedWarsPlugin.getInstance().getUserFactory().getUser(player);
+
+                        player.showBossBar(BedWarsPlugin.getInstance().getBossBar());
+                        GameConstants.MESSAGE_GLOBAL_WINNER.forEach(line -> {
+                            player.sendMessage(line
+                                    .replaceAll("%team-color%", winnerTeam.getGameTeam().getChatColor().toString())
+                                    .replaceAll("%team-name%", winnerTeam.getGameTeam().name())
+                                    .replaceAll("%level-current%", bedWarsUserOptional.map(BedWarsUser::getLevel).map(String::valueOf).orElse("-"))
+                                    .replaceAll("%level-next%", bedWarsUserOptional.map(BedWarsUser::getNextLevel).map(String::valueOf).orElse("-"))
+                                    .replaceAll("%experience-reward%", gameMatch.getDataOf(player).map(GameMatchPlayer::getExperienceReward).map(AtomicInteger::get).map(String::valueOf).orElse("-"))
+                                    .replaceAll("%experience-current%", bedWarsUserOptional.map(BedWarsUser::getExperienceCurrent).map(String::valueOf).orElse("-"))
+                                    .replaceAll("%experience-required%", bedWarsUserOptional.map(BedWarsUser::getExperienceRequired).map(String::valueOf).orElse("-"))
+                                    .replaceAll("%experience-percentage%", bedWarsUserOptional.map(BedWarsUser::getExperiencePercentage).map(d -> new DecimalFormat("#.##").format(d)).orElse("-"))
+                                    .replaceAll("%experience-progress-bar%", bedWarsUserOptional.map(BedWarsUser::getExperienceProgressBar).orElse("-"))
+                            );
+                        });
+                    });
+                });
             }
         }
+        gameMatch.getPlayerList().forEach(player -> {
+            player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 2, 2);
+        });
     }
 
     @EventHandler
@@ -235,12 +275,18 @@ public class MatchListeners implements Listener {
                         player.teleportAsync(location);
                     });
 
-                    gameMatchPlayer.updateEffect();
                     player.getInventory().setItem(0, gameMatchPlayer.getWeapon());
                     player.getInventory().setItem(1, gameMatchPlayer.getUtility());
                     player.getInventory().setArmorContents(gameMatchPlayer.getArmor());
 
                     player.setGameMode(GameMode.SURVIVAL);
+                    player.setInvulnerable(true);
+
+                    BedWarsPlugin.getInstance().getScheduler().executeSync(gameMatchPlayer::updateEffect);
+                    BedWarsPlugin.getInstance().getScheduler().asyncLater(() -> {
+                        player.setInvulnerable(false);
+                        Bukkit.broadcastMessage("false");
+                    }, 3, TimeUnit.SECONDS);
                 });
             }
             case RESPAWNING -> {

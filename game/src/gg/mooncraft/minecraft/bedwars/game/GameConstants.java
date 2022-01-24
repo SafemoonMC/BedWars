@@ -72,7 +72,20 @@ public final class GameConstants {
     public static final @NotNull String MESSAGE_SHOP_CANNOT_AFFORD = DisplayUtilities.getColored("&cYou don't have enough materials!");
     public static final @NotNull String MESSAGE_SHOP_BUY = DisplayUtilities.getColored("&bYou purchased &3%shop-item%");
 
+
     public static final @NotNull String MESSAGE_GENERATOR_UPDATE = DisplayUtilities.getColored("%type% Generators &ehave been upgraded to Tier &c%tier%");
+    public static final @NotNull List<String> MESSAGE_BED_DESTRUCTION_UPDATE = Arrays.asList(
+            "",
+            DisplayUtilities.getColored("&e&lBED DESTRUCTION &7>> &aAll Beds have been destroyed! Kill the remaining players to win!"),
+            ""
+    );
+    public static final @NotNull List<String> MESSAGE_SUDDEN_DEATH_UPDATE = Arrays.asList(
+            "",
+            DisplayUtilities.getColored("&e&lSUDDEN DEATH &7>> &aDragons from every team have spawned!"),
+            ""
+    );
+
+
 
     public static final @NotNull String MESSAGE_EXPERIENCE_RECEIVED = DisplayUtilities.getColored("&b+%amount% Bed Wars Experience (%action%)");
 
