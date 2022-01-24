@@ -52,9 +52,9 @@ public final class ExpCalculator {
         int levelRespectingPrestige = getLevelRespectingPrestige(level);
 
         if (levelRespectingPrestige > EASY_LEVELS) {
-            experience += 5000 * LEVELS_PER_PRESTIGE - EASY_LEVELS;
+            experience += 5000L * (levelRespectingPrestige - EASY_LEVELS);
         }
-        for (int i = 1; i < EASY_LEVELS; i++) {
+        for (int i = 1; i <= EASY_LEVELS; i++) {
             if (i > levelRespectingPrestige) break;
             long experienceForEasyLevel = getExperienceForLevel(i);
             experience += experienceForEasyLevel;
