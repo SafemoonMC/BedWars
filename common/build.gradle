@@ -4,7 +4,7 @@ dependencies {
     compileOnly 'me.eduardwayland.mooncraft.waylander:WaylanderScheduler:1.0.0'
     compileOnly 'me.eduardwayland.mooncraft.waylander:WaylanderDatabase:1.0.0'
 
-    compileOnly 'redis.clients:jedis:4.0.0'
+    compileOnly 'redis.clients:jedis:4.0.1'
     compileOnly 'com.github.ben-manes.caffeine:caffeine:3.0.5'
 
     compileOnly 'org.spigotmc:Airplane:1.17.1'
