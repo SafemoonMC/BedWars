@@ -12,10 +12,13 @@ import org.jetbrains.annotations.NotNull;
 public final class WorldUtilities {
 
     public static Location[] getBedParts(@NotNull Block block) {
+        if (!(block.getBlockData() instanceof Bed bed)) {
+            return new Location[0];
+        }
+
         Location[] locations = new Location[2];
         locations[0] = block.getLocation();
 
-        Bed bed = (Bed) block.getBlockData();
         if (bed.getPart() == Bed.Part.HEAD) {
             locations[1] = block.getRelative(bed.getFacing().getOppositeFace()).getLocation();
         } else {
