@@ -75,6 +75,7 @@ public final class GameTicker extends GameRunnable {
                 if (tick % 2 == 0) {
                     gameMatch.getPlayerList().forEach(player -> {
                         TabPlayer tabPlayer = TabAPI.getInstance().getPlayer(player.getUniqueId());
+                        if(tabPlayer == null) return;
                         BedWarsPlugin.getInstance().getBoardManager().updateScoreboard(tabPlayer);
                     });
                 }

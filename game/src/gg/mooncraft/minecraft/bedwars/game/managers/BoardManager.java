@@ -173,6 +173,7 @@ public final class BoardManager {
     }
 
     public void updateScoreboard(@NotNull TabPlayer tabPlayer) {
+        if (!tabPlayer.isLoaded()) return;
         PlaceholderManagerImpl placeholderManager = (PlaceholderManagerImpl) TabAPI.getInstance().getPlaceholderManager();
 
         for (Placeholder placeholder : placeholderManager.getUsedPlaceholders()) {
