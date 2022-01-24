@@ -21,7 +21,7 @@ public final class GameEndTask implements Runnable {
     /*
     Constants
      */
-    private static final int GAME_COUNTDOWN_START = 6;
+    private static final int GAME_COUNTDOWN_END = 10;
 
     /*
     Fields
@@ -43,7 +43,7 @@ public final class GameEndTask implements Runnable {
     public void play() {
         if (this.schedulerTask != null) return;
         this.gameMatch.updateState(GameState.UNLOADING);
-        this.count = new AtomicInteger(GAME_COUNTDOWN_START);
+        this.count = new AtomicInteger(GAME_COUNTDOWN_END);
         this.schedulerTask = BedWarsPlugin.getInstance().getScheduler().asyncRepeating(this, 1, TimeUnit.SECONDS);
     }
 
