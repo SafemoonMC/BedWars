@@ -266,6 +266,17 @@ public class MatchListeners implements Listener {
                         });
                     });
                 });
+                if (!e.getMatchTeam().isAnyAlive()) {
+                    e.getMatchTeam().getMapPointList()
+                            .stream()
+                            .filter(teamMapPoint -> teamMapPoint.getType() == PointTypes.TEAM.TEAM_BED)
+                            .map(teamMapPoint -> PointAdapter.adapt(gameMatch, teamMapPoint))
+                            .forEach(location -> {
+                                Location[] parts = WorldUtilities.getBedParts(location.getBlock());
+                                Arrays.stream(parts).forEach(streamLocation -> streamLocation.getBlock().setType(Material.AIR));
+                            });
+                    e.getMatchTeam().updateStatus(TeamStatus.NOT_ALIVE);
+                }
 
                 long teamsAlive = e.getMatch().getTeamList()
                         .stream()
