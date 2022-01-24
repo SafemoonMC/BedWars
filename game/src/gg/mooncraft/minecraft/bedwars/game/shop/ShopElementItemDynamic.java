@@ -2,15 +2,19 @@ package gg.mooncraft.minecraft.bedwars.game.shop;
 
 import lombok.Getter;
 
+import net.kyori.adventure.text.Component;
+
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatchPlayer;
 import gg.mooncraft.minecraft.bedwars.game.match.options.OptionEntry;
 
+import java.util.List;
 import java.util.function.Function;
 
 @Getter
@@ -38,7 +42,13 @@ public final class ShopElementItemDynamic extends ShopElement {
         ItemStack itemStack = super.getIconItem(player, gameMatchPlayer);
         if (originalItemStack.getItemMeta().hasEnchants()) {
             itemStack.addUnsafeEnchantments(originalItemStack.getEnchantments());
-            itemStack.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            itemStack.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
+
+            ItemMeta itemMeta = itemStack.getItemMeta();
+            List<Component> lore = itemMeta.lore();
+            lore.add(0, Component.empty());
+            itemMeta.lore(lore);
+            itemStack.setItemMeta(itemMeta);
         }
         itemStack.setAmount(originalItemStack.getAmount());
         return itemStack;

@@ -169,7 +169,9 @@ public final class ShopMenu implements ShopInterface {
                 player.getInventory().removeItemAnySlot(costItem);
 
                 ItemStack itemStack = shopElementItemDynamic.getItemStackFunction().apply(gameMatchPlayer);
-                player.getInventory().addItem(ItemsUtilities.makeUnbreakable(itemStack));
+                itemStack = ItemsUtilities.makeUnbreakable(itemStack);
+                itemStack.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
+                player.getInventory().addItem(itemStack);
             }
             if (shopElement instanceof ShopElementItemPermanent shopElementItemPermanent) {
                 if (gameMatchPlayer.getPermanentElementList().contains(shopElementItemPermanent.getPermanentElement())) {
