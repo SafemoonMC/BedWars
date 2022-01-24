@@ -134,7 +134,9 @@ public class UtilityListeners implements Listener {
             }
             if (e.getItem().getType() == Material.FIRE_CHARGE) {
                 e.getPlayer().getInventory().getItemInMainHand().setAmount(e.getItem().getAmount() - 1);
-                e.getPlayer().launchProjectile(Fireball.class);
+                Fireball fireball = e.getPlayer().launchProjectile(Fireball.class);
+                fireball.setShooter(e.getPlayer());
+                fireball.setIsIncendiary(false);
             }
         }
     }
@@ -186,6 +188,9 @@ public class UtilityListeners implements Listener {
 
     @EventHandler
     public void on(@NotNull EntityExplodeEvent e) {
+        if (e.getEntity() instanceof Fireball fireball && fireball.getShooter() instanceof Player) {
+            e.setYield(e.getYield() * 2);
+        }
         BedWarsPlugin.getInstance().getMatchManager().getGameMatch(e.getLocation().getWorld()).ifPresent(gameMatch -> {
             if (e.getEntity() instanceof TNTPrimed || e.getEntity() instanceof Fireball) {
                 e.blockList().removeIf(block -> !gameMatch.getBlocksSystem().canBreak(block.getLocation()) || block.getType().name().contains("STAINED_GLASS"));
