@@ -19,7 +19,6 @@ import org.jetbrains.annotations.Nullable;
 import gg.mooncraft.minecraft.bedwars.data.user.stats.StatisticTypes;
 import gg.mooncraft.minecraft.bedwars.game.events.EventsAPI;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchUpdatePlayerEvent;
-import gg.mooncraft.minecraft.bedwars.game.items.ItemStackCreator;
 import gg.mooncraft.minecraft.bedwars.game.match.tasks.PlaytimeTask;
 import gg.mooncraft.minecraft.bedwars.game.shop.PermanentElement;
 import gg.mooncraft.minecraft.bedwars.game.utilities.ItemsUtilities;
@@ -82,7 +81,7 @@ public final class GameMatchPlayer {
         this.armor[0] = ItemsUtilities.createArmorItem(gameMatchTeam.getGameTeam(), Material.LEATHER_BOOTS);
         this.armor[1] = ItemsUtilities.createArmorItem(gameMatchTeam.getGameTeam(), Material.LEATHER_LEGGINGS);
         this.armor[2] = ItemsUtilities.createArmorItem(gameMatchTeam.getGameTeam(), Material.LEATHER_CHESTPLATE);
-        this.armor[3] = ItemStackCreator.using(ItemsUtilities.createArmorItem(gameMatchTeam.getGameTeam(), Material.LEATHER_HELMET)).enchant(Enchantment.WATER_WORKER, 1).create();
+        this.armor[3] = ItemsUtilities.createArmorItem(gameMatchTeam.getGameTeam(), Material.LEATHER_HELMET);
         this.permanentElementList = new ArrayList<>();
 
         this.lastMagicMilk = new AtomicLong();
