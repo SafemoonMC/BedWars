@@ -29,7 +29,9 @@ public final class GameConstants {
 
     public static final @NotNull List<String> ANNOUNCER_MESSAGES = Arrays.asList(
             DisplayUtilities.getColored("&cCross-teaming is not allowed! Report rule breakers with /report <player>."),
-            DisplayUtilities.getColored("&cReport rule breakers with /report <player>.")
+            DisplayUtilities.getColored("&cReport rule breakers with /report <player>."),
+            DisplayUtilities.getColored("&3Bed Wars &8>> &fBridge to other islands to get other resources!"),
+            DisplayUtilities.getColored("&3Bed Wars &8>> &fBuy upgrades and items at the Island NPCs!")
     );
 
     public static final @NotNull String BOSSBAR_TITLE = DisplayUtilities.getColored("&f&lPlaying &3&lBED WARS &f&lon &3&lPLAY.MOONCRAFT.GG");
