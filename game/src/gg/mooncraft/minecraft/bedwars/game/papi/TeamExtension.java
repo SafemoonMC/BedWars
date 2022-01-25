@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import gg.mooncraft.minecraft.bedwars.data.GameTeam;
+import gg.mooncraft.minecraft.bedwars.data.Prestige;
 import gg.mooncraft.minecraft.bedwars.data.user.BedWarsUser;
 import gg.mooncraft.minecraft.bedwars.data.user.stats.StatisticTypes;
 import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
@@ -29,6 +30,15 @@ public class TeamExtension extends PlaceholderExpansion {
                     .map(BedWarsUser::getLevel)
                     .map(String::valueOf)
                     .orElse("0");
+        } else if (params.equalsIgnoreCase("level-prestige")) {
+            return BedWarsPlugin.getInstance().getUserFactory().getUser(player)
+                    .map(bedWarsUser -> bedWarsUser.getPrestige().applyColors(bedWarsUser.getLevel()))
+                    .orElse("0");
+        } else if (params.equalsIgnoreCase("prestige")) {
+            return BedWarsPlugin.getInstance().getUserFactory().getUser(player)
+                    .map(BedWarsUser::getPrestige)
+                    .map(Prestige::getDisplay)
+                    .orElse("-");
         }
 
         if (params.contains("-")) {
