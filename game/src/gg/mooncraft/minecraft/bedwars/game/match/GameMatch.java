@@ -117,7 +117,7 @@ public final class GameMatch {
     }
 
     public boolean findTeamFor(@NotNull List<UUID> playerList) {
-        if (gameState != GameState.WAITING) return false;
+        if (gameState != GameState.WAITING && gameState != GameState.STARTING) return false;
         List<UUID> finalPlayerList = new ArrayList<>(playerList);
         finalPlayerList.removeIf(this::hasPlayer);
 

@@ -408,7 +408,7 @@ public class MatchListeners implements Listener {
 
         // If the game is still waiting for players, a quit has to free team slot
         // Else the player must be set as a spectator
-        if (gameMatch.getGameState() != GameState.WAITING) {
+        if (gameMatch.getGameState() != GameState.WAITING && gameMatch.getGameState() != GameState.STARTING) {
             GameMatchPlayer gameMatchPlayer = e.getMatchPlayer();
             gameMatchPlayer.updateStatus(PlayerStatus.SPECTATING);
         } else {
