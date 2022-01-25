@@ -1,5 +1,7 @@
 package gg.mooncraft.minecraft.bedwars.game.handlers.listeners;
 
+import net.kyori.adventure.text.Component;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -20,6 +22,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import gg.mooncraft.minecraft.bedwars.data.GameState;
 import gg.mooncraft.minecraft.bedwars.game.BedWarsPlugin;
 import gg.mooncraft.minecraft.bedwars.game.match.PlayerStatus;
 
@@ -67,6 +70,14 @@ public class GameListeners implements Listener {
         if (e.getAction() == Action.RIGHT_CLICK_BLOCK && e.getItem() != null && e.getItem().getType() == Material.WATER_BUCKET) {
             e.getPlayer().getInventory().getItemInMainHand().setAmount(e.getItem().getAmount() - 1);
         }
+        if (e.getAction().isRightClick() && e.getItem() != null && e.getItem().getType() == Material.RED_BED) {
+            BedWarsPlugin.getInstance().getMatchManager().getGameMatch(e.getPlayer()).ifPresent(gameMatch -> {
+                if (gameMatch.getGameState() != GameState.PLAYING) {
+                    e.setCancelled(true);
+                    e.getPlayer().kick(Component.text("Teleporting you to the lobby..."));
+                }
+            });
+        }
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -84,15 +95,22 @@ public class GameListeners implements Listener {
     @EventHandler
     public void on(@NotNull PlayerDropItemEvent e) {
         ItemStack itemStack = e.getItemDrop().getItemStack();
-        if (itemStack.getType().name().contains("BOOTS") || itemStack.getType().name().contains("LEGGINGS") || itemStack.getType().name().contains("CHESTPLATE") || itemStack.getType().name().contains("HELMET") || itemStack.getType().name().contains("AXE") || itemStack.getType().name().contains("PICKAXE") || itemStack.getType().name().contains("SHEARS")) {
+        if (itemStack.getType().name().contains("BOOTS") || itemStack.getType().name().contains("LEGGINGS") || itemStack.getType().name().contains("CHESTPLATE") || itemStack.getType().name().contains("HELMET") || itemStack.getType().name().contains("AXE") || itemStack.getType().name().contains("PICKAXE") || itemStack.getType().name().contains("SHEARS") || itemStack.getType() == Material.RED_BED) {
             e.setCancelled(true);
         }
     }
 
     @EventHandler
     public void on(@NotNull InventoryClickEvent e) {
+        if (!(e.getWhoClicked() instanceof Player player)) return;
+
         if (e.getSlotType() == InventoryType.SlotType.ARMOR) {
             e.setCancelled(true);
         }
+        BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player).ifPresent(gameMatch -> {
+            if (gameMatch.getGameState() != GameState.PLAYING) {
+                e.setCancelled(true);
+            }
+        });
     }
 }

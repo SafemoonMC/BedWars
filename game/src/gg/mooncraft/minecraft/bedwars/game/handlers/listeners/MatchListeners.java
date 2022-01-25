@@ -44,6 +44,7 @@ import gg.mooncraft.minecraft.bedwars.game.events.MatchUpdateGameEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchUpdatePlayerEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchUpdateStateEvent;
 import gg.mooncraft.minecraft.bedwars.game.events.MatchVillagerInteractEvent;
+import gg.mooncraft.minecraft.bedwars.game.items.ItemStackCreator;
 import gg.mooncraft.minecraft.bedwars.game.match.GameEvent;
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatch;
 import gg.mooncraft.minecraft.bedwars.game.match.GameMatchPlayer;
@@ -382,6 +383,13 @@ public class MatchListeners implements Listener {
 
         // Try to update GameStarTask if necessary
         if (gameMatch.getGameState() == GameState.WAITING) {
+            ItemStack bedItemStack = ItemStackCreator.using(Material.RED_BED)
+                    .meta()
+                    .display("&c&lReturn to Lobby")
+                    .lore(List.of("&7Right-click to return to lobby!"))
+                    .stack().create();
+            player.getInventory().setItem(8, bedItemStack);
+
             player.setGameMode(GameMode.ADVENTURE);
             player.showBossBar(BedWarsPlugin.getInstance().getBossBar());
             if (gameMatch.getPlayersCount() == gameMatch.getPlayersCapacity()) {
