@@ -6,7 +6,7 @@ dependencies {
     implementation 'me.eduardwayland.mooncraft.waylander:WaylanderDatabase:1.0.0'
 
     implementation 'redis.clients:jedis:4.0.1'
-    implementation 'org.mariadb.jdbc:mariadb-java-client:2.7.4'
+    implementation 'org.mariadb.jdbc:mariadb-java-client:2.7.5'
     implementation 'com.github.ben-manes.caffeine:caffeine:3.0.5'
 
     compileOnly 'com.mojang:brigadier:1.0.18'
