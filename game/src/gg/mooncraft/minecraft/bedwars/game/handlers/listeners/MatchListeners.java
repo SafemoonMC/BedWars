@@ -283,10 +283,7 @@ public class MatchListeners implements Listener {
                     player.setInvulnerable(true);
 
                     BedWarsPlugin.getInstance().getScheduler().executeSync(gameMatchPlayer::updateEffect);
-                    BedWarsPlugin.getInstance().getScheduler().asyncLater(() -> {
-                        player.setInvulnerable(false);
-                        Bukkit.broadcastMessage("false");
-                    }, 3, TimeUnit.SECONDS);
+                    BedWarsPlugin.getInstance().getScheduler().asyncLater(() -> player.setInvulnerable(false), 3, TimeUnit.SECONDS);
                 });
             }
             case RESPAWNING -> {
