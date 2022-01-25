@@ -92,8 +92,8 @@ public final class GameMatchPlayer {
      */
     public void updateEffect() {
         if (player != null) {
-            if (getParent().getUpgradeTier("miner") == 1) {
-                player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, Integer.MAX_VALUE, 0, true, true, true));
+            if (getParent().getUpgradeTier("miner") != 0) {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, Integer.MAX_VALUE, getParent().getUpgradeTier("miner") - 1, true, true, true));
             }
             if (getParent().getUpgradeTier("healpool") == 1 && getParent().isBedArea(player.getLocation())) {
                 player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, Integer.MAX_VALUE, 0, true, true, true));
