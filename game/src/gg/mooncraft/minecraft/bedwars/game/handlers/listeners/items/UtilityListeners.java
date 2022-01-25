@@ -7,7 +7,6 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Egg;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.Player;
@@ -24,7 +23,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
 import gg.mooncraft.minecraft.bedwars.data.GameTeam;
@@ -137,6 +135,7 @@ public class UtilityListeners implements Listener {
                 Fireball fireball = e.getPlayer().launchProjectile(Fireball.class);
                 fireball.setShooter(e.getPlayer());
                 fireball.setIsIncendiary(false);
+                fireball.setYield(fireball.getYield() * 2.5F);
             }
         }
     }
@@ -188,23 +187,21 @@ public class UtilityListeners implements Listener {
 
     @EventHandler
     public void on(@NotNull EntityExplodeEvent e) {
-        if (e.getEntity() instanceof Fireball fireball && fireball.getShooter() instanceof Player) {
-            e.setYield(e.getYield() * 2);
-        }
         BedWarsPlugin.getInstance().getMatchManager().getGameMatch(e.getLocation().getWorld()).ifPresent(gameMatch -> {
             if (e.getEntity() instanceof TNTPrimed || e.getEntity() instanceof Fireball) {
                 e.blockList().removeIf(block -> !gameMatch.getBlocksSystem().canBreak(block.getLocation()) || block.getType().name().contains("STAINED_GLASS"));
 
-                e.blockList().forEach(block -> {
-                    float x = -1.0F + (float) (Math.random() * 2.0D + 0.0D);
-                    float y = -1.5F + (float) (Math.random() * 3.0D + 0.0D);
-                    float z = -1.0F + (float) (Math.random() * 2.0D + 0.0D);
-
-                    FallingBlock fallingBlock = block.getWorld().spawnFallingBlock(block.getLocation(), block.getBlockData());
-                    fallingBlock.setDropItem(false);
-                    fallingBlock.setHurtEntities(true);
-                    fallingBlock.setVelocity(new Vector(x, y, z));
-                });
+//                It will be implemented at a later point as experimental feature - MCD-923
+//                e.blockList().forEach(block -> {
+//                    float x = -1.0F + (float) (Math.random() * 2.0D + 0.0D);
+//                    float y = -1.5F + (float) (Math.random() * 3.0D + 0.0D);
+//                    float z = -1.0F + (float) (Math.random() * 2.0D + 0.0D);
+//
+//                    FallingBlock fallingBlock = block.getWorld().spawnFallingBlock(block.getLocation(), block.getBlockData());
+//                    fallingBlock.setDropItem(false);
+//                    fallingBlock.setHurtEntities(true);
+//                    fallingBlock.setVelocity(new Vector(x, y, z));
+//                });
             }
         });
     }
