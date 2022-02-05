@@ -12,6 +12,8 @@ import me.eduardwayland.mooncraft.waylander.command.builders.RequiredCommandBuil
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionDefault;
 
 import gg.mooncraft.minecraft.bedwars.data.GameMode;
 import gg.mooncraft.minecraft.bedwars.lobby.BedWarsPlugin;
@@ -21,13 +23,13 @@ public final class Commands {
 
     public static void loadAll() {
         LiteralCommand<?> command = LiteralCommandBuilder
-                .name("bedwars").aliases(new String[]{"bw"})
+                .name("bedwars").aliases(new String[]{"bw"}).permission(new Permission("bedwars.admin", PermissionDefault.OP))
                 .then(LiteralCommandBuilder
                         .name("play")
                         .then(RequiredCommandBuilder
                                 .name("mode", StringArgumentType.word())
                                 .then(RequiredCommandBuilder
-                                        .name("player", new PlayerType())
+                                        .name("player", new PlayerType()).permission(new Permission("bedwars.admin", PermissionDefault.OP))
                                         .executes(((sender, arguments) -> {
                                             Player player = Bukkit.getPlayer(arguments.getArgument("player", String.class));
                                             if (player == null) return;
@@ -40,7 +42,7 @@ public final class Commands {
                 .then(LiteralCommandBuilder
                         .name("fastplay")
                         .then(RequiredCommandBuilder
-                                .name("player", new PlayerType())
+                                .name("player", new PlayerType()).permission(new Permission("bedwars.admin", PermissionDefault.OP))
                                 .executes((sender, arguments) -> {
                                     Player player = Bukkit.getPlayer(arguments.getArgument("player", String.class));
                                     if (player == null) return;
