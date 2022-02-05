@@ -43,6 +43,33 @@ public final class MatchmakingManager {
     /*
     Methods
      */
+    public void playFastMatchmaking(@NotNull Player player) {
+        if (this.matchmakingQueue.stream().anyMatch(matchmaking -> matchmaking.getPlayerList().contains(player))) {
+            return;
+        }
+        PartyUtilities.getParty(player).handle((partyData, throwable) -> {
+            if (throwable != null) return null;
+            return partyData;
+        }).thenApply(partyData -> {
+            if (partyData != null) {
+                player.sendMessage(ChatColor.RED + "You have to disband your party!");
+                return null;
+            }
+            return new Matchmaking(null, List.of(player));
+        }).thenAccept(matchmaking -> {
+            if (matchmaking == null) return;
+            try {
+                if (this.matchmakingQueue.stream().anyMatch(streamMatchmaking -> matchmaking.getPlayerList().containsAll(streamMatchmaking.getPlayerList()))) {
+                    return;
+                }
+                this.matchmakingQueue.put(matchmaking);
+            } catch (InterruptedException e) {
+                BedWarsPlugin.getInstance().getLogger().severe(e.getMessage());
+                player.sendMessage(ChatColor.RED + "Matchmaking system outage!");
+            }
+        });
+    }
+
     public void playMatchmaking(@NotNull GameMode gameMode, @NotNull Player player) {
         if (this.matchmakingQueue.stream().anyMatch(matchmaking -> matchmaking.getPlayerList().contains(player))) {
             return;

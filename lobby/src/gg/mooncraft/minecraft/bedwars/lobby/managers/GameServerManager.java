@@ -5,8 +5,10 @@ import org.jetbrains.annotations.NotNull;
 import gg.mooncraft.minecraft.bedwars.common.messages.GameServerMessage;
 import gg.mooncraft.minecraft.bedwars.data.GameMode;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public final class GameServerManager {
@@ -38,6 +40,38 @@ public final class GameServerManager {
 
     public @NotNull Optional<GameServerMessage.GameServer> getGameServer(@NotNull String serverName) {
         return this.gameServerList.stream().filter(gameServer -> gameServer.getServerName().equalsIgnoreCase(serverName)).findFirst();
+    }
+
+    public @NotNull Optional<Map.Entry<GameServerMessage.GameServer, GameServerMessage.GameServerMatch>> getFastGameServer() {
+        Optional<GameServerMessage.GameServer> freeGameServer = this.gameServerList.stream().filter(gameServer -> gameServer.getAvailableMatch().isPresent()).findFirst();
+        if (freeGameServer.isPresent()) {
+            GameServerMessage.GameServer gameServer = freeGameServer.get();
+            GameServerMessage.GameServerMatch gameServerMatch = gameServer.getAvailableMatch().orElse(null);
+            if (gameServerMatch == null) {
+                return Optional.empty();
+            }
+            return Optional.of(new AbstractMap.SimpleEntry<>(gameServer, gameServerMatch));
+        }
+
+        GameServerMessage.GameServer stGameServer = null;
+        GameServerMessage.GameServerMatch stGameServerMatch = null;
+        for (GameServerMessage.GameServer gameServer : new ArrayList<>(this.gameServerList)) {
+            Optional<GameServerMessage.GameServerMatch> gameServerMatchOptional = gameServer.getAvailableMatch();
+            if (gameServerMatchOptional.isEmpty()) continue;
+            GameServerMessage.GameServerMatch gameServerMatch = gameServerMatchOptional.get();
+
+            if (stGameServer == null) {
+                stGameServer = gameServer;
+                stGameServerMatch = gameServerMatch;
+            } else if (stGameServerMatch.getPlayers() < gameServerMatch.getPlayers()) {
+                stGameServer = gameServer;
+                stGameServerMatch = gameServerMatch;
+            }
+        }
+        if (stGameServer == null || stGameServerMatch.getPlayers() == 0) {
+            return Optional.empty();
+        }
+        return Optional.of(new AbstractMap.SimpleEntry<>(stGameServer, stGameServerMatch));
     }
 
     public int getOnlinePlayers(@NotNull GameMode gameMode) {

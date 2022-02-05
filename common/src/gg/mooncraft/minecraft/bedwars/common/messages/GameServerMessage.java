@@ -13,8 +13,10 @@ import gg.mooncraft.minecraft.bedwars.data.GameMode;
 import gg.mooncraft.minecraft.bedwars.data.GameState;
 
 import java.time.Instant;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 @Getter
@@ -64,6 +66,15 @@ public final class GameServerMessage extends AbstractMessage {
         /*
         Methods
          */
+        public @NotNull Optional<GameServerMatch> getAvailableMatch() {
+            if (serverStatus == ServerStatus.DISABLED) {
+                return Optional.empty();
+            }
+            return this.matchList.stream()
+                    .filter(gameServerMatch -> gameServerMatch.getPlayers() != 0 && (gameServerMatch.getGameMode().getWeight() - gameServerMatch.getPlayers()) >= 1)
+                    .min(Comparator.comparingInt(o -> (o.getGameMode().getWeight() - o.getPlayers())));
+        }
+
         public boolean isAvailableFor(@NotNull GameMode gameMode, int players) {
             if (serverStatus == ServerStatus.DISABLED) {
                 return false;

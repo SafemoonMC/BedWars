@@ -37,6 +37,17 @@ public final class Commands {
                                 )
                         )
                 )
+                .then(LiteralCommandBuilder
+                        .name("fastplay")
+                        .then(RequiredCommandBuilder
+                                .name("player", new PlayerType())
+                                .executes((sender, arguments) -> {
+                                    Player player = Bukkit.getPlayer(arguments.getArgument("player", String.class));
+                                    if (player == null) return;
+                                    BedWarsPlugin.getInstance().getMatchmakingManager().playFastMatchmaking(player);
+                                })
+                        )
+                )
                 .build();
 
         BedWarsPlugin.getInstance().registerCommand(command);
