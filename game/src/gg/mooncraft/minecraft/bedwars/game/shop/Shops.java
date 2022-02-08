@@ -514,11 +514,27 @@ public final class Shops {
                 )
         );
         SOLO_SHOP.addItem("tools", new ShopElementItemDynamic(
+                        "Diamond Pickaxe",
+                        "",
+                        new OptionEntry<>(Material.GOLD_INGOT, 12),
+                        Material.DIAMOND_PICKAXE,
+                        gameMatchPlayer -> ItemStackCreator.using(Material.DIAMOND_PICKAXE).enchant(Enchantment.DIG_SPEED, 1).enchant(Enchantment.DAMAGE_ALL, gameMatchPlayer.getParent().getUpgradeTier("weapon")).amount(1).create()
+                )
+        );
+        SOLO_SHOP.addItem("tools", new ShopElementItemDynamic(
                         "Wooden Axe",
                         "",
                         new OptionEntry<>(Material.IRON_INGOT, 2),
                         Material.WOODEN_AXE,
                         gameMatchPlayer -> ItemStackCreator.using(Material.WOODEN_AXE).enchant(Enchantment.DIG_SPEED, 1).enchant(Enchantment.DAMAGE_ALL, gameMatchPlayer.getParent().getUpgradeTier("weapon")).amount(1).create()
+                )
+        );
+        SOLO_SHOP.addItem("tools", new ShopElementItemDynamic(
+                        "Diamond Axe",
+                        "",
+                        new OptionEntry<>(Material.GOLD_INGOT, 12),
+                        Material.DIAMOND_AXE,
+                        gameMatchPlayer -> ItemStackCreator.using(Material.DIAMOND_AXE).enchant(Enchantment.DIG_SPEED, 1).enchant(Enchantment.DAMAGE_ALL, gameMatchPlayer.getParent().getUpgradeTier("weapon")).amount(1).create()
                 )
         );
         // Tools DUOS
@@ -539,11 +555,27 @@ public final class Shops {
                 )
         );
         DUOS_SHOP.addItem("tools", new ShopElementItemDynamic(
+                        "Diamond Pickaxe",
+                        "",
+                        new OptionEntry<>(Material.GOLD_INGOT, 12),
+                        Material.DIAMOND_PICKAXE,
+                        gameMatchPlayer -> ItemStackCreator.using(Material.DIAMOND_PICKAXE).enchant(Enchantment.DIG_SPEED, 1).enchant(Enchantment.DAMAGE_ALL, gameMatchPlayer.getParent().getUpgradeTier("weapon")).amount(1).create()
+                )
+        );
+        DUOS_SHOP.addItem("tools", new ShopElementItemDynamic(
                         "Wooden Axe",
                         "",
                         new OptionEntry<>(Material.IRON_INGOT, 2),
                         Material.WOODEN_AXE,
                         gameMatchPlayer -> ItemStackCreator.using(Material.WOODEN_AXE).enchant(Enchantment.DIG_SPEED, 1).enchant(Enchantment.DAMAGE_ALL, gameMatchPlayer.getParent().getUpgradeTier("weapon")).amount(1).create()
+                )
+        );
+        DUOS_SHOP.addItem("tools", new ShopElementItemDynamic(
+                        "Diamond Axe",
+                        "",
+                        new OptionEntry<>(Material.GOLD_INGOT, 12),
+                        Material.DIAMOND_AXE,
+                        gameMatchPlayer -> ItemStackCreator.using(Material.DIAMOND_AXE).enchant(Enchantment.DIG_SPEED, 1).enchant(Enchantment.DAMAGE_ALL, gameMatchPlayer.getParent().getUpgradeTier("weapon")).amount(1).create()
                 )
         );
         // Tools TRIOS
@@ -564,11 +596,27 @@ public final class Shops {
                 )
         );
         TRIOS_SHOP.addItem("tools", new ShopElementItemDynamic(
+                        "Diamond Pickaxe",
+                        "",
+                        new OptionEntry<>(Material.GOLD_INGOT, 12),
+                        Material.DIAMOND_PICKAXE,
+                        gameMatchPlayer -> ItemStackCreator.using(Material.DIAMOND_PICKAXE).enchant(Enchantment.DIG_SPEED, 1).enchant(Enchantment.DAMAGE_ALL, gameMatchPlayer.getParent().getUpgradeTier("weapon")).amount(1).create()
+                )
+        );
+        TRIOS_SHOP.addItem("tools", new ShopElementItemDynamic(
                         "Wooden Axe",
                         "",
                         new OptionEntry<>(Material.IRON_INGOT, 2),
                         Material.WOODEN_AXE,
                         gameMatchPlayer -> ItemStackCreator.using(Material.WOODEN_AXE).enchant(Enchantment.DIG_SPEED, 1).enchant(Enchantment.DAMAGE_ALL, gameMatchPlayer.getParent().getUpgradeTier("weapon")).amount(1).create()
+                )
+        );
+        TRIOS_SHOP.addItem("tools", new ShopElementItemDynamic(
+                        "Diamond Axe",
+                        "",
+                        new OptionEntry<>(Material.GOLD_INGOT, 12),
+                        Material.DIAMOND_AXE,
+                        gameMatchPlayer -> ItemStackCreator.using(Material.DIAMOND_AXE).enchant(Enchantment.DIG_SPEED, 1).enchant(Enchantment.DAMAGE_ALL, gameMatchPlayer.getParent().getUpgradeTier("weapon")).amount(1).create()
                 )
         );
         // Tools QUADS
@@ -589,11 +637,27 @@ public final class Shops {
                 )
         );
         QUADS_SHOP.addItem("tools", new ShopElementItemDynamic(
+                        "Diamond Pickaxe",
+                        "",
+                        new OptionEntry<>(Material.GOLD_INGOT, 12),
+                        Material.DIAMOND_PICKAXE,
+                        gameMatchPlayer -> ItemStackCreator.using(Material.DIAMOND_PICKAXE).enchant(Enchantment.DIG_SPEED, 1).enchant(Enchantment.DAMAGE_ALL, gameMatchPlayer.getParent().getUpgradeTier("weapon")).amount(1).create()
+                )
+        );
+        QUADS_SHOP.addItem("tools", new ShopElementItemDynamic(
                         "Wooden Axe",
                         "",
                         new OptionEntry<>(Material.IRON_INGOT, 2),
                         Material.WOODEN_AXE,
                         gameMatchPlayer -> ItemStackCreator.using(Material.WOODEN_AXE).enchant(Enchantment.DIG_SPEED, 1).enchant(Enchantment.DAMAGE_ALL, gameMatchPlayer.getParent().getUpgradeTier("weapon")).amount(1).create()
+                )
+        );
+        QUADS_SHOP.addItem("tools", new ShopElementItemDynamic(
+                        "Diamond Axe",
+                        "",
+                        new OptionEntry<>(Material.GOLD_INGOT, 12),
+                        Material.DIAMOND_AXE,
+                        gameMatchPlayer -> ItemStackCreator.using(Material.DIAMOND_AXE).enchant(Enchantment.DIG_SPEED, 1).enchant(Enchantment.DAMAGE_ALL, gameMatchPlayer.getParent().getUpgradeTier("weapon")).amount(1).create()
                 )
         );
         // Ranged SOLO
