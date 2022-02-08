@@ -1,6 +1,6 @@
 name: BedWars-Lobby
 main: gg.mooncraft.minecraft.bedwars.lobby.BedWarsPlugin
-version: @plugin-version@
+version: @lobby-plugin-version@
 api-version: @plugin-api-version@
 author: @plugin-author@
 softdepend: [ PlaceholderAPI ]
