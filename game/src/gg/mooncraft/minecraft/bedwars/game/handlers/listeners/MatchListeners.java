@@ -360,7 +360,7 @@ public class MatchListeners implements Listener {
         // Show scoreboard and nametags
         BedWarsPlugin.getInstance().getScheduler().executeSync(() -> {
             gameMatchPlayer.getTabPlayer().ifPresent(tabPlayer -> {
-                if (gameMatch.getGameState() == GameState.WAITING) {
+                if (gameMatch.getGameState() == GameState.WAITING || gameMatch.getGameState() == GameState.STARTING) {
                     TabAPI.getInstance().getScoreboardManager().showScoreboard(tabPlayer, gameMatch.getScoreboard());
                 } else {
                     TabAPI.getInstance().getScoreboardManager().showScoreboard(tabPlayer, gameMatchTeam.getScoreboard());
@@ -382,7 +382,7 @@ public class MatchListeners implements Listener {
         gameMatch.getPlayerList().forEach(streamPlayer -> streamPlayer.sendMessage(joinMessage));
 
         // Try to update GameStarTask if necessary
-        if (gameMatch.getGameState() == GameState.WAITING) {
+        if (gameMatch.getGameState() == GameState.WAITING || gameMatch.getGameState() == GameState.STARTING) {
             ItemStack bedItemStack = ItemStackCreator.using(Material.RED_BED)
                     .meta()
                     .display("&c&lReturn to Lobby")
@@ -415,6 +415,11 @@ public class MatchListeners implements Listener {
             e.getMatchTeam().delPlayer(player.getUniqueId());
         }
 
+        // Try to update GameStarTask if necessary
+        if (gameMatch.getGameState() == GameState.WAITING || gameMatch.getGameState() == GameState.STARTING) {
+            gameMatch.getGameTicker().getGameStartTask().stop();
+        }
+
         // Send quit message
         String quitMessage = PlaceholderAPI.setPlaceholders(player, GameConstants.MESSAGE_PLAYER_QUIT);
         gameMatch.getPlayerList().forEach(streamPlayer -> streamPlayer.sendMessage(quitMessage));
@@ -428,11 +433,6 @@ public class MatchListeners implements Listener {
                     .map(Optional::get)
                     .forEach(streamTabPlayer -> BedWarsPlugin.getInstance().getBoardManager().updateScoreboard(streamTabPlayer));
         });
-
-        // Try to update GameStarTask if necessary
-        if (gameMatch.getGameState() == GameState.WAITING) {
-            gameMatch.getGameTicker().getGameStartTask().stop();
-        }
 
         // Send update message to lobby
         BedWarsPlugin.getInstance().getGameServerManager().sendGameServerMessage();
