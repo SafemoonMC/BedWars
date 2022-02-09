@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
+import org.jetbrains.annotations.NotNull;
 
 import gg.mooncraft.minecraft.bedwars.data.GameMode;
 import gg.mooncraft.minecraft.bedwars.data.GameState;
@@ -46,20 +47,7 @@ public final class Commands {
                 .name("bedwars").aliases("bw").permission(new Permission("bedwars.admin", PermissionDefault.OP))
                 .then(LiteralCommandBuilder
                         .<Player>name("start")
-                        .executes(player -> {
-                            BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player).ifPresentOrElse(gameMatch -> {
-                                if (gameMatch.getGameState() == GameState.WAITING) {
-                                    if (!gameMatch.getGameTicker().getGameStartTask().isRunning()) {
-                                        gameMatch.getGameTicker().getGameStartTask().play();
-                                        player.sendMessage("The GameStartTask has been started!");
-                                    } else {
-                                        player.sendMessage("The GameStartTask is already playing!");
-                                    }
-                                } else {
-                                    player.sendMessage("This game has already been started!");
-                                }
-                            }, () -> player.sendMessage("You're not in a game match."));
-                        })
+                        .executes(Commands::forceStart)
                 )
                 .then(LiteralCommandBuilder
                         .<Player>name("stop")
@@ -274,9 +262,33 @@ public final class Commands {
                 .<Player>name("leave").aliases("l").permission(new Permission("bedwars.lobby", PermissionDefault.TRUE))
                 .executes(commandSender -> commandSender.kick(Component.text("Teleporting you to the lobby..."), PlayerKickEvent.Cause.PLUGIN))
                 .build();
+        LiteralCommand<?> forcestartCommand = LiteralCommandBuilder
+                .<Player>name("forcestart").aliases("fs").permission(new Permission("bedwars.forcestart", PermissionDefault.FALSE))
+                .executes(Commands::forceStart)
+                .build();
 
         BedWarsPlugin.getInstance().registerCommand(command);
         BedWarsPlugin.getInstance().registerCommand(leaveCommand);
+        BedWarsPlugin.getInstance().registerCommand(forcestartCommand);
         BedWarsPlugin.getInstance().getLogger().info("Commands have been loaded.");
+    }
+
+    private static void forceStart(@NotNull Player player) {
+        BedWarsPlugin.getInstance().getMatchManager().getGameMatch(player).ifPresentOrElse(gameMatch -> {
+            if (gameMatch.getGameState() == GameState.WAITING) {
+                if (!gameMatch.getGameTicker().getGameStartTask().isRunning()) {
+                    if (gameMatch.getPlayerList().size() >= 2) {
+                        gameMatch.getGameTicker().getGameStartTask().play();
+                        player.sendMessage("The GameStartTask has been started!");
+                    } else {
+                        player.sendMessage("You can force-start a match with at least 2 players.");
+                    }
+                } else {
+                    player.sendMessage("The GameStartTask is already playing!");
+                }
+            } else {
+                player.sendMessage("This game has already been started!");
+            }
+        }, () -> player.sendMessage("You're not in a game match."));
     }
 }
